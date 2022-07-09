@@ -1,0 +1,37 @@
+condition: 
+  - text: ${condition_term} ${condition_query} ${command}
+    code: |
+      ${condition_query}
+        ${command}
+  - text: ${command}, ${condition_term} ${condition_query}
+    code: |
+      ${condition_query}
+        ${command}
+  - text: ${condition_term.1} ${condition_query.1} ${command}, ${condition_term.2} ${condition_query.2}
+    code: |
+      ${condition_query.1}
+        ${condition_query.2}
+          ${command}
+
+condition_query:
+  - text: ${query}
+    code: |
+      ${query}
+      if ${query:var}:
+    var: ${query:var}
+  # - text: ${query.1} ${cc} ${query.2}
+  #   code: |
+  #     ${query.1}
+  #     ${query.2}
+  #     if ${query.1:var} ${cc} ${query.2:var}:
+  #   var: 
+
+condition_term:
+  - if
+  - in the event
+  - provided that
+  - text: provided
+    weight: 0.5
+
+negative_condition_term:
+  - unless

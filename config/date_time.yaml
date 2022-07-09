@@ -1,0 +1,74 @@
+date_time:
+  - text: ${date_time_general}
+    code: ${date_time_general}
+    var: date_time 
+  - text: at ${date_time_exact}
+    code: ${date_time_exact}
+    var: date_time 
+
+date_time_general:
+  - text: ${date_time_term}
+    code: ${date_time_term:var} = DateTime.resolve_from_text("${date_time_term}")
+
+date_time_exact:
+  - text: ${date_time_hour}
+    code: ${date_time_hour:var} = DateTime.resolve_from_text("${date_time_hour}")
+
+date_time_now:
+  - text: now
+    code: now = DateTime.resolve_from_text("now")
+    # var: now
+
+date_time_past:
+  - text: ${date_time_past_term}
+    code: ${date_time_past_term:var} = DateTime.resolve_from_text("${date_time_past_term}")
+    # var: ${date_time_past_term:var}
+  # - text: at ${date_time_hour_term}
+  #   code: ${date_time_hour_term}
+  #   var: ${date_time_hour_term:var}
+
+date_time_term:
+  - tomorrow
+  - tomorrow morning
+  - tomorrow
+  - today
+  - the day after tomorrow
+  - in the morning
+  - in the afternoon
+  - at noon
+  - tonight
+  - in the weekend
+
+day_of_the_week:
+  - ${faker_day_of_the_week}
+
+month_name:
+  - ${faker_month_name}
+
+date_time_hour:
+  - ${date_time_hour_term}
+  - ${date_time_hour_term} ${date_time_future}
+  # - text: ${date_time_future} at ${date_time_hour_term}
+  #   code: "${date_time_future} at ${date_time_hour_term}"
+
+date_time_future:
+  - tomorrow
+  - next week
+  - next month
+  - the day after tomorrow
+  - in 2 days
+
+date_time_hour_term:
+  - ${faker_time_hour}
+  - ${faker_time_hour_minutes}
+  - mindnight
+  - noon
+  # - at ${faker_time_hour} am tomorrow morning
+  # - tomorrow morning at ${faker_time_hour} am
+  # - at ${faker_time_hour} pm tonight
+  # - tonight at ${faker_time_hour} pm
+
+date_time_past_term:
+  - today
+  - yesterday
+  - ${date_time_hour_term}

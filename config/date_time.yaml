@@ -1,10 +1,10 @@
 date_time:
   - text: ${date_time_general}
     code: ${date_time_general}
-    var: date_time 
+    var: date_time
   - text: at ${date_time_exact}
     code: ${date_time_exact}
-    var: date_time 
+    var: date_time
 
 date_time_general:
   - text: ${date_time_term}
@@ -13,16 +13,17 @@ date_time_general:
 date_time_exact:
   - text: ${date_time_hour}
     code: ${date_time_hour:var} = DateTime.resolve_from_text("${date_time_hour}")
+    var: date_time
 
 date_time_now:
   - text: now
-    code: now = DateTime.resolve_from_text("now")
-    # var: now
+    code: ${date_time_now:var} = DateTime.resolve_from_text("now")
+    var: date_time
 
 date_time_past:
   - text: ${date_time_past_term}
     code: ${date_time_past_term:var} = DateTime.resolve_from_text("${date_time_past_term}")
-    # var: ${date_time_past_term:var}
+    var: date_time
   # - text: at ${date_time_hour_term}
   #   code: ${date_time_hour_term}
   #   var: ${date_time_hour_term:var}

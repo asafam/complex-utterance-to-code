@@ -7,11 +7,12 @@ condition:
     code: |
       ${condition_query}
         ${command}
-  - text: ${condition_term.1} ${condition_query.1} ${command}, ${condition_term.2} ${condition_query.2}
-    code: |
-      ${condition_query.1}
-        ${condition_query.2}
-          ${command}
+  # - text: ${condition_term.1} ${condition_query.1} ${command}, ${condition_term.2} ${condition_query.2}
+  #   code: |
+  #     ${condition_query.1}
+  #       ${condition_query.2}
+  #         ${command}
+  #   weight: 0.3
 
 condition_query:
   - text: ${query}

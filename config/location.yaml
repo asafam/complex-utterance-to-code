@@ -16,8 +16,8 @@ specific_location:
 location_landmark:
   - text: ${location_landmark_item}
     code: |
-      ${location_landmark_item:var} = Location.resolve_from_text(${location_landmark_item})
-    var: ${location_landmark_item:var}
+      ${location_landmark:var} = Location.resolve_from_text("${location_landmark_item}")
+    var: location
 
 location_landmark_item:
   - the airport
@@ -34,8 +34,8 @@ location_landmark_item:
 location_path:
   - text: ${location_path_item}
     code: |
-      ${location_path_item:var} = Location.resolve_from_text(${location_path_item})
-    var: ${location_path_item:var}
+      ${location_path_item:var} = Location.resolve_from_text("${location_path_item}")
+    var: location
 
 location_path_item:
   - text: highway ${faker_digit}

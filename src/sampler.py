@@ -6,12 +6,14 @@ from utils import get_code, get_keys, get_var
 from fake_data.faker import fake
 
 
-def sample(key: str, name: str, program_stack: Dict, grammar: Dict) -> Dict:
+def sample(
+    key: str, name: str, program_stack: Dict, grammar: Dict, idx: Optional[str] = None
+) -> Dict:
     if re.search(rf"faker_.*", key):
         result = sample_from_faker(key=key)
     else:
         result = sample_from_grammar(
-            key=key, program_stack=program_stack.copy(), grammar=grammar
+            key=key, program_stack=program_stack.copy(), grammar=grammar, idx=idx
         )
 
     program_stack[name] = result
@@ -38,18 +40,29 @@ def normalize_result(result: Optional[Union[str, dict]], key: str):
     return value
 
 
-def sample_from_grammar(key: str, program_stack: Dict, grammar: Dict) -> Dict:
+def sample_from_grammar(
+    key: str, program_stack: Dict, grammar: Dict, idx: Optional[str] = None
+) -> Dict:
     d = sample_random_value(key, grammar)
     child_keys = get_keys(d["text"] + d["code"])
     for child_name, child_key, child_idx in child_keys:
+        if idx and child_idx:
+            child_idx = f"{idx}_{child_idx}"
+        elif idx:
+            child_idx = idx
+
         dd = sample(
-            key=child_key, name=child_name, program_stack=program_stack, grammar=grammar
+            key=child_key,
+            name=child_name,
+            idx=child_idx,
+            program_stack=program_stack,
+            grammar=grammar,
         )
         d["text"] = substitute_text(text=d["text"], key=child_name, value=dd["text"])
         var = dd["var"] or d["var"] or f"${{{key}:var}}"
-        if child_idx:
+        if child_idx and not var.startswith("$"):
             var = var + child_idx
-        d["code"] = substitute_code(
+        d["code"], _ = substitute_code(
             code=d["code"], key=child_key, name=child_name, value=dd["code"], var=var
         )
         # d["code"], d["var"] = substitute_code(code=d["code"], key=k, value=dd["code"], var=d["var"])
@@ -90,7 +103,7 @@ def get_entries_for_key(key: str, data: dict) -> List[dict]:
             params_str = re.search(k, key).group(1) if re.search(k, key) else None
         except:
             params_str = None
-            
+
         if params_str:
             for item in entries:
                 param_values = list(map(lambda x: x.strip(), params_str.split(",")))
@@ -108,13 +121,21 @@ def get_entries_for_key(key: str, data: dict) -> List[dict]:
                 if len(param_values) > 1:
                     for param in param_values[1:]:
                         [k, v] = param.split("=")
-                        params[k.strip()] = v.strip() if not v.strip().startswith('$') else f'${{{v.strip()[1:]}}}'
-                text_keys = get_keys(item['text'], key_pattern=r'\$([^\s\{\}}]+)')
+                        params[k.strip()] = (
+                            v.strip()
+                            if not v.strip().startswith("$")
+                            else f"${{{v.strip()[1:]}}}"
+                        )
+                text_keys = get_keys(item["text"], key_pattern=r"\$([^\s\{\}}]+)")
                 for k in text_keys:
-                    item["text"] = re.sub(re.escape(f"${k[0]}"), params.get(k[0], ""), item["text"], 1) 
-                code_keys = get_keys(item['code'], key_pattern=r'\$([^\s\,\(\)\{\}]+)')
+                    item["text"] = re.sub(
+                        re.escape(f"${k[0]}"), params.get(k[0], ""), item["text"], 1
+                    )
+                code_keys = get_keys(item["code"], key_pattern=r"\$([^\s\,\(\)\{\}]+)")
                 for k in code_keys:
-                    item["code"] = re.sub(re.escape(f"${k[0]}"), params.get(k[0], ""), item["code"], 1) #item["code"].replace(f"${k[0]}", params.get(k[0], ""))
+                    item["code"] = re.sub(
+                        re.escape(f"${k[0]}"), params.get(k[0], ""), item["code"], 1
+                    )  # item["code"].replace(f"${k[0]}", params.get(k[0], ""))
     return entries
 
 
@@ -123,20 +144,20 @@ def substitute_text(text: str, key: str, value: str) -> str:
     if value:
         escaped_key = re.escape(key)
         new_text = re.sub(rf"\${{{escaped_key}}}", value, new_text, 1)
-    
+
     new_text = re.sub(rf"\s+", " ", new_text, 1)
     return new_text
 
 
 def substitute_code(
     code: str, key: str, name: str, value: str, var: Optional[str]
-) -> str:
+) -> Tuple[str, str]:
     new_code = code
 
     # get indentation
     escaped_regex = f"${{{key}}}"
-    if re.search(rf"\n\s*{escaped_regex}", code):
-        indent = code.split(f"${{{key}}}")[0].split("\n")[-1]
+    if re.search(rf"\n\s*{escaped_regex}", new_code):
+        indent = new_code.split(f"${{{key}}}")[0].split("\n")[-1]
         # indent
         value = re.sub(rf"\n", f"\n{indent}", value)
 
@@ -151,7 +172,7 @@ def substitute_code(
         escaped_regex = re.escape(f"${{{name}:var}}")
         new_code = re.sub(escaped_regex, var, new_code, 1)
 
-    return new_code
+    return new_code, var
 
 
 def substitute_text2(text: str, key: str, repl: str) -> str:

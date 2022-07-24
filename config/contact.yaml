@@ -21,3 +21,13 @@ contact_i:
 name:
   - ${faker_name}
   - ${faker_first_name}
+name_male:
+  - text: ${faker_first_name_male}
+    code: ${faker_first_name_male}
+    gend: masc
+    num: sg
+name_female:
+  - text: ${faker_first_name_female}
+    code: ${faker_first_name_female}
+    gend: fem
+    num: sg

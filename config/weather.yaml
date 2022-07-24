@@ -17,40 +17,40 @@ weather_command:
       ResponderCommand.default_responder(response=weather_forecasts)
 
 weather_query:
-  - text: ${weather_condition} ${date_time}
-    code: |
-      ${weather_condition}
-      ${date_time}
-      weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, weather_condition=${weather_condition:var})
-      weather_forecasts_result = len(list(weather_forecasts)) > 0
-    var: weather_forecasts_result
-  - text: ${weather_condition} ${date_time} in ${location}
-    code: |
-      ${weather_condition}
-      ${date_time}
-      ${location}
-      weather_forecasts = WeatherQueryget_weather_forecasts(date_time=${date_time:var}, location=${location:var}, weather_condition=${weather_condition:var})
-      weather_forecasts_result = len(list(weather_forecasts)) > 0
-    var: weather_forecasts_result
-  - text: ${weather_condition} in ${location} ${date_time}
-    code: |
-      ${weather_condition}
-      ${date_time}
-      ${location}
-      weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, location=${location:var}, weather_condition=${weather_condition:var})
-      weather_forecasts_result = len(list(weather_forecasts)) > 0
-    var: weather_forecasts_result
-  - text: ${weather_condition} ${date_time} in ${location.1} ${cc} ${location.2}
-    code: |
-      ${weather_condition}
-      ${date_time}
-      ${location.1}
-      ${location.2}
-      weather_forecasts_result = True
-      for location in [${location.1:var}, ${location.2:var}]:
-        weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, location=location, weather_condition=${weather_condition:var})
-        weather_forecasts_result = weather_forecasts_result ${cc} len(list(weather_forecasts)) > 0
-    var: weather_forecasts_result
+  # - text: ${weather_condition} ${date_time}
+  #   code: |
+  #     ${weather_condition}
+  #     ${date_time}
+  #     weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, weather_condition=${weather_condition:var})
+  #     weather_forecasts_result = len(list(weather_forecasts)) > 0
+  #   var: weather_forecasts_result
+  # - text: ${weather_condition} ${date_time} in ${location}
+  #   code: |
+  #     ${weather_condition}
+  #     ${date_time}
+  #     ${location}
+  #     weather_forecasts = WeatherQueryget_weather_forecasts(date_time=${date_time:var}, location=${location:var}, weather_condition=${weather_condition:var})
+  #     weather_forecasts_result = len(list(weather_forecasts)) > 0
+  #   var: weather_forecasts_result
+  # - text: ${weather_condition} in ${location} ${date_time}
+  #   code: |
+  #     ${weather_condition}
+  #     ${date_time}
+  #     ${location}
+  #     weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, location=${location:var}, weather_condition=${weather_condition:var})
+  #     weather_forecasts_result = len(list(weather_forecasts)) > 0
+  #   var: weather_forecasts_result
+  # - text: ${weather_condition} ${date_time} in ${location.1} ${cc} ${location.2}
+  #   code: |
+  #     ${weather_condition}
+  #     ${date_time}
+  #     ${location.1}
+  #     ${location.2}
+  #     weather_forecasts_result = True
+  #     for location in [${location.1:var}, ${location.2:var}]:
+  #       weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, location=location, weather_condition=${weather_condition:var})
+  #       weather_forecasts_result = weather_forecasts_result ${cc} len(list(weather_forecasts)) > 0
+    # var: weather_forecasts_result
   - text: ${weather_condition} in ${location.1} and ${location.2} ${date_time.1} and ${date_time.2}
     code: |
       ${weather_condition}
@@ -63,7 +63,8 @@ weather_query:
         for date_time in [${date_time.1:var}, ${date_time.2:var}]:
           weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=date_time, location=location, weather_condition=${weather_condition:var})
           weather_forecasts_result = weather_forecasts_result and len(list(weather_forecasts)) > 0
-    var: weather_forecasts_result
+      bool_val = weather_forecasts_result
+    var: bool_val
 
 weather_command_verb:
   - tell

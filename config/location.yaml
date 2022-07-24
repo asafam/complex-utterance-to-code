@@ -2,6 +2,7 @@ location:
   - text: ${location_sing}
     code: ${location_sing}
     var: location #${location_sing:var}
+    coref_valid: True
 
 location_sing:
   - text: ${specific_location}

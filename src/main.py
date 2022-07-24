@@ -4,6 +4,7 @@ import yaml
 import os
 from pathlib import Path
 from sampler import sample
+from utils import to_code, to_text
 from typing import List, Tuple, Union
 
 
@@ -29,11 +30,14 @@ def main(k, grammar_dir="config", root_key="utterance", seed=42):
     if seed:
         random.seed(seed)
     grammar = load_grammar(grammar_dir)
+    context = dict()
     for n in range(k):
-        d = sample(key=root_key, name=root_key, program_stack=dict(), grammar=grammar)
+        s = sample(key=root_key, name=root_key, grammar=grammar, program_stack=dict(), context=dict())
         print(f"{n+1}) Sample:")
-        print(f'Text:\n{d["text"]}\n')
-        print(f'Code:\n{d["code"]}\n')
+        # print(f'Text:\n{to_text(s)}\n')
+        # print(f'Code:\n{to_code(s)}\n')
+        print(f'Text:\n{s["text"]}\n')
+        print(f'Code:\n{s["code"]}\n')
         print("-------------------------------")
 
 

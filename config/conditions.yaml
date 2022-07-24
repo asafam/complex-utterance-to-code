@@ -18,6 +18,7 @@ condition_query:
   - text: ${query}
     code: |
       ${query}
+      
       if ${query:var}:
     var: ${query:var}
   # - text: ${query.1} ${cc} ${query.2}

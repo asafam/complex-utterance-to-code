@@ -1,24 +1,47 @@
 import re
+import uuid
 import random
 import copy
-from typing import Dict, Tuple, Union, List, Optional
-from utils import get_code, get_keys, get_var
+from typing import Any, Dict, Tuple, Union, List, Optional
+from utils import (
+    is_coref_valid,
+    get_code,
+    get_context_id,
+    get_keys,
+    get_value_context_id,
+    get_var,
+    get_var_value,
+    substitute_code,
+    substitute_text,
+    substitute_var,
+)
 from fake_data.faker import fake
 
 
 def sample(
-    key: str, name: str, program_stack: Dict, grammar: Dict, idx: Optional[str] = None
+    key: str,
+    name: str,
+    grammar: Dict,
+    program_stack: Dict,
+    context: Dict,
+    idx: Optional[str] = None,
 ) -> Dict:
+    context["id"] = get_context_id()
     if re.search(rf"faker_.*", key):
-        result = sample_from_faker(key=key)
+        value = sample_from_faker(key=key)
     else:
-        result = sample_from_grammar(
-            key=key, program_stack=program_stack.copy(), grammar=grammar, idx=idx
+        value = sample_from_grammar(
+            key=key,
+            grammar=grammar,
+            program_stack=program_stack,
+            context=context,
+            idx=idx,
         )
 
-    program_stack[name] = result
+    value["final"] = True
+    program_stack[value["uuid"]] = value
 
-    return result
+    return value
 
 
 def sample_from_faker(key: str) -> dict:
@@ -31,68 +54,158 @@ def sample_from_faker(key: str) -> dict:
     return value
 
 
-def normalize_result(result: Optional[Union[str, dict]], key: str):
+def normalize_result(
+    result: Optional[Union[str, dict]], key: str, context: Optional[Dict] = None
+):
     value = result if isinstance(result, dict) else dict()
+    value["uuid"] = key + "_" + str(uuid.uuid4()).split("-")[0]
     value["text"] = result["text"] if isinstance(result, dict) else result
+    value["template_text"] = value["text"]
     value["code"] = get_code(value)
+    value["template_code"] = value["code"]
     value["var"] = get_var(value, [])
     value["key"] = key
+    value["final"] = False
+    value["args"] = dict()
+    if context:
+        value["context"] = context
     return value
 
 
 def sample_from_grammar(
-    key: str, program_stack: Dict, grammar: Dict, idx: Optional[str] = None
+    key: str,
+    grammar: Dict,
+    program_stack: Dict,
+    context: Dict,
+    idx: Optional[str] = None,
 ) -> Dict:
-    d = sample_random_value(key, grammar)
-    child_keys = get_keys(d["text"] + d["code"])
-    for child_name, child_key, child_idx in child_keys:
-        if idx and child_idx:
-            child_idx = f"{idx}_{child_idx}"
-        elif idx:
-            child_idx = idx
+    value = sample_value(key, grammar, program_stack, context=context)
+    if not value["final"]:
+        child_keys = get_keys(value["text"] + value["code"], index=idx)
+        for child_name, child_key, child_idx in child_keys:
+            subcontext = dict()
+            subcontext["parent"] = context
+            context["children"] = (
+                [*context["children"], subcontext]
+                if "children" in context
+                else [subcontext]
+            )
+            # sample child value
+            child = sample(
+                key=child_key,
+                name=child_name,
+                idx=child_idx,
+                grammar=grammar,
+                program_stack=program_stack,
+                context=subcontext,
+            )
 
-        dd = sample(
-            key=child_key,
-            name=child_name,
-            idx=child_idx,
-            program_stack=program_stack,
-            grammar=grammar,
+            value["args"][child_name] = child
+
+            value["text"] = substitute_text(
+                text=value["text"], key=child_name, value=child["text"]
+            )
+
+            # var_value = child["var"] or value["var"] or f"${{{key}:var}}"
+            # if child_idx and not var_value.startswith("$"):
+            #     var_value = var_value + child_idx
+
+            var_value = get_var_value(
+                name=child_name,
+                parent_var=value["var"],
+                child_var=child["var"],
+                index=child_idx,
+            )
+
+            value["var"] = substitute_var(
+                var=value["var"],
+                key=child_key,
+                name=child_name,
+                var_value=var_value,
+            )
+
+            # replace child value and var in parent with child value and var
+            value["code"] = substitute_code(
+                code=value["code"],
+                var=value["var"],
+                key=child_key,
+                name=child_name,
+                code_value=child["code"],
+                var_value=var_value,
+                child_var=child["var"],
+            )
+
+            # d["var"] = d["var"] or new_var
+            # d["code"], d["var"] = substitute_code(code=d["code"], key=k, value=dd["code"], var=d["var"])
+
+            # d["code"] = substitute_code(code=d["code"], key=k, repl=dd["code"])
+
+            # if d["var"]:
+            #     repl_var = d["var"]
+            #     #(
+            #         # dd["var"] if "var" in dd and dd["var"] is not None else d["var"] #get_var(dd, [])
+            #     # )
+            #     d["var"], d["code"] = substitute_var(var=d["var"],
+            #                                          code=d["code"],
+            #                                          key=k,
+            #                                          repl=repl_var)
+    return value
+
+
+def sample_value(
+    key: str,
+    data: Dict,
+    program_stack: Dict,
+    context: Dict,
+    k: int = 1,
+    options: Dict = {},
+) -> Dict[str, Any]:
+    defaultOptions = {"reuse_key": True}
+    options = {**defaultOptions, **options}
+
+    if not options["reuse_key"]:
+        return sample_random_value(key=key, data=data, k=k, context=context)
+    else:
+        value = get_value_from_program_stack(
+            key=key, program_stack=program_stack, context=context
         )
-        d["text"] = substitute_text(text=d["text"], key=child_name, value=dd["text"])
-        var = dd["var"] or d["var"] or f"${{{key}:var}}"
-        if child_idx and not var.startswith("$"):
-            var = var + child_idx
-        d["code"], _ = substitute_code(
-            code=d["code"], key=child_key, name=child_name, value=dd["code"], var=var
-        )
-        # d["code"], d["var"] = substitute_code(code=d["code"], key=k, value=dd["code"], var=d["var"])
-
-        # d["code"] = substitute_code(code=d["code"], key=k, repl=dd["code"])
-
-        # if d["var"]:
-        #     repl_var = d["var"]
-        #     #(
-        #         # dd["var"] if "var" in dd and dd["var"] is not None else d["var"] #get_var(dd, [])
-        #     # )
-        #     d["var"], d["code"] = substitute_var(var=d["var"],
-        #                                          code=d["code"],
-        #                                          key=k,
-        #                                          repl=repl_var)
-
-    return d
+        if value:
+            return value
+        else:
+            return sample_random_value(key=key, data=data, k=k, context=context)
 
 
-def sample_random_value(key: str, data: dict, k=1) -> dict:
-    population = get_entries_for_key(key, data)
+def sample_random_value(
+    key: str, data: dict, context: Dict, k: int = 1
+) -> Dict[str, Any]:
+    population = get_entries_for_key(key, data, context)
     weights = [item["weight"] if "weight" in item else 1.0 for item in population]
     results = random.choices(population, weights, k=k)
     result = results[0]
-    d = normalize_result(result, key)
+    d = normalize_result(result, key, context)
     d = copy.deepcopy(d)
     return d
 
 
-def get_entries_for_key(key: str, data: dict) -> List[dict]:
+def get_value_from_program_stack(
+    key: str, program_stack: Dict, context: Dict
+) -> Optional[Dict[str, Any]]:
+    value = None
+    values = []
+    for k in program_stack:
+        v = program_stack[k]
+        if (
+            v['key'] == key
+            and is_coref_valid(v)
+            and get_value_context_id(v) != context['parent']['id']
+        ):
+            values.append(v)
+    if len(values) > 0:
+        value = values[0]
+    return value
+
+
+def get_entries_for_key(key: str, data: dict, context: Dict) -> List[dict]:
     entries = []
     if key in data:
         entries = copy.deepcopy(data[key])
@@ -139,42 +252,6 @@ def get_entries_for_key(key: str, data: dict) -> List[dict]:
     return entries
 
 
-def substitute_text(text: str, key: str, value: str) -> str:
-    new_text = text
-    if value:
-        escaped_key = re.escape(key)
-        new_text = re.sub(rf"\${{{escaped_key}}}", value, new_text, 1)
-
-    new_text = re.sub(rf"\s+", " ", new_text, 1)
-    return new_text
-
-
-def substitute_code(
-    code: str, key: str, name: str, value: str, var: Optional[str]
-) -> Tuple[str, str]:
-    new_code = code
-
-    # get indentation
-    escaped_regex = f"${{{key}}}"
-    if re.search(rf"\n\s*{escaped_regex}", new_code):
-        indent = new_code.split(f"${{{key}}}")[0].split("\n")[-1]
-        # indent
-        value = re.sub(rf"\n", f"\n{indent}", value)
-
-    # replace keys in code
-    if value:
-        escaped_regex = re.escape(f"${{{name}}}")
-        new_code = re.sub(escaped_regex, value, new_code, 1)
-
-    if var:
-        escaped_regex = re.escape(f"${{{key}:var}}")
-        new_code = re.sub(escaped_regex, var, new_code, 1)
-        escaped_regex = re.escape(f"${{{name}:var}}")
-        new_code = re.sub(escaped_regex, var, new_code, 1)
-
-    return new_code, var
-
-
 def substitute_text2(text: str, key: str, repl: str) -> str:
     new_text = re.sub(rf"\${{{key}}}", repl, text, 1)
     return new_text
@@ -190,16 +267,6 @@ def substitute_code2(code: str, key: str, repl: str) -> str:
         new_code = re.sub(r'"', "", new_code)
         new_code = f'"{new_code}"'
     return new_code
-
-
-def substitute_var(code: str, var: str, key: str, repl: str) -> Tuple[str, str]:
-    new_code = code
-    new_var = var
-    if f"${{{key}:var}}" in code:
-        new_code = re.sub(rf"\${{{key}:var}}", repl, code)
-        new_var = re.sub(rf"\${{{key}:var}}", repl, var) if var else repl
-
-    return new_code, new_var
 
 
 def substitute_var2(var: str, code: str, key: str, repl: str) -> Tuple[str, str]:

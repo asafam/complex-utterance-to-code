@@ -69,14 +69,14 @@ navigation_duration_command:
       duration = NavigationQuery.get_duration(destination=${destination:var})
       ResponderCommand.default_responder(response=duration)
     var: duration
-  - text: tell me how long will it take me to arrive to ${destination} ${date_time_exact}
+  - text: tell me how long will it take me to arrive to ${destination} at ${date_time_exact}
     code: |
       ${destination}
       ${date_time_exact}
       duration = NavigationQuery.get_duration(destination=${destination:var}, date_time=${date_time_exact:var})
       ResponderCommand.default_responder(response=duration)
     var: duration
-  - text: tell me how long will it take me to arrive ${date_time_exact} to ${destination}
+  - text: tell me how long will it take me to arrive at ${date_time_exact} to ${destination}
     code: |
       ${destination}
       ${date_time_exact}
@@ -85,20 +85,20 @@ navigation_duration_command:
     var: duration
 
 navigation_estimate_arrival_command:
-  - text: tell me when will I arrive at ${destination} if I leave ${date_time_exact}
+  - text: tell me when will I arrive at ${destination} if I leave at ${date_time_exact}
     code: |
       ${destination}
       ${date_time_exact}
       arrival = NavigationQuery.get_estimated_arrival(destination=${destination:var}, date_time=${date_time_exact:var})
       ResponderCommand.default_responder(response=arrival)
-  - text: tell me when will I arrive at ${destination} if I leave ${date_time_exact} from ${source}
+  - text: tell me when will I arrive at ${destination} if I leave at ${date_time_exact} from ${source}
     code: |
       ${destination}
       ${date_time_exact}
       ${source}
       arrival = NavigationQuery.get_estimated_arrival(source=${source:var}, destination=${destination:var}, date_time=${date_time_exact:var})
       ResponderCommand.default_responder(response=arrival)
-  - text: tell me when will I arrive at ${destination} if I leave from ${source} ${date_time_exact}
+  - text: tell me when will I arrive at ${destination} if I leave from ${source} at ${date_time_exact}
     code: |
       ${destination}
       ${source}
@@ -107,20 +107,20 @@ navigation_estimate_arrival_command:
       ResponderCommand.default_responder(response=arrival)
 
 navigation_estimate_departure_command:
-  - text: tell me when should I leave to get ${destination} ${date_time_exact}
+  - text: tell me when should I leave to get ${destination} at ${date_time_exact}
     code: |
       ${destination}
       ${date_time_exact}
       departure = NavigationQuery.get_estimated_departure(destination=${destination:var}, date_time=${date_time_exact:var})
       ResponderCommand.default_responder(response=departure)
-  - text: tell me when should I leave to get ${destination} ${date_time_exact} from ${source}
+  - text: tell me when should I leave to get ${destination} at ${date_time_exact} from ${source}
     code: |
       ${destination}
       ${date_time_exact}
       ${source}
       departure = NavigationQuery.get_estimated_departure(source=${source:var}, destination=${destination:var}, date_time=${date_time_exact:var})
       ResponderCommand.default_responder(response=departure)
-  - text: tell me when should I leave to get ${destination} from ${source} ${date_time_exact}
+  - text: tell me when should I leave to get ${destination} from ${source} at ${date_time_exact}
     code: |
       ${destination}
       ${source}
@@ -163,7 +163,7 @@ navigation_driving_duration_query:
       duration = NavigationQuery.get_duration(destination=${destination:var}, time_duration=${time_duration:var})
       duration_result = len(list(duration))
     var: duration_result
-  - text: it will take me ${time_duration} to arrive at ${destination} ${date_time_exact}
+  - text: it will take me ${time_duration} to arrive at ${destination} at ${date_time_exact}
     code: |
       ${time_duration}
       ${destination}

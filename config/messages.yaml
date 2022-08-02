@@ -8,7 +8,7 @@ simple_message_command:
       ${contact}
       recipient = ${contact:var}
       ${message_exact_content}
-      send_message(recipient=recipient, exact_content=${message_exact_content:var})
+      MessagesCommand.send_message(recipient=recipient, exact_content=${message_exact_content:var})
 
 loop_message_command:
   - text: ${message_verb} ${contact.1}, ${contact.2} and ${contact.3} ${message_exact_content}
@@ -18,41 +18,46 @@ loop_message_command:
       ${contact.3}
       for recipient in [${contact.1:var}, ${contact.2:var}, ${contact.3:var}]:
         ${message_exact_content}
-        send_message(recipient=recipient, exact_content=${message_exact_content:var})
+        MessagesCommand.send_message(recipient=recipient, exact_content=${message_exact_content:var})
 
 messages_query:
   - text: ${contact_i} ${messages_possession_verb} a message from ${sender}
     code: |
       ${contact_i}
       ${sender}
-      messages = messages.get_messages(recipient=${contact_i:var}, sender=${sender:var})
-    var: messages
+      messages = MessagesQuery.get_messages(recipient=${contact_i:var}, sender=${sender:var})
+      result = len(list(messages))
+    var: result
   - text: ${contact_i} ${messages_possession_verb} a message from ${sender} {date_time_past}
     code: |
       ${contact_i}
       ${sender}
       ${date_time_past}
-      messages = messages.get_messages(recipient=${contact_i:var}, sender=${sender:var}, date_time=${date_time_past:var})
-    var: messages
+      messages = MessagesQuery.get_messages(recipient=${contact_i:var}, sender=${sender:var}, date_time=${date_time_past:var})
+      result = len(list(messages))
+    var: result
   - text: ${contact_i} ${messages_possession_verb} a message from ${sender.1} or ${sender.2}
     code: |
       ${contact_i}
+      recipient = ${contact_i:var}
       ${sender.1}
       ${sender.2}
-      messages1 = messages.get_messages(recipient=${contact_i:var}, sender=${sender.1:var})
-      messages2 = messages.get_messages(recipient=${contact_i:var}, sender=${sender.2:var})
-      messages = messages1 + messages2
-    var: messages
+      result = True
+      for sender in [${sender.1:var}, ${sender.2:var}]:
+        messages = MessagesQuery.get_messages(recipient=recipient, sender=sender)
+        result = result and len(list(messages))
+    var: result
   - text: ${contact_i} ${messages_possession_verb} a message from ${sender.1} or ${sender.2} {date_time_past}
     code: |
       ${contact_i}
       ${sender.1}
       ${sender.2}
       ${date_time_past}
-      messages1 = messages.get_messages(recipient=${contact_i:var}, sender=${sender.1:var}, date_time=${date_time_past:var})
-      messages2 = messages.get_messages(recipient=${contact_i:var}, sender=${sender.2:var}, date_time=${date_time_past:var})
-      messages = messages1 + messages2
-    var: messages
+      result = True
+      for sender in [${sender.1:var}, ${sender.2:var}]:
+        messages = MessagesQuery.get_messages(date_time=${date_time_past:var}, recipient=recipient, sender=sender)
+        result = result and len(list(messages))
+    var: result
 
 message_verb:
   - text: text

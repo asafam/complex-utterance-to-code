@@ -1,47 +1,89 @@
-date_time:
-  - text: ${date_time_general}
-    code: ${date_time_general}
-    var: date_time
+at_date_time:
   - text: at ${date_time_exact}
     code: ${date_time_exact}
     var: date_time
+    syn: pp
+
+for_date_time:
+  - text: for ${date_time_relative}
+    code: ${date_time_relative}
+    var: date_time
+    syn: pp
+
+on_date_time:
+  - text: on ${date_time_general}
+    code: ${date_time_general}
+    var: date_time
+    syn: pp
+
+date_time:
+  - text: ${date_time_relative}
+    code: ${date_time_relative}
+    var: date_time
+  - text: ${date_time_general}
+    code: ${date_time_general}
+    var: date_time
+  - text: ${date_time_exact}
+    code: ${date_time_exact}
+    var: date_time
+
+date_time_relative:
+  - text: ${date_time_relative_item}
+    code: ${date_time_relative:var} = DateTime.resolve_from_text("${date_time_relative_item}")
+    var: date_time
+    type: date_time
+    syn: NP
 
 date_time_general:
-  - text: ${date_time_term}
-    code: ${date_time_general:var} = DateTime.resolve_from_text("${date_time_term}")
+  - text: ${date_time_general_item}
+    code: ${date_time_general:var} = DateTime.resolve_from_text("${date_time_general_item}")
+    var: date_time
+    type: date_time
+    syn: NP
 
 date_time_exact:
-  - text: ${date_time_hour}
-    code: ${date_time_exact:var} = DateTime.resolve_from_text("${date_time_hour}")
+  - text: ${date_time_exact_item}
+    code: ${date_time_exact:var} = DateTime.resolve_from_text("${date_time_exact_item}")
     var: date_time
+    type: date_time
+    syn: NP
 
 date_time_now:
-  - text: now
-    code: ${date_time_now:var} = DateTime.resolve_from_text("now")
+  - text: ${date_time_now_item}
+    code: ${date_time_now:var} = DateTime.resolve_from_text("${date_time_now_item}")
     var: date_time
+    type: date_time
+    syn: NP
 
 date_time_past:
   - text: ${date_time_past_term}
     code: ${date_time_past:var} = DateTime.resolve_from_text("${date_time_past_term}")
     var: date_time
-  # - text: at ${date_time_hour_term}
-  #   code: ${date_time_hour_term}
-  #   var: ${date_time_hour_term:var}
+    type: date_time
+    syn: NP
 
-date_time_term:
-  - tomorrow
-  - tomorrow morning
-  - tomorrow
+date_time_relative_item:
   - today
-  - the day after tomorrow
-  - in the morning
-  - in the afternoon
-  - at noon
   - tonight
-  - in the weekend
+  - tomorrow
+  - tomorrow ${times_of_day}
+  - the day after tomorrow
+  - the ${times_of_day} of the day after tomorrow
+  - the weekend
+  - ${day_of_week} ${times_of_day}
 
-day_of_the_week:
-  - ${faker_day_of_the_week}
+date_time_general_item:
+  - ${day_of_week}
+
+date_time_now_item:
+  - now
+  - right now
+  - at this moment
+
+date_time_exact_item:
+  - ${date_time_hour}
+  - noon
+  - midnight
 
 month_name:
   - ${faker_month_name}
@@ -73,3 +115,12 @@ date_time_past_term:
   - today
   - yesterday
   - ${date_time_hour_term}
+
+day_of_week:
+  - ${faker_day_of_week}
+
+times_of_day:
+  - morning
+  - afternoon
+  - evening
+  - night

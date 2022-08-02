@@ -1,11 +1,12 @@
 import argparse
+from collections import deque
 import random
 import yaml
 import os
 from pathlib import Path
 from sampler import sample
-from utils import to_code, to_text
-from typing import List, Tuple, Union
+from key import Key
+from typing import List, Tuple, Union, Dict
 
 
 def load_grammar(grammar_dir: str, file_exts=[".yaml", ".yml"]) -> dict:
@@ -26,18 +27,18 @@ def load_grammar(grammar_dir: str, file_exts=[".yaml", ".yml"]) -> dict:
     return grammar
 
 
-def main(k, grammar_dir="config", root_key="utterance", seed=42):
+def main(k, grammar_dir="config", root_key=Key("utterance"), seed=42):
     if seed:
         random.seed(seed)
     grammar = load_grammar(grammar_dir)
     context = dict()
     for n in range(k):
-        s = sample(key=root_key, name=root_key, grammar=grammar, program_stack=dict(), context=dict())
+        s = sample(key=root_key, grammar=grammar, program_stack=deque(), context=dict())
         print(f"{n+1}) Sample:")
-        # print(f'Text:\n{to_text(s)}\n')
-        # print(f'Code:\n{to_code(s)}\n')
-        print(f'Text:\n{s["text"]}\n')
-        print(f'Code:\n{s["code"]}\n')
+        print(f"Text:\n{s.to_text()}\n")
+        print(f"Code:\n{s.to_code()}\n")
+        # print(f'Text:\n{s["text"]}\n')
+        # print(f'Code:\n{s["code"]}\n')
         print("-------------------------------")
 
 

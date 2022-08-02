@@ -30,43 +30,49 @@ reminders_query:
   - text: ${contact_i} ${reminders_possion_verb} a reminder ${reminder_exact_content}
     code: |
       ${contact_i}
+      person_reminded = ${contact_i:var}
       ${reminder_exact_content}
-      reminders = RemindersQuery.get_reminders(person_reminded=${contact_i:var}, exact_content=${reminder_exact_content:var})
+      reminders = RemindersQuery.get_reminders(person_reminded=person_reminded, exact_content=${reminder_exact_content:var})
       reminders_result = len(list(reminders)) > 0
     var: reminders_result
-  - text: ${contact_i} ${reminders_possion_verb} a reminder for ${date_time}
+  - text: ${contact_i} ${reminders_possion_verb} a reminder ${reminder_date_time}
     code: |
       ${contact_i}
+      person_reminded = ${contact_i:var}
       ${date_time} 
-      reminders = RemindersQuery.get_reminders(person_reminded=${contact_i:var}, date_time=${date_time:var})
+      reminders = RemindersQuery.get_reminders(person_reminded=person_reminded, date_time=${date_time:var})
       reminders_result = len(list(reminders)) > 0
     var: reminders_result
-  - text: ${contact_i} ${reminders_possion_verb} a reminder for ${date_time} ${reminder_exact_content}
+  - text: ${contact_i} ${reminders_possion_verb} a reminder ${reminder_date_time} ${reminder_exact_content}
     code: |
       ${contact_i}
+      person_reminded = ${contact_i:var}
       ${reminder_exact_content}
-      reminders = RemindersQuery.get_reminders(person_reminded=${contact_i:var}, date_time=${date_time:var}, exact_content=${reminder_exact_content:var})
+      reminders = RemindersQuery.get_reminders(person_reminded=person_reminded, date_time=${date_time:var}, exact_content=${reminder_exact_content:var})
       reminders_result = len(list(reminders)) > 0
     var: reminders_result
   - text: ${contact_i} ${reminders_possion_verb} reminders ${reminder_exact_content}
     code: |
       ${contact_i}
+      person_reminded = ${contact_i:var}
       ${reminder_exact_content}
-      reminders = reminders.get_reminders(person_reminded=${contact_i:var}, exact_content=${reminder_exact_content:var})
+      reminders = reminders.get_reminders(person_reminded=person_reminded, exact_content=${reminder_exact_content:var})
       reminders_result = len(list(reminders)) > 0
     var: reminders_result
-  - text: ${contact_i} ${reminders_possion_verb} reminders for ${date_time}
+  - text: ${contact_i} ${reminders_possion_verb} reminders ${reminder_date_time}
     code: |
       ${contact_i}
+      person_reminded = ${contact_i:var}
       ${date_time} 
-      reminders = reminders.get_reminders(person_reminded=${contact_i:var}, date_time=${date_time:var})
+      reminders = reminders.get_reminders(person_reminded=person_reminded, date_time=${date_time:var})
       reminders_result = len(list(reminders)) > 0
     var: reminders_result
-  - text: ${contact_i} ${reminders_possion_verb} reminders for ${date_time} ${reminder_exact_content}
+  - text: ${contact_i} ${reminders_possion_verb} reminders ${reminder_date_time} ${reminder_exact_content}
     code: |
       ${contact_i}
+      person_reminded = ${contact_i:var}
       ${reminder_exact_content}
-      reminders = reminders.get_reminders(person_reminded=${contact_i:var}, date_time=${date_time:var}, exact_content=${reminder_exact_content:var})
+      reminders = reminders.get_reminders(person_reminded=person_reminded, date_time=${date_time:var}, exact_content=${reminder_exact_content:var})
       reminders_result = len(list(reminders)) > 0
     var: reminders_result
 
@@ -88,13 +94,18 @@ person_reminded:
     # var: ${contact:var}
 
 reminder_exact_content:
-  - text: ${reminder_exact_content_value}
+  - text: ${reminder_exact_content_item}
     code: |
-      ${reminder_exact_content:var} = Content.resolve_from_text("${reminder_exact_content_value}")
+      ${reminder_exact_content:var} = Content.resolve_from_text("${reminder_exact_content_item}")
     var: exact_content
 
-reminder_exact_content_value:
+reminder_exact_content_item:
   - text: to bring a coat
     code: bring a coat
   - text: to leave 15 minutes earlier
     code: leave 15 minutes earlier
+
+reminder_date_time:
+  - text: for ${date_time}
+    code: ${date_time}
+    syn: PP 

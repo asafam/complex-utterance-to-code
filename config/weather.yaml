@@ -1,70 +1,79 @@
 weather_command:
-  - text: ${weather_command_verb} me the weather ${date_time}
+  - text: ${weather_command_verb} me the weather ${weather_date_time}
     code: |
-      ${date_time}
-      weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=date_time)
+      ${weather_date_time}
+      weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${weather_date_time:var})
       ResponderCommand.default_responder(response=weather_forecasts)
-  - text: ${weather_command_verb} me the weather in ${location}
+  - text: ${weather_command_verb} me the weather ${weather_location}
     code: |
-      ${location}
+      ${weather_location}
+      location = ${weather_location:var}
       weather_forecasts = WeatherQuery.get_weather_forecasts(location=location)
       ResponderCommand.default_responder(response=weather_forecasts)
-  - text: ${weather_command_verb} me the weather ${date_time} in ${location}
+  - text: ${weather_command_verb} me the weather ${weather_date_time} ${weather_location}
     code: |
-      ${date_time}
-      ${location}
+      ${weather_date_time}
+      ${weather_location}
+      location = ${weather_location:var}
       weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=date_time, location=location)
       ResponderCommand.default_responder(response=weather_forecasts)
 
 weather_query:
-  # - text: ${weather_condition} ${date_time}
+  # - text: ${weather_condition} ${weather_date_time}
   #   code: |
   #     ${weather_condition}
-  #     ${date_time}
-  #     weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, weather_condition=${weather_condition:var})
+  #     ${weather_date_time}
+  #     weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${weather_date_time:var}, weather_condition=${weather_condition:var})
   #     weather_forecasts_result = len(list(weather_forecasts)) > 0
   #   var: weather_forecasts_result
-  # - text: ${weather_condition} ${date_time} in ${location}
-  #   code: |
-  #     ${weather_condition}
-  #     ${date_time}
-  #     ${location}
-  #     weather_forecasts = WeatherQueryget_weather_forecasts(date_time=${date_time:var}, location=${location:var}, weather_condition=${weather_condition:var})
-  #     weather_forecasts_result = len(list(weather_forecasts)) > 0
-  #   var: weather_forecasts_result
-  # - text: ${weather_condition} in ${location} ${date_time}
-  #   code: |
-  #     ${weather_condition}
-  #     ${date_time}
-  #     ${location}
-  #     weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, location=${location:var}, weather_condition=${weather_condition:var})
-  #     weather_forecasts_result = len(list(weather_forecasts)) > 0
-  #   var: weather_forecasts_result
-  # - text: ${weather_condition} ${date_time} in ${location.1} ${cc} ${location.2}
-  #   code: |
-  #     ${weather_condition}
-  #     ${date_time}
-  #     ${location.1}
-  #     ${location.2}
-  #     weather_forecasts_result = True
-  #     for location in [${location.1:var}, ${location.2:var}]:
-  #       weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${date_time:var}, location=location, weather_condition=${weather_condition:var})
-  #       weather_forecasts_result = weather_forecasts_result ${cc} len(list(weather_forecasts)) > 0
-    # var: weather_forecasts_result
-  - text: ${weather_condition} in ${location.1} and ${location.2} ${date_time.1} and ${date_time.2}
+  - text: ${weather_condition} ${weather_date_time} ${weather_location}
     code: |
       ${weather_condition}
-      ${location.1}
-      ${location.2}
-      ${date_time.1}
-      ${date_time.2}
-      weather_forecasts_result = True
-      for location in [${location.1:var}, ${location.2:var}]:
-        for date_time in [${date_time.1:var}, ${date_time.2:var}]:
-          weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=date_time, location=location, weather_condition=${weather_condition:var})
-          weather_forecasts_result = weather_forecasts_result and len(list(weather_forecasts)) > 0
-      bool_val = weather_forecasts_result
-    var: bool_val
+      ${weather_date_time}
+      ${weather_location}
+      location = ${weather_location:var}
+      weather_forecasts = WeatherQueryget_weather_forecasts(date_time=${weather_date_time:var}, location=location, weather_condition=${weather_condition:var})
+      weather_forecasts_result = len(list(weather_forecasts)) > 0
+    var: weather_forecasts_result
+  # - text: ${weather_condition} ${weather_location} ${weather_date_time}
+  #   code: |
+  #     ${weather_condition}
+  #     ${weather_date_time}
+  #     ${weather_location}
+  #     location = ${weather_location:var}
+  #     weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${weather_date_time:var}, location=location, weather_condition=${weather_condition:var})
+  #     weather_forecasts_result = len(list(weather_forecasts)) > 0
+  #   var: weather_forecasts_result
+  # - text: ${weather_condition} ${weather_date_time} ${weather_location.1} ${cc} ${weather_location.2}
+  #   code: |
+  #     ${weather_condition}
+  #     ${weather_date_time}
+  #     ${weather_location.1}
+  #     location1 = ${weather_location.1:var}
+  #     ${weather_location.2}
+  #     location2 = ${weather_location.2:var}
+  #     weather_forecasts_result = True
+  #     for location in [location1, location2]:
+  #       weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${weather_date_time:var}, location=location, weather_condition=${weather_condition:var})
+  #       weather_forecasts_result = weather_forecasts_result ${cc} len(list(weather_forecasts)) > 0
+  #   var: weather_forecasts_result
+  # - text: ${weather_condition} ${weather_location.1} and ${weather_location.2} ${weather_date_time.1} and ${weather_date_time.2}
+  #   code: |
+  #     ${weather_condition}
+  #     ${weather_location.1}
+  #     location1 = ${weather_location.1:var}
+  #     ${weather_location.2}
+  #     location2 = ${weather_location.2:var}
+  #     ${weather_date_time.1}
+  #     date_time1 = ${weather_date_time.1:var}
+  #     ${weather_date_time.2}
+  #     date_time2 = ${weather_date_time.2:var}
+  #     result = True
+  #     for location in [location1, location2]:
+  #       for date_time in [date_time1, date_time2]:
+  #         weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=date_time, location=location, weather_condition=${weather_condition:var})
+  #         result = result and len(list(weather_forecasts)) > 0
+  #   var: result
 
 weather_command_verb:
   - tell
@@ -74,23 +83,63 @@ weather_command_verb:
 weather_condition:
   - text: it ${weather_condition_term}
     code: |
-      ${weather_condition_term:var} = WeatherCondition.resolve_from_text("${weather_condition_term}")
-    var: weather_condition #${weather_condition_term:var}
+      ${weather_condition:var} = WeatherCondition.resolve_from_text("${weather_condition_term}")
+    var: weather_condition
+    syn: VP
 
 weather_condition_term:
   - text: rains
-    code: "rains"
+    code: rains
+    syn: VB
   - text: snows
-    code: "snows"
+    code: snows
+    syn: VB
   - text: freezes
-    code: "freezes"
+    code: freezes
+    syn: VB
   - text: will be sunny
-    code: "sunny"
+    code: sunny
+    syn: VB
   - text: will be nice
-    code: "nice"
+    code: nice
+    syn: VB
   - text: will be warm
-    code: "warm"
+    code: warm
+    syn: VB
   - text: will be cold
-    code: "cold"
+    code: cold
+    syn: VB
   - text: will be chilly
-    code: "chilly"
+    code: chilly
+    syn: VB
+
+weather_location:
+  - text: ${at_location}
+    code: ${at_location}
+    var: location
+    coreference_text: there
+    weight: 0.25
+  - text: ${in_location}
+    code: ${in_location}
+    var: location
+    coreference_text: there
+  - text: ${on_location}
+    code: ${on_location}
+    var: location
+    coreference_text: there
+    weight: 0.25
+
+weather_date_time:
+  - text: ${at_date_time}
+    code: ${at_date_time}
+    var: date_time
+    coreference_text: at that time
+  - text: ${on_date_time}
+    code: ${on_date_time}
+    var: date_time
+    coreference_text: at that time
+  - text: ${date_time_now}
+    code: ${date_time_now}
+    var: date_time
+    coreference_text: at that time
+    weight: 0.25

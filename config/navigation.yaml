@@ -37,95 +37,106 @@ navigation_directions_command:
       directions = navigation.get_directions(destination=${destination:var})
       ResponderCommand.default_responder(response=directions)
     var: directions
-  - text: ${directions_verb} ${source} ${destination} at ${date_time_exact}
+  - text: ${directions_verb} ${source} ${destination} ${at_date_time}
     code: |
       ${source}
       ${destination}
-      ${date_time_exact}
-      directions = navigation.get_directions(source=${source:var}, destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      directions = navigation.get_directions(source=${source:var}, destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=directions)
     var: directions
-  - text: ${directions_verb} ${destination} ${source} at ${date_time_exact}
+  - text: ${directions_verb} ${destination} ${source} ${at_date_time}
     code: |
       ${source}
       ${destination}
-      ${date_time_exact}
-      directions = navigation.get_directions(source=${source:var}, destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      directions = navigation.get_directions(source=${source:var}, destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=directions)
     var: directions
-  - text: ${directions_verb} ${destination} at ${date_time_exact}
+  - text: ${directions_verb} ${destination} ${at_date_time}
     code: |
       ${source}
       ${destination}
-      ${date_time_exact}
-      directions = navigation.get_directions(destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      directions = navigation.get_directions(destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=directions)
     var: directions
 
 navigation_duration_command:
-  - text: tell me how long will it take me to arrive to ${destination}
+  - text: tell me how long will it take me to arrive ${destination}
     code: |
       ${destination}
       duration = NavigationQuery.get_duration(destination=${destination:var})
       ResponderCommand.default_responder(response=duration)
     var: duration
-  - text: tell me how long will it take me to arrive to ${destination} at ${date_time_exact}
+  - text: tell me how long will it take me to arrive ${destination} ${at_date_time}
     code: |
       ${destination}
-      ${date_time_exact}
-      duration = NavigationQuery.get_duration(destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      duration = NavigationQuery.get_duration(destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=duration)
     var: duration
-  - text: tell me how long will it take me to arrive at ${date_time_exact} to ${destination}
+  - text: tell me how long will it take me to arrive ${at_date_time} to ${destination}
     code: |
       ${destination}
-      ${date_time_exact}
-      duration = NavigationQuery.get_duration(destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      duration = NavigationQuery.get_duration(destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=duration)
     var: duration
 
 navigation_estimate_arrival_command:
-  - text: tell me when will I arrive at ${destination} if I leave at ${date_time_exact}
+  - text: tell me when will I arrive at ${destination} if I leave ${at_date_time}
     code: |
       ${destination}
-      ${date_time_exact}
-      arrival = NavigationQuery.get_estimated_arrival(destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      arrival = NavigationQuery.get_estimated_arrival(destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=arrival)
-  - text: tell me when will I arrive at ${destination} if I leave at ${date_time_exact} from ${source}
+  - text: tell me when will I arrive at ${destination} if I leave ${at_date_time} from ${source}
     code: |
       ${destination}
-      ${date_time_exact}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
       ${source}
-      arrival = NavigationQuery.get_estimated_arrival(source=${source:var}, destination=${destination:var}, date_time=${date_time_exact:var})
+      arrival = NavigationQuery.get_estimated_arrival(source=${source:var}, destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=arrival)
-  - text: tell me when will I arrive at ${destination} if I leave from ${source} at ${date_time_exact}
+  - text: tell me when will I arrive at ${destination} if I leave from ${source} ${at_date_time}
     code: |
       ${destination}
       ${source}
-      ${date_time_exact}
-      arrival = NavigationQuery.get_estimated_arrival(source=${source:var}, destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      arrival = NavigationQuery.get_estimated_arrival(source=${source:var}, destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=arrival)
 
 navigation_estimate_departure_command:
-  - text: tell me when should I leave to get ${destination} at ${date_time_exact}
+  - text: tell me when I should leave to get ${destination} ${at_date_time}
     code: |
       ${destination}
-      ${date_time_exact}
-      departure = NavigationQuery.get_estimated_departure(destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      departure = NavigationQuery.get_estimated_departure(destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=departure)
-  - text: tell me when should I leave to get ${destination} at ${date_time_exact} from ${source}
+  - text: tell me when I should leave to get ${destination} ${at_date_time} from ${source}
     code: |
       ${destination}
-      ${date_time_exact}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
       ${source}
-      departure = NavigationQuery.get_estimated_departure(source=${source:var}, destination=${destination:var}, date_time=${date_time_exact:var})
+      departure = NavigationQuery.get_estimated_departure(source=${source:var}, destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=departure)
-  - text: tell me when should I leave to get ${destination} from ${source} at ${date_time_exact}
+  - text: tell me when I should leave to get ${destination} from ${source} ${at_date_time}
     code: |
       ${destination}
       ${source}
-      ${date_time_exact}
-      departure = NavigationQuery.get_estimated_departure(source=${source:var}, destination=${destination:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      departure = NavigationQuery.get_estimated_departure(source=${source:var}, destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=departure)
 
 navigation_traffic_query:
@@ -136,12 +147,13 @@ navigation_traffic_query:
       traffic_info = NavigationQuery.get_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var})
       traffic_result = len(list(traffic_info)) > 0
     var: traffic_result
-  - text: there will be ${traffic_condition} in ${traffic_location} at ${date_time_exact}
+  - text: there will be ${traffic_condition} in ${traffic_location} ${at_date_time}
     code: |
       ${traffic_condition}
       ${traffic_location}
-      ${date_time_exact}
-      traffic_info = NavigationQuery.get_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var}, date_time=${date_time_exact:var})
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      traffic_info = NavigationQuery.get_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var}, date_time=date_time)
       traffic_result = len(list(traffic_info)) > 0
     var: traffic_result
   - text: there is ${traffic_condition} in ${traffic_location.1} ${cc} ${traffic_location.2}
@@ -163,18 +175,20 @@ navigation_driving_duration_query:
       duration = NavigationQuery.get_duration(destination=${destination:var}, time_duration=${time_duration:var})
       duration_result = len(list(duration))
     var: duration_result
-  - text: it will take me ${time_duration} to arrive at ${destination} at ${date_time_exact}
+  - text: it will take me ${time_duration} to arrive at ${destination} ${at_date_time}
     code: |
       ${time_duration}
       ${destination}
-      ${date_time_exact}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
       duration = NavigationQuery.get_duration(destination=${destination:var}, time_duration=${time_duration:var})
       duration_result = len(list(duration))
     var: duration_result
-  - text: it will take me ${time_duration} ${date_time_exact} to arrive at ${destination} from ${source}
+  - text: it will take me ${time_duration} ${at_date_time} to arrive at ${destination} from ${source}
     code: |
       ${time_duration}
-      ${date_time_exact}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
       ${destination}
       ${source}
       duration = NavigationQuery.get_duration(destination=${destination:var}, time_duration=${time_duration:var})
@@ -221,18 +235,20 @@ directions_verb:
   - directions
 
 destination:
-  - text: to ${location}
+  - text: ${to_location}
     code: |
-      ${location}
-      ${destination:var} = ${location:var}
+      ${to_location}
+      ${destination:var} = ${to_location:var}
     var: destination
+    coreference_text: to there
 
 source:
-  - text: from ${location}
+  - text: ${from_location}
     code: |
-      ${location}
-      ${source:var} = ${location:var}
+      ${from_location}
+      ${source:var} = ${from_location:var}
     var: source
+    coreference_text: from there
 
 traffic_location:
   - text: around ${location_landmark}
@@ -285,11 +301,13 @@ departure_time:
     var: departure_time
 
 navigation_time:
-  - text: before ${date_time_exact}
+  - text: before ${at_date_time}
     code: |
-      ${date_time_exact}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
     var: date_time
-  - text: at ${date_time_exact}
+  - text: ${at_date_time}
     code: |
-      ${date_time_exact}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
     var: date_time

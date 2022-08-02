@@ -20,7 +20,7 @@
             "console": "integratedTerminal",
             "args": [
                 "--k",
-                "1"
+                "10"
             ],
         },
     ]

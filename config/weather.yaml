@@ -24,17 +24,17 @@ weather_query:
   #     ${weather_condition}
   #     ${weather_date_time}
   #     weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${weather_date_time:var}, weather_condition=${weather_condition:var})
-  #     weather_forecasts_result = len(list(weather_forecasts)) > 0
-  #   var: weather_forecasts_result
+  #     result = len(list(weather_forecasts)) > 0
+  #   var: result
   - text: ${weather_condition} ${weather_date_time} ${weather_location}
     code: |
       ${weather_condition}
       ${weather_date_time}
       ${weather_location}
       location = ${weather_location:var}
-      weather_forecasts = WeatherQueryget_weather_forecasts(date_time=${weather_date_time:var}, location=location, weather_condition=${weather_condition:var})
-      weather_forecasts_result = len(list(weather_forecasts)) > 0
-    var: weather_forecasts_result
+      weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${weather_date_time:var}, location=location, weather_condition=${weather_condition:var})
+      result = len(list(weather_forecasts)) > 0
+    var: result
   # - text: ${weather_condition} ${weather_location} ${weather_date_time}
   #   code: |
   #     ${weather_condition}
@@ -42,8 +42,8 @@ weather_query:
   #     ${weather_location}
   #     location = ${weather_location:var}
   #     weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${weather_date_time:var}, location=location, weather_condition=${weather_condition:var})
-  #     weather_forecasts_result = len(list(weather_forecasts)) > 0
-  #   var: weather_forecasts_result
+  #     result = len(list(weather_forecasts)) > 0
+  #   var: result
   # - text: ${weather_condition} ${weather_date_time} ${weather_location.1} ${cc} ${weather_location.2}
   #   code: |
   #     ${weather_condition}
@@ -52,11 +52,11 @@ weather_query:
   #     location1 = ${weather_location.1:var}
   #     ${weather_location.2}
   #     location2 = ${weather_location.2:var}
-  #     weather_forecasts_result = True
+  #     result = True
   #     for location in [location1, location2]:
   #       weather_forecasts = WeatherQuery.get_weather_forecasts(date_time=${weather_date_time:var}, location=location, weather_condition=${weather_condition:var})
-  #       weather_forecasts_result = weather_forecasts_result ${cc} len(list(weather_forecasts)) > 0
-  #   var: weather_forecasts_result
+  #       result = result ${cc} len(list(weather_forecasts)) > 0
+  #   var: result
   # - text: ${weather_condition} ${weather_location.1} and ${weather_location.2} ${weather_date_time.1} and ${weather_date_time.2}
   #   code: |
   #     ${weather_condition}
@@ -119,27 +119,27 @@ weather_location:
     var: location
     coreference_text: there
     weight: 0.25
-  - text: ${in_location}
-    code: ${in_location}
-    var: location
-    coreference_text: there
-  - text: ${on_location}
-    code: ${on_location}
-    var: location
-    coreference_text: there
-    weight: 0.25
+  # - text: ${in_location}
+  #   code: ${in_location}
+  #   var: location
+  #   coreference_text: there
+  # - text: ${on_location}
+  #   code: ${on_location}
+  #   var: location
+  #   coreference_text: there
+  #   weight: 0.25
 
 weather_date_time:
   - text: ${at_date_time}
     code: ${at_date_time}
     var: date_time
     coreference_text: at that time
-  - text: ${on_date_time}
-    code: ${on_date_time}
-    var: date_time
-    coreference_text: at that time
-  - text: ${date_time_now}
-    code: ${date_time_now}
-    var: date_time
-    coreference_text: at that time
-    weight: 0.25
+  # - text: ${on_date_time}
+  #   code: ${on_date_time}
+  #   var: date_time
+  #   coreference_text: at that time
+  # - text: ${date_time_now}
+  #   code: ${date_time_now}
+  #   var: date_time
+  #   coreference_text: at that time
+  #   weight: 0.25

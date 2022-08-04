@@ -119,14 +119,17 @@ def sample(
     )
     if coref_source_entity:
         # flag this entity to be a co-ref of a given source
-        entity.coreference_source = coref_source_entity
+        if coref_source_entity not in coref_source_entity.coreference_entities:
+            coref_source_entity.coreference_entities.append(coref_source_entity)
+        coref_source_entity.coreference_entities.append(entity)
+        entity.coreference_entities = coref_source_entity.coreference_entities
 
     entity.final = True
 
     return entity
 
 
-def sample_coreference(coref_entity: Entity, program_stack: Deque) -> Optional[Entity]:
+def sample_coreference(coref_entity: Entity, program_stack: Deque[Entity]) -> Optional[Entity]:
     """
     This method sample a value by key from a the program stack.
 
@@ -141,9 +144,12 @@ def sample_coreference(coref_entity: Entity, program_stack: Deque) -> Optional[E
         b. Update the coreffed entity to have a coreffed value
         c. Update the source entity to have a corefenced value
     """
+    if not coref_entity.can_corefernce():
+       return None
+    
     source_entity = None
     for entity in program_stack:
-        if entity.can_coref_on_entity(coref_entity):
+        if entity.is_coreference_with(coref_entity):
             source_entity = entity
             break
     return source_entity

@@ -80,7 +80,7 @@ navigation_duration_command:
       duration = NavigationQuery.get_duration(destination=${destination:var}, date_time=date_time)
       ResponderCommand.default_responder(response=duration)
     var: duration
-  - text: tell me how long will it take me to arrive ${at_date_time} to ${destination}
+  - text: tell me how long will it take me to arrive ${at_date_time} ${destination}
     code: |
       ${destination}
       ${at_date_time}
@@ -240,7 +240,7 @@ destination:
       ${to_location}
       ${destination:var} = ${to_location:var}
     var: destination
-    coreference_text: to there
+    coreference_value: to there
 
 source:
   - text: ${from_location}
@@ -248,7 +248,7 @@ source:
       ${from_location}
       ${source:var} = ${from_location:var}
     var: source
-    coreference_text: from there
+    coreference_value: from there
 
 traffic_location:
   - text: around ${location_landmark}

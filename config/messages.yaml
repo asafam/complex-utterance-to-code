@@ -1,14 +1,13 @@
 messages_command:
   - ${simple_message_command}
-  - ${loop_message_command}
+  # - ${loop_message_command}
 
 simple_message_command:
-  - text: ${message_verb} ${contact} ${message_exact_content}
+  - text: ${message_verb} ${recipient} ${message_exact_content}
     code: |
-      ${contact}
-      recipient = ${contact:var}
+      ${recipient}
       ${message_exact_content}
-      MessagesCommand.send_message(recipient=recipient, exact_content=${message_exact_content:var})
+      MessagesCommand.send_message(recipient=${recipient:var}, exact_content=${message_exact_content:var})
 
 loop_message_command:
   - text: ${message_verb} ${contact.1}, ${contact.2} and ${contact.3} ${message_exact_content}
@@ -69,6 +68,20 @@ messages_possession_verb:
 
 sender:
   - ${contact}
+
+recipient:
+  - text: ${contact}
+    code: |
+      ${contact}
+      recipient = ${contact:var}
+    var: recipient
+    coreference_value:
+      - value: him
+        gend: masc
+        num: sg
+      - value: her
+        gend: fem
+        num: sg
 
 message_exact_content:
   - text: ${message_exact_content_value}

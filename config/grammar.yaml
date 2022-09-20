@@ -1,6 +1,6 @@
 utterance:
   - ${condition}
-  # - ${sequence}
+  - ${sequence}
   # - ${simple}
   # - ${weather_query}
 
@@ -8,9 +8,9 @@ simple:
   - ${command}
 
 command:
-  # - ${messages_command}
-  # - ${navigation_command}
-  # - ${reminders_command}
+  - ${messages_command}
+  - ${navigation_command}
+  - ${reminders_command}
   - ${weather_command}
 
 query:

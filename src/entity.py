@@ -19,7 +19,6 @@ class Entity:
         code: str,
         var: str,
         final: bool = False,
-        parent: Optional["Entity"] = None,
         context: Dict = {},
         **kwargs,
     ) -> None:
@@ -34,25 +33,57 @@ class Entity:
         self.uuid = self._generate_uuid()
         self.final = final
         self.type = None
-        self.parent = parent
-        self.coreference_text = None
-        self.coreference_entities = []
+        self.syn = None
+        self.parent: Optional[Entity] = None
+        self.coreference_value: Optional[str] = None
+        self.coreference_entities: List[Entity] = []
         self.shown = False
 
         for k, v in kwargs.items():
             setattr(self, k, v)
 
     def can_corefernce(self) -> bool:
-        result = self.coreference_text is not None
+        result = self.coreference_value is not None
         return result
 
     def get_context_id(self) -> Optional[str]:
         context_id = self.context.get("parent", {}).get("id")
         return context_id
 
+    def get_coreference_text(self) -> Optional[str]:
+        text = None
+        referent_entity = (
+            self.coreference_entities[0] if len(self.coreference_entities) > 0 else None
+        )
+        if referent_entity and self.coreference_value == "${referent_entity}":
+            text = referent_entity.coreference_value
+        elif self.coreference_value and type(self.coreference_value) == list:
+            for coref_item in self.coreference_value:
+                result = True
+                for key in [k for k in coref_item.keys() if k != "value"]:
+                    referent_value = referent_entity and referent_entity.get_syn_value(
+                        key
+                    )
+                    result = result and referent_value in [None, coref_item[key]]
+                if result:
+                    text = coref_item['value']
+                    break
+        else:
+            text = self.coreference_value
+        return text
+
     def get_keys(self) -> List[Key]:
         keys = get_keys(value=self.text + self.code, index=self.key.index)
         return keys
+
+    def get_syn_value(self, key: str) -> Optional[str]:
+        if self.syn and key in self.syn:
+            return self.syn[key]
+        elif self.children and len(self.children.values()) == 1:
+            child = list(self.children.values())[0]
+            return child.get_syn_value(key)
+        else:
+            return None
 
     def get_type(self) -> Optional[str]:
         if self.type:
@@ -90,7 +121,8 @@ class Entity:
         """
         result = (
             self.get_type() == coref_entity.get_type()  # coref to the same type
-            and self.coreference_text is not None  # has a text value for co-referencing
+            and self.coreference_value
+            is not None  # has a text value for co-referencing
             # and coref_entity.type
             # is not None  # the source is a top level - todo!!! need to find a better way
             and self.key.count == 1  # source entity is not brought in conjunction
@@ -103,11 +135,12 @@ class Entity:
     def to_text(self, options: Dict = dict()) -> str:
         default_options = {"print_stack": []}
         options = {**default_options, **options}
-        if self.coreference_text and self._is_coreference_mentioned(
+        if self.coreference_value and self._is_coreference_mentioned(
             options["print_stack"]
         ):
             options["print_stack"].append(self.uuid)
-            return self.coreference_text
+            text = self.get_coreference_text() or ""
+            return text
 
         child_keys = get_keys(value=self.text, index=self.key.index)
         for child_key in child_keys:
@@ -125,7 +158,7 @@ class Entity:
     def to_code(self, options: Dict = dict()) -> str:
         default_options = {"print_stack": []}
         options = {**default_options, **options}
-        if self.coreference_text and self._is_coreference_mentioned(
+        if self.coreference_value and self._is_coreference_mentioned(
             options["print_stack"]
         ):
             options["print_stack"].append(self.uuid)
@@ -180,7 +213,7 @@ class Entity:
         return result
 
     # def _is_top_level_coreference(self):
-    #     result = self.coreference_text is not None and not (self.parent and self.get_type() == self.parent.get_type() and self.parent._is_top_level_coreference())
+    #     result = self.coreference_value is not None and not (self.parent and self.get_type() == self.parent.get_type() and self.parent._is_top_level_coreference())
 
     def __repr__(self) -> str:
         return self.key.key

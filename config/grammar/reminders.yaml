@@ -1,0 +1,109 @@
+reminders_command:
+  - ${reminders_create_command}
+  - ${reminders_delete_command}
+
+reminders_create_command:
+  - text: ${remind_create_verb} ${person_reminded_me} ${reminder_exact_content}
+    code: |
+      ${person_reminded_me}
+      ${reminder_exact_content}
+      Reminder.create_reminder(person_reminded=${person_reminded_me:var}, exact_content=${reminder_exact_content:var})
+
+reminders_delete_command:
+  - text: ${remove|delete} ${quantifier(reminders, det=the)} ${reminder_exact_content}
+    code: |
+      ${reminder_exact_content}
+      reminders = Reminder.find_reminders(exact_content=${reminder_exact_content:var})
+      reminders = ${quantifier(reminders, det=the)}
+      Reminder.delete_reminder(reminders=reminders)
+  - text: ${remove|delete} ${quantifier(reminders, nmod_poss={person_reminded_my})} ${reminder_exact_content}
+    code: |
+      ${person_reminded_my}
+      ${reminder_exact_content}
+      reminders = Reminder.find_reminders(person_reminded=${person_reminded_my:var}, exact_content=${reminder_exact_content:var})
+      reminders = ${quantifier(reminders, nmod_poss={person_reminded_my})}
+      Reminder.delete_reminder(reminders=reminders)
+
+reminders_query:
+  - text: ${person_reminded_i} ${reminders_possion_verb} a reminder ${reminder_exact_content}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_content}
+      reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, exact_content=${reminder_exact_content:var})
+      exp = len(reminders) > 0
+    var: reminders_result
+  - text: ${person_reminded_i} ${reminders_possion_verb} a reminder ${reminder_date_time}
+    code: |
+      ${person_reminded_i}
+      ${date_time} 
+      reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${date_time:var})
+      exp = len(reminders) > 0
+    var: reminders_result
+  - text: ${person_reminded_i} ${reminders_possion_verb} a reminder ${reminder_date_time} ${reminder_exact_content}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_content}
+      reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${date_time:var}, exact_content=${reminder_exact_content:var})
+      exp = len(reminders) > 0
+    var: reminders_result
+  - text: ${person_reminded_i} ${reminders_possion_verb} reminders ${reminder_exact_content}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_content}
+      reminders = reminder.get_reminders(person_reminded=${person_reminded_i:var}, exact_content=${reminder_exact_content:var})
+      exp = len(reminders) > 0
+    var: reminders_result
+  - text: ${person_reminded_i} ${reminders_possion_verb} reminders ${reminder_date_time}
+    code: |
+      ${person_reminded_i}
+      ${date_time} 
+      reminders = reminder.get_reminders(person_reminded=${person_reminded_i:var}, date_time=${date_time:var})
+      exp = len(reminders) > 0
+    var: reminders_result
+  - text: ${person_reminded_i} ${reminders_possion_verb} reminders ${reminder_date_time} ${reminder_exact_content}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_content}
+      reminders = reminder.get_reminders(person_reminded=${person_reminded_i:var}, date_time=${date_time:var}, exact_content=${reminder_exact_content:var})
+      exp = len(reminders) > 0
+    var: reminders_result
+
+remind_create_verb:
+  - remind
+  - set a reminder for
+
+reminders_possion_verb:
+  - got
+  - have
+
+person_reminded_i:
+  - text: ${contact_i}
+    code: ${contact_i}
+    var: person_reminded
+
+person_reminded_me:
+  - text: ${contact_me}
+    code: ${contact_me}
+    var: person_reminded
+
+person_reminded_my:
+  - text: ${contact_my}
+    code: ${contact_my}
+    var: person_reminded
+
+reminder_exact_content:
+  - text: ${reminder_exact_content_item}
+    code: |
+      ${reminder_exact_content:var} = Content.resolve_from_text("${reminder_exact_content_item}")
+    var: exact_content
+
+reminder_exact_content_item:
+  - text: to bring a coat
+    code: bring a coat
+  - text: to leave 15 minutes earlier
+    code: leave 15 minutes earlier
+
+reminder_date_time:
+  - text: for ${date_time}
+    code: ${date_time}
+    syn: PP

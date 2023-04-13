@@ -1,0 +1,317 @@
+navigation_command:
+  - ${navigation_directions_command}
+  - ${navigation_duration_command}
+  - ${navigation_estimate_arrival_command}
+  - ${navigation_estimate_departure_command}
+  - ${navigation_traffic_info_command}
+
+navigation_query:
+  - text: ${navigation_traffic_query}
+    code: ${navigation_traffic_query}
+    var: ${navigation_traffic_query:var}
+  - text: ${navigation_estimate_arrival_query}
+    code: ${navigation_estimate_arrival_query}
+    var: ${navigation_estimate_arrival_query:Var}
+  - text: ${navigation_estimate_departure_query}
+    code: ${navigation_estimate_departure_query}
+    var: ${navigation_estimate_departure_query:Var}
+
+navigation_directions_command:
+  - text: ${directions_verb} ${source} ${destination}
+    code: |
+      ${source}
+      ${destination}
+      directions = Navigation.find_directions(source=${source:var}, destination=${destination:var})
+      Responder.respond(response=directions)
+    var: directions
+  - text: ${directions_verb} ${destination} ${source}
+    code: |
+      ${source}
+      ${destination}
+      directions = Navigation.find_directions(source=${source:var}, destination=${destination:var})
+      Responder.respond(response=directions)
+    var: directions
+    weight: 10000
+  - text: ${directions_verb} ${destination}
+    code: |
+      ${source}
+      ${destination}
+      directions = Navigation.find_directions(destination=${destination:var})
+      Responder.respond(response=directions)
+    var: directions
+  - text: ${directions_verb} ${source} ${destination} ${at_date_time}
+    code: |
+      ${source}
+      ${destination}
+      ${at_date_time}
+      directions = Navigation.find_directions(source=${source:var}, destination=${destination:var}, date_time=${at_date_time:var})
+      Responder.respond(response=directions)
+    var: directions
+  - text: ${directions_verb} ${destination} ${source} ${at_date_time}
+    code: |
+      ${source}
+      ${destination}
+      ${at_date_time}
+      directions = Navigation.find_directions(source=${source:var}, destination=${destination:var}, date_time=${at_date_time:var})
+      Responder.respond(response=directions)
+    var: directions
+  - text: ${directions_verb} ${destination} ${at_date_time}
+    code: |
+      ${source}
+      ${destination}
+      ${at_date_time}
+      directions = Navigation.find_directions(destination=${destination:var}, date_time=${at_date_time:var})
+      Responder.respond(response=directions)
+    var: directions
+
+navigation_duration_command:
+  - text: tell me how long will it take me to arrive ${destination}
+    code: |
+      ${destination}
+      duration = Navigation.find_duration(destination=${destination:var})
+      Responder.respond(response=duration)
+    var: duration
+  - text: tell me how long will it take me to arrive ${destination} ${at_date_time}
+    code: |
+      ${destination}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      duration = Navigation.find_duration(destination=${destination:var}, date_time=date_time)
+      Responder.respond(response=duration)
+    var: duration
+  - text: tell me how long will it take me to arrive ${at_date_time} ${destination}
+    code: |
+      ${destination}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      duration = Navigation.find_duration(destination=${destination:var}, date_time=date_time)
+      Responder.respond(response=duration)
+    var: duration
+
+navigation_estimate_arrival_command:
+  - text: tell me when will I arrive at ${destination} if I leave ${at_date_time}
+    code: |
+      ${destination}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      arrival = Navigation.find_estimated_arrival(destination=${destination:var}, date_time=date_time)
+      Responder.respond(response=arrival)
+  - text: tell me when will I arrive at ${destination} if I leave ${at_date_time} ${source}
+    code: |
+      ${destination}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      ${source}
+      arrival = Navigation.find_estimated_arrival(source=${source:var}, destination=${destination:var}, date_time=date_time)
+      Responder.respond(response=arrival)
+  - text: tell me when will I arrive at ${destination} if I leave ${source} ${at_date_time}
+    code: |
+      ${destination}
+      ${source}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      arrival = Navigation.find_estimated_arrival(source=${source:var}, destination=${destination:var}, date_time=date_time)
+      Responder.respond(response=arrival)
+
+navigation_estimate_departure_command:
+  - text: tell me when I should leave to get ${destination} ${at_date_time}
+    code: |
+      ${destination}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      departure = Navigation.find_estimated_departure(destination=${destination:var}, date_time=date_time)
+      Responder.respond(response=departure)
+  - text: tell me when I should leave to get ${destination} ${at_date_time} ${source}
+    code: |
+      ${destination}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      ${source}
+      departure = Navigation.find_estimated_departure(source=${source:var}, destination=${destination:var}, date_time=date_time)
+      Responder.respond(response=departure)
+  - text: tell me when I should leave to get ${destination} ${source} ${at_date_time}
+    code: |
+      ${destination}
+      ${source}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      departure = Navigation.find_estimated_departure(source=${source:var}, destination=${destination:var}, date_time=date_time)
+      Responder.respond(response=departure)
+
+navigation_traffic_info_command:
+  - text: ${show me|tell me|check} ${if|whether} there is ${traffic_condition} ${traffic_location}
+    code: |
+      ${traffic_condition}
+      ${traffic_location}
+      navigation_traffic_info = Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var})
+      Responder.respond(response=navigation_traffic_info)
+  - text: ${show me|tell me|check} ${if|whether} there is ${traffic_condition} ${traffic_location} ${at_date_time}
+    code: |
+      ${traffic_condition}
+      ${traffic_location}
+      ${at_date_time}
+      navigation_traffic_info = Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var}, date_time=${at_date_time:var})
+      Responder.respond(response=navigation_traffic_info)
+
+navigation_traffic_query:
+  - text: there is ${traffic_condition} ${traffic_location}
+    code: |
+      ${traffic_condition}
+      ${traffic_location}
+      traffic_info = Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var})
+      exp = len(traffic_info) > 0
+    var: traffic_result
+  - text: there will be ${traffic_condition} in ${traffic_location} ${at_date_time}
+    code: |
+      ${traffic_condition}
+      ${traffic_location}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      traffic_info = Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var}, date_time=date_time)
+      exp = len(traffic_info) > 0
+    var: traffic_result
+  - text: there is ${traffic_condition} in ${traffic_location.1} ${cc} ${traffic_location.2}
+    code: |
+      ${traffic_condition}
+      ${traffic_location.1}
+      ${traffic_location.2}
+      exp = True
+      for location in [${traffic_location.1:var}, ${traffic_location.2:var}]:
+        traffic_info = Navigation.find_traffic_info(location=location, traffic_condition=${traffic_condition:var})
+        exp = traffic_result ${cc} len(traffic_info) > 0 if traffic is not None else len(traffic) > 0
+    var: traffic_result
+
+navigation_driving_duration_query:
+  - text: it will take me ${time_duration} to arrive at ${destination}
+    code: |
+      ${time_duration}
+      ${destination}
+      duration = Navigation.find_duration(destination=${destination:var}, time_duration=${time_duration:var})
+      exp = len(duration)
+    var: duration_result
+  - text: it will take me ${time_duration} to arrive at ${destination} ${at_date_time}
+    code: |
+      ${time_duration}
+      ${destination}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      duration = Navigation.find_duration(destination=${destination:var}, time_duration=${time_duration:var})
+      exp = len(duration)
+    var: duration_result
+  - text: it will take me ${time_duration} ${at_date_time} to arrive at ${destination} ${source}
+    code: |
+      ${time_duration}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      ${destination}
+      ${source}
+      duration = Navigation.find_duration(destination=${destination:var}, time_duration=${time_duration:var})
+      exp = len(duration)
+    var: duration_result
+
+navigation_estimate_arrival_query:
+  - text: I will arrive ${arrival_time} to ${destination} when I leave ${departure_time}
+    code: |
+      ${arrival_time}
+      ${destination}
+      ${departure_time}
+      arrival = Navigation.find_estimated_arrival(destination=${destination:var}, departure_time=${departure_time:var}, arrival_time=${arrival_time:var})
+      exp = len(arrival) > 0
+  - text: I will arrive ${arrival_time} to ${destination} when I leave ${source} ${departure_time}
+    code: |
+      ${arrival_time}
+      ${destination}
+      ${source}
+      ${departure_time}
+      arrival = Navigation.find_estimated_arrival(source=${source:var}, destination=${destination:var}, departure_time=${departure_time:var}, arrival_time=${arrival_time:var})
+      exp = len(arrival) > 0
+
+navigation_estimate_departure_query:
+  - text: I need to leave ${departure_time} to get ${destination} ${arrival_time}
+    code: |
+      ${departure_time}
+      ${destination}
+      ${arrival_time}
+      departure = Navigation.find_estimated_departure(destination=${destination:var}, departure_time=${departure_time:var}, arrival_time=${arrival_time:var})
+      exp = len(departure) > 0
+  - text: I need to leave ${departure_time} ${source} to get ${destination} ${arrival_time}
+    code: |
+      ${departure_time}
+      ${source}
+      ${destination}
+      ${arrival_time}
+      departure = Navigation.find_estimated_departure(source=${source:var}, destination=${destination:var}, departure_time=${departure_time:var}, arrival_time=${arrival_time:var})
+      exp = len(departure) > 0
+
+directions_verb:
+  - ${get|show|tell|display} ${me|} ${the|} ${directions|route}
+
+destination:
+  - text: ${to_location}
+    code: ${to_location}
+    var: destination
+    coreference_value: to there
+
+source:
+  - text: ${from_location}
+    code: ${from_location}
+    var: source
+    coreference_value: from there
+
+traffic_location:
+  - text: ${location_proximity}
+    code: ${location_proximity}
+    var: location
+    coreference_value: there
+  - text: ${near_location}
+    code: ${near_location}
+    var: location
+    coreference_value: there
+  - text: in ${location_path}
+    code: ${location_path}
+    var: location #${location_path:var}
+    coreference_value: there
+
+traffic_condition:
+  - text: ${traffic_condition_term}
+    code: |
+      ${traffic_condition:var} = TrafficCondition.resolve_from_text("${traffic_condition_term}")
+    var: traffic_condition
+
+traffic_condition_term:
+  - traffic
+  - traffic jam
+  - construction
+
+time_duration:
+  - text: ${time_duration_value}
+    code: |
+      ${time_duration:var} = TimeDuration.resolve_from_text("${time_duration_value}")
+    var: time_duration
+
+time_duration_value:
+  - over an hour
+  - 15 minutes
+  - 30 minutes
+  - 45 minutes
+  - half an hour
+  - an hour and a half
+
+arrival_time:
+  - text: ${navigation_time}
+    code: |
+      ${arrival_time:var} = ${navigation_time}
+    var: arrival_time
+
+departure_time:
+  - text: ${navigation_time}
+    code: ${navigation_time}
+    var: departure_time
+
+navigation_time:
+  - text: before ${exact_date_time}
+    code: ${exact_date_time}
+    var: date_time
+  - text: ${at_date_time}
+    code: ${at_date_time}
+    var: date_time

@@ -1,0 +1,182 @@
+at_date_time:
+  - text: at ${exact_date_time}
+    code: ${exact_date_time}
+    var: date_time
+    syn:
+      num: sg
+      label: pp
+    coreference_value: at that time
+
+every_date_times:
+  - text: every ${every_date_time}
+    code: |
+      ${every_date_times:var} = DateTime.resolve_many_from_text("every ${every_date_time}")
+    var: date_times
+    type: weather
+    syn:
+      num: pl
+      label: pp
+
+every_date_time:
+  - ${general_date_time_item}
+  - ${general_date_time_item} this week
+  - ${general_date_time_item.1} and ${general_date_time_item.2} this ${month|year}
+  - ${general_date_time_item.1}, ${general_date_time_item.2} and ${general_date_time_item.3} this ${month|year}
+  - day this week
+
+for_date_time:
+  - text: for ${relative_date_time}
+    code: ${relative_date_time}
+    var: date_time
+    syn: pp
+
+on_date_time:
+  - text: on ${general_date_time}
+    code: ${general_date_time}
+    var: date_time
+    syn: pp
+
+on_date_times:
+  - text: on ${general_date_times_item}
+    code: |
+      ${on_date_times:var} = DateTime.resolve_many_from_text("on ${general_date_times_item}")
+    var: date_times
+    syn:
+      num: pl
+      label: pp
+
+date_time:
+  - text: ${relative_date_time}
+    code: ${relative_date_time}
+    var: date_time
+  - text: ${general_date_time}
+    code: ${general_date_time}
+    var: date_time
+  - text: ${exact_date_time}
+    code: ${exact_date_time}
+    var: date_time
+
+relative_date_time:
+  - text: ${relative_date_time_item}
+    code: ${relative_date_time:var} = DateTime.resolve_from_text("${relative_date_time_item}")
+    var: date_time
+    type: date_time
+    syn: NP
+
+general_date_time:
+  - text: ${general_date_time_item}
+    code: ${general_date_time:var} = DateTime.resolve_from_text("${general_date_time_item}")
+    var: date_time
+    type: date_time
+    syn:
+      num: sg
+      label: pp
+
+exact_date_time:
+  - text: ${exact_date_time_item}
+    code: ${exact_date_time:var} = DateTime.resolve_from_text("${exact_date_time_item}")
+    var: date_time
+    type: date_time
+    syn: NP
+
+now_date_time:
+  - text: ${now_date_time_item}
+    code: ${now_date_time:var} = DateTime.resolve_from_text("${now_date_time_item}")
+    var: date_time
+    type: date_time
+    syn: NP
+
+past_date_time:
+  - text: ${past_date_time_term}
+    code: ${past_date_time:var} = DateTime.resolve_from_text("${past_date_time_term}")
+    var: date_time
+    type: date_time
+    syn: NP
+
+relative_date_time_item:
+  - today
+  - tonight
+  - tomorrow
+  - tomorrow ${times_of_day}
+  - the day after tomorrow
+  - the ${times_of_day} of the day after tomorrow
+  - the weekend
+  - ${day_of_week} ${times_of_day}
+
+general_date_time_item:
+  - ${day_of_week}
+  - text: ${day_of_week} during ${month_name}
+    code: ${day_of_week} during ${month_name}
+    weight: 0.15
+  - text: ${ordinal} of ${month_name}
+    code: ${ordinal} of ${month_name}
+    weight: 0.15
+
+general_date_times_item:
+  - ${day_of_week}s
+
+now_date_time_item:
+  - now
+  - right now
+  - at this moment
+
+exact_date_time_item:
+  - ${date_time_hour}
+
+month_name:
+  - ${faker_month_name}
+
+date_time_hour:
+  - ${date_time_hour_term}
+  - ${date_time_hour_term} ${date_time_future}
+  # - text: ${date_time_future} at ${date_time_hour_term}
+  #   code: "${date_time_future} at ${date_time_hour_term}"
+
+date_time_future:
+  - tomorrow
+  - next week
+  - next month
+  - the day after tomorrow
+  - in 2 days
+
+date_time_hour_term:
+  - ${faker_time_hour}
+  - ${faker_time_hour_minutes}
+  - mindnight
+  - noon
+  # - at ${faker_time_hour} am tomorrow morning
+  # - tomorrow morning at ${faker_time_hour} am
+  # - at ${faker_time_hour} pm tonight
+  # - tonight at ${faker_time_hour} pm
+
+past_date_time_term:
+  - today
+  - yesterday
+  - ${date_time_hour_term}
+
+day_of_week:
+  - ${faker_day_of_week}
+
+times_of_day:
+  - morning
+  - afternoon
+  - evening
+  - night
+
+ordinal:
+  - first
+  - second
+  - third
+  - fourth
+  - fifth
+  - sixth
+  - seventh
+  - eighth
+  - nineth
+  - tenth
+  - eleventh
+
+time_unit_item:
+  - week
+  - month
+  - year

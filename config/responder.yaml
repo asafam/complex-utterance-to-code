@@ -1,7 +1,0 @@
-responder_command:
-  - text: ${responder_query}
-    code: |
-      ${responder_query}
-      ResponderCommand.default_responder(response=${responder_query:var})
-responder_query:
-  - ${navigation_directions_query}

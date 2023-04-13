@@ -1,27 +1,87 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "Python: main",
-            "type": "python",
-            "request": "launch",
-            "program": "src/main.py",
-            "console": "integratedTerminal",
-            "args": [
-                "--k",
-                "10"
-            ],
-        },
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+
+    {
+      "name": "Python: synthetics",
+      "type": "python",
+      "request": "launch",
+      "program": "src/main_synthetics.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--k",
+        "10000",
+        // "--print_console"
+        "--output_file",
+        "data/train_complex_utterance_to_code_with_intermediate_10k.csv.gz"
+      ]
+    },
+
+    {
+      "name": "Python: representations: text",
+      "type": "python",
+      "request": "launch",
+      "program": "src/main_representations.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--tree_type",
+        "text",
+        "--text_parser_name",
+        "stanza",
+        "--show_preprocessed",
+        "--show_postprocessed",
+        "--input",
+        "check if there is near my home a traffic jam"
+        // "before you tell me the weather in my neighborhood, tell me how long will it take me to arrive to my neighborhood, tell me when will I arrive at to Davidshire if I leave from Morocco at noon and show me if there is traffic jam near my work place at that time"
+        // "show me whether there is traffic jam near my parents neighborhood, provided there is an heavy metal show in Robles Freeway"
+        // "show me whether there is traffic jam near my parents neighborhood provided there is an heavy metal show in Robles Freeway"
+        // "check if it will be raining on Saturday",
+        // "check if there is construction near the stadium, provided it snows on Sean Parks street and on Jennifer Track street at 10:04 AM and on Saturday during February"
+        // "email Melissa and let her know that I will be there in 10 minutes, provided it will be sunny at English Mills on seventh of January"
+        // "if it is hot then he is red, and if it is blue then she is sad"
+        // "Directions to the Eagles game"
+        // "Directions to the Eagles game and to the pharmacy"
+        // "Directions to the Eagles game and the pharmacy"
+        // "Directions to the Eagles game, and to the pharmacy"
+        // "Directions to the Eagles game, to the Knicks game, and to the pharmacy"
+        // "Directions to the Eagles game if it will be raining"
+        // "I need you to give me directions to the Eagles game"
+        // "If it will be raining, get directions to the Eagles game"
+        // "Get directions to the Eagles game if it will be raining"
+        // "If it will be raining then get directions to the Eagles game"
+        // "If it will be raining then get directions to the Eagles game and tell Jane I may be late"
+        // "Get directions to the Eagles game provided that it will be raining"
+        // "Unless there is traffic in the city, tell her I will be on time, otherwise tell her that I will be late"
+        // "Provided there is no traffic in the city, tell her I will be on time"
+        // "Check if the door is open and eat chocolate"
+        // "Archive emails in my inbox, but only the ones that have been marked read."
+        // "Remove the reminder for booking the flight, but text Ali that she owes me $380."
+      ]
+    },
+
+    {
+      "name": "Python: representations: code",
+      "type": "python",
+      "request": "launch",
+      "program": "src/main_representations.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--tree_type",
+        "code",
+        "--show_preprocessed",
+        "--input_file",
+        "examples/code/example1.py"
+      ]
+    }
+  ]
 }

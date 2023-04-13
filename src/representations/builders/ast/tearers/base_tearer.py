@@ -6,8 +6,14 @@ from representations.builders.ast import tearers
 
 
 class BaseTearer:
+    def is_enabled(self):
+        return True
+
     def is_match(self, node: Node) -> bool:
         raise NotImplementedError()
+
+    def get_priority(self) -> int:
+        return 100
 
     def tear(self, node: Node) -> Any:
         factory = tearers.tearer_factory.TearerFactory()

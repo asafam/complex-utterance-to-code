@@ -44,9 +44,10 @@ class IfTearer(BaseTearer):
             and len(node.children[2].children) > 0
         ):
             orelse_node = node.children[2]
-            tearer = factory.get_tearer(orelse_node.children[0])
-            item = tearer.tear(orelse_node.children[0])
-            orelse.append(item)
+            for child in orelse_node.children:
+                tearer = factory.get_tearer(child)
+                item = tearer.tear(child)
+                orelse.append(item)
 
         return (
             If(test=test, body=body, orelse=orelse, lineno=None)

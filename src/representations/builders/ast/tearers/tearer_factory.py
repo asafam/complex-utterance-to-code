@@ -8,9 +8,10 @@ from representations.builders import ast
 
 class TearerFactory:
     def get_tearer(self, item):
-        all_tearers = self._load_all_tearers()
-        cls = next((b for b in all_tearers if b().is_match(item)), None)
-        tearer = cls() if cls else GenericTearer()
+        all_tearers = [Tearer() for Tearer in self._load_all_tearers()]
+        tearers = [b for b in all_tearers if b.is_match(item) and b.is_enabled()]
+        tearers = sorted(tearers, key=lambda b: b.get_priority(), reverse=True)
+        tearer = next(iter(tearers), None)
         return tearer
 
     def _load_all_tearers(self):

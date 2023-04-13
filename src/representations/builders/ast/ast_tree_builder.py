@@ -31,7 +31,6 @@ class ASTTreeBuilder(BaseTreeBuilder):
 
     def _build_tree(self, input: str) -> Node:
         root_node = Node("root")
-
         asdl = ast.parse(input)
         factory = BuilderFactory()
         builder = factory.get_builder(asdl)
@@ -39,9 +38,9 @@ class ASTTreeBuilder(BaseTreeBuilder):
 
         root_node.add_child(node)
 
-        # tearer = TearerFactory().get_tearer(node)
-        # asdl2 = tearer.tear(node)
-        # x = ast.unparse(asdl2)
-        # print(x)
+        tearer = TearerFactory().get_tearer(node)
+        asdl2 = tearer.tear(node)
+        x = ast.unparse(asdl2)
+        print(x)
         
         return root_node

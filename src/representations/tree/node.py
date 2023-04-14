@@ -468,6 +468,41 @@ class Node:
         result = text.startswith(value, remove_panctuations=remove_panctuations)
         return result
 
+    @classmethod
+    def unparse(cls, text: str) -> Node:
+        """Parse text into a node tree"""
+        text = re.sub(
+            r"\s+", " ", text
+        )  # replace all new lines and spaces with a single space
+        text = text.strip()
+
+        if text.startswith("[") and text.endswith("]"):
+            text = text[1:-1].strip()
+
+        items = text.split("[", 1)
+        label = items[0].strip()
+        node = Node(label=label, head=(label == "hd"), root=(label == "root"))
+
+        if len(items) == 1:
+            return node
+
+        tokens = f"[ {items[1]}".strip().split(" ")
+        child = []
+        count = 0
+        for token in tokens:
+            child.append(token)
+            if token.startswith("["):
+                count += 1
+            elif token.endswith("]"):
+                count -= 1
+                if count == 0:
+                    child_text = " ".join(child)
+                    child_node = cls.unparse(child_text)
+                    node.add_child(child_node)
+                    child = []
+
+        return node
+
     def update(self, label=None, head=None, root=None, children=None, parent=None):
         """Update node attributes"""
         self.label = label or self.label

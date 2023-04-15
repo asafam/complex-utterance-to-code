@@ -13,10 +13,10 @@
     },
 
     {
-      "name": "Python: synthetics",
+      "name": "Python: generator",
       "type": "python",
       "request": "launch",
-      "program": "src/main_synthetics.py",
+      "program": "src/generator.py",
       "console": "integratedTerminal",
       "args": [
         "--k",
@@ -24,6 +24,21 @@
         // "--print_console"
         "--output_file",
         "data/train_complex_utterance_to_code_with_intermediate_10k.csv.gz"
+      ]
+    },
+
+    {
+      "name": "Python: generator update",
+      "type": "python",
+      "request": "launch",
+      "program": "src/generator.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--lang_representations",
+        "--input_file",
+        "/Users/asaf/Workspace/biu/complex-utterance-to-code-apps/data/api-file-ingestor/eval_complex_utterance_to_code_with_intermediate_20230414.csv.gz",
+        "--output_file",
+        "data/eval_complex_utterance_to_code_with_intermediate_20230414.csv.gz"
       ]
     },
 

@@ -14,7 +14,7 @@ def generate_code_representation(code: str, rules_enabled: bool = False):
     postprocessed_tree = None
     if rules_enabled:
         postprocessed_tree = builder.apply_rules(
-            tree=tree, rules_file_path="config/representations/ast_rules.yaml"
+            tree=tree,
         )
 
     return tree, postprocessed_tree

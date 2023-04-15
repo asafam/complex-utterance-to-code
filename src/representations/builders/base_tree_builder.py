@@ -6,7 +6,7 @@ from representations.rules.node_rule import NodeRule
 
 
 class BaseTreeBuilder:
-    def apply_rules(self, tree: Tree, rules: List[NodeRule]) -> Tree:
+    def apply_rules(self, tree: Tree, rules: List[NodeRule] = []) -> Tree:
         tree_after_rules = copy.deepcopy(tree)
         if rules:
             self.apply_rules_on_node(
@@ -33,7 +33,11 @@ class BaseTreeBuilder:
                     and any([child.match(**skip_options) for skip_options in skip])
                 ):
                     self.apply_rules_on_node(
-                        node=child, skip=skip, inplace=inplace, depth=depth + 1
+                        node=child,
+                        rules=rules,
+                        skip=skip,
+                        inplace=inplace,
+                        depth=depth + 1,
                     )
             children = [
                 (c, c in [x[0] for x in children]) for c in node.children

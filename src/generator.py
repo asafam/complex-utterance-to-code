@@ -1,7 +1,9 @@
-from typing import List
+from typing import Optional
 import argparse
 import random
+import re
 import pandas as pd
+import numpy as np
 from synthetics.sampler import sample
 from main_representations import (
     generate_text_representation,
@@ -11,11 +13,11 @@ from utils.utils import printProgressBar, print_sample_to_console, print_sample_
 
 
 def main(
-    k: int,
+    k: Optional[int] = None,
     lang_representations: bool = False,
     code_representations: bool = False,
-    input_file: str = None,
-    output_file: str = None,
+    input_file: Optional[str] = None,
+    output_file: Optional[str] = None,
     print_console: bool = True,
     seed: int = 42,
     force: bool = False,
@@ -29,29 +31,38 @@ def main(
     if input_file and not force:  # check if file exists
         # load the data
         data = pd.read_csv(input_file)
+        data = data.replace(np.nan, "", regex=True)
 
         for i, row in data.iterrows():
             text = row["text"]
             code = row["code"]
-            _, lr = generate_text_representation(text, rules_enabled=True)
-            lang_rep = (
-                row["lang_rep"]
-                if not lang_representations and not pd.isna(row["lang_rep"])
-                else str(lr if lr is not None else '')
-            )
-            _, cr = generate_code_representation(code, rules_enabled=True)
-            code_rep = (
-                row["code_rep"]
-                if not code_representations and not pd.isna(row["code_rep"])
-                else str(cr if cr is not None else '')
-            )
-            item = {
-                "text": text,
-                "code": code,
-                "lang_rep": lang_rep,
-                "code_rep": code_rep,
-            }
-            samples.append(item)
+
+            if text:
+                if lang_representations:
+                    _, lr = generate_text_representation(text, rules_enabled=True)
+                    lang_rep = str(lr if lr is not None else "")
+                else:
+                    lang_rep = row["lang_rep"]
+                row["lang_rep"] = re.sub(
+                    rf"\s+", " ", lang_rep
+                ).strip()  # replace multiple spaces, \n and \t with a space
+            else:
+                row["lang_rep"] = None
+
+            if code:
+                if code_representations:
+                    _, cr = generate_code_representation(code, rules_enabled=True)
+                    code_rep = str(cr if cr is not None else "")
+
+                else:
+                    code_rep = row["code_rep"] if "code_rep" in row else ""
+                row["code_rep"] = re.sub(
+                    rf"\s+", " ", code_rep
+                ).strip()  # replace multiple spaces, \n and \t with a space
+            else:
+                row["code_rep"] = None
+
+            samples.append(row.to_dict())
             printProgressBar(
                 i + 1, data.shape[0], prefix="Progress:", suffix="Updated", length=50
             )
@@ -116,15 +127,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Generates pairs of scenario and intents"
     )
-    parser.add_argument("--action", type=str, default="build", help="build|update")
-    parser.add_argument(
-        "--k", type=int, default=1, help="number of examples to generate"
-    )
+    parser.add_argument("--k", type=int, help="number of examples to generate")
     parser.add_argument("--lang_representations", default=False, action="store_true")
     parser.add_argument("--code_representations", default=False, action="store_true")
     parser.add_argument(
         "--force",
-        default=True,
+        default=False,
         action="store_true",
         help="force flag to regenerate data",
     )
@@ -135,19 +143,13 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.action == "build":
-        main(
-            k=args.k,
-            lang_representations=args.lang_representations,
-            code_representations=args.code_representations,
-            print_console=args.print_console,
-            input_file=args.input_file,
-            output_file=args.output_file,
-            seed=args.seed,
-            force=args.force,
-        )
-    elif args.action == "update":
-        update(
-            data_file=args.data_file,
-            columns=args.update_columns,
-        )
+    main(
+        k=args.k,
+        lang_representations=args.lang_representations,
+        code_representations=args.code_representations,
+        print_console=args.print_console,
+        input_file=args.input_file,
+        output_file=args.output_file,
+        seed=args.seed,
+        force=args.force,
+    )

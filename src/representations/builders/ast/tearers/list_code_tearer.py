@@ -1,13 +1,17 @@
 from typing import Any
+import re
 from ast import *
 from representations.tree.node import Node
 from representations.builders.ast.tearers.base_tearer import BaseTearer
 from representations.builders.ast.tearers.tearer_factory import TearerFactory
 
 
-class ListTearer(BaseTearer):
+class ListCodeTearer(BaseTearer):
     def is_match(self, node):
-        return node.label == "List"
+        return re.match(r"^\[.*\]$", node.label.strip())
+    
+    def get_priority(self) -> int:
+        return super().get_priority() + 1
 
     def tear(self, node: Node) -> Any:
         factory = TearerFactory()

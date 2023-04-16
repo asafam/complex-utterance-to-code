@@ -1,8 +1,10 @@
-for i in range(10):
-    print("hello")
-    if 1 > 2 or 1 > 3:
-        x = 2
-    else:
-        x = 1
-        if 1 < 2:
-            x = 3
+destination = Location.resolve_from_text("New Robert")
+date_time = DateTime.resolve_from_text("5 AM")
+duration = Navigation.find_duration(destination=destination, date_time=date_time)
+Responder.respond(response=duration)
+
+if [destination]:
+    data = [x for x in data if x.data.get("destination") == destination]
+    person_reminded = Contact.resolve_from_text("me")
+    exact_content = Content.resolve_from_text("bring a coat")
+    Reminder.create_reminder(person_reminded=person_reminded, exact_content=exact_content)

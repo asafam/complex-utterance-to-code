@@ -479,6 +479,12 @@ class Node:
         if text.startswith("[") and text.endswith("]"):
             text = text[1:-1].strip()
 
+        if text.startswith("[") and text.endswith(
+            "]"
+        ):  # if text shows a string representation of a list (e.g. [1,2,3])
+            node = Node(label=text)
+            return node
+
         items = text.split("[", 1)
         label = items[0].strip()
         node = Node(label=label, head=(label == "hd"), root=(label == "root"))

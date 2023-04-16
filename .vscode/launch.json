@@ -34,11 +34,11 @@
       "program": "src/generator.py",
       "console": "integratedTerminal",
       "args": [
-        "--lang_representations",
+        "--code_representations",
         "--input_file",
-        "/Users/asaf/Workspace/biu/complex-utterance-to-code-apps/data/api-file-ingestor/eval_complex_utterance_to_code_with_intermediate_20230414.csv.gz",
+        "data/train_complex_utterance_to_code_with_intermediate_10k_20230414.csv.gz",
         "--output_file",
-        "data/eval_complex_utterance_to_code_with_intermediate_20230414.csv.gz"
+        "data/train_complex_utterance_to_code_with_intermediate_10k_20230414.csv.gz"
       ]
     },
 

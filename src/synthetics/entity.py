@@ -264,7 +264,7 @@ class Entity:
         # then set var value to the parent var value
         if (
             self.var
-            and ((child.var is None) or (self.get_type() == child.get_type()))
+            and ((child.var is None) or (self.get_type() is not None and self.get_type() == child.get_type()))
             and not self.var.startswith("$")
         ):
             var_value = self.var

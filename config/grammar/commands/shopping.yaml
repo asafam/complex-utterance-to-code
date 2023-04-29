@@ -1,17 +1,17 @@
 products_command:
-  - ${product_comp_command}
+  - ${products_command_find}
 
-products_comp_command:
-  - text: ${products_verb} ${product_comp_list}
+products_command_find:
+  - text: ${products_find_action} ${products_comp_list}
     code: |
-      ${product_comp_list}
-      Responder.respond(response=${product_comp_list:var})
-    var: ${product_comp_list:var}
-  - text: ${products_verb} ${product_xcomp_list}
+      ${products_comp_list}
+      Responder.respond(response=${products_comp_list:var})
+    var: ${products_comp_list:var}
+  - text: ${products_find_action} ${products_xcomp_list}
     code: |
-      ${product_xcomp_list}
-      Responder.respond(response=${product_xcomp_list:var})
-    var: ${product_xcomp_list:var}
+      ${products_xcomp_list}
+      Responder.respond(response=${products_xcomp_list:var})
+    var: ${products_xcomp_list:var}
 
 products_command_query:
   - text: ${query_command_verb} if ${products_comp_list}
@@ -21,150 +21,150 @@ products_command_query:
     var: ${products_comp_list:var}
 
 products_comp_list:
-  - text: ${product} are ${product_attribute_suffix}
+  - text: ${product_name} that are ${product_attribute_suffix}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_suffix}
       ${products_comp_list:var} = Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var})
     var: products
-  - text: ${product} are ${product_attribute_suffix} at ${store}
+  - text: ${product_name} that are ${product_attribute_suffix} at ${store}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_suffix}
       ${store}
       ${products_comp_list:var} = Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var}, location=${store:var})
     var: products
-  - text: ${product} are ${product_attribute_suffix} at ${stores}
+  - text: ${product_name} that are ${product_attribute_suffix} at ${stores}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_suffix}
       ${stores}
       ${products_comp_list:var} = []
       for location in ${stores:var}:
         ${products_comp_list:var} += Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var}, location=location)
     var: products
-  - text: ${product.1} are ${product_attribute_suffix} ${cc} ${product.2} are ${product_attribute_suffix}
+  - text: ${product_name.1} that are ${product_attribute_suffix} ${cc} ${product_name.2} that are ${product_attribute_suffix}
     code: |
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${product_attribute_suffix}
       ${products_comp_list:var} = []
-      for product in [${product.1:var}, ${product.2:var}]:
-        ${products_comp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var})
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
+        ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var})
     var: products
-  - text: ${product.1} are ${product_attribute_suffix} ${cc} ${product.2} are ${product_attribute_suffix} at ${store}
+  - text: ${product_name.1} that are ${product_attribute_suffix} ${cc} ${product_name.2} that are ${product_attribute_suffix} at ${store}
     code: |
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${product_attribute_suffix}
       ${store}
       ${products_comp_list:var} = []
-      for product in [${product.1:var}, ${product.2:var}]:
-        ${products_comp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
+        ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
     var: products
-  - text: ${product.1} are ${product_attribute_suffix} ${cc} ${product.2} are ${product_attribute_suffix} at ${stores}
+  - text: ${product_name.1} that are ${product_attribute_suffix} ${cc} ${product_name.2} that are ${product_attribute_suffix} at ${stores}
     code: |
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${product_attribute_suffix}
       ${stores}
       ${products_comp_list:var} = []
-      for product in [${product.1:var}, ${product.2:var}]:
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
         for location in ${stores:var}:
-          ${products_comp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=location)
+          ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=location)
     var: products
-  - text: ${products} are ${product_attribute_suffix}
+  - text: ${product_names} that are ${product_attribute_suffix}
     code: |
-      ${products}
+      ${product_names}
       ${product_attribute_suffix}
       ${products_comp_list:var} = []
-      for product in ${products:var}:
-        ${products_comp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var})
+      for product_name in ${product_names:var}:
+        ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var})
     var: products
-  - text: ${products} are ${product_attribute_suffix} at ${store}
+  - text: ${product_names} that are ${product_attribute_suffix} at ${store}
     code: |
-      ${products}
+      ${product_names}
       ${product_attribute_suffix}
       ${store}
       ${products_comp_list:var} = []
-      for product in ${products:var}:
-        ${products_comp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+      for product_name in ${product_names:var}:
+        ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
     var: products
-  - text: ${products} are ${product_attribute_suffix} at ${stores}
+  - text: ${product_names} that are ${product_attribute_suffix} at ${stores}
     code: |
-      ${products}
+      ${product_names}
       ${product_attribute_suffix}
       ${stores}
       ${products_comp_list:var} = []
-      for product in ${products:var}:
+      for product_name in ${product_names:var}:
         for location in ${stores:var}:
-          ${products_comp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=location)
+          ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=location)
     var: products
 
 products_xcomp_list:
-  - text: ${product_attribute_prefix} on ${product}
+  - text: ${product_attribute_prefix} on ${product_name}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_prefix}
       ${products_xcomp_list:var} = Product.find_products(product=${product:var}, product_attribute=${product_attribute_prefix:var})
     var: products
-  - text: ${product_attribute_prefix} on ${products}
+  - text: ${product_attribute_prefix} on ${product_names}
     code: |
       ${product_attribute_prefix}
-      ${products}
+      ${product_names}
       ${products_xcomp_list:var} = []
-      for product in ${products:var}:
-        ${products_xcomp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_prefix:var})
+      for product_name in ${product_names:var}:
+        ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var})
     var: products
-  - text: ${product_attribute_prefix} on ${product} at ${store}
+  - text: ${product_attribute_prefix} on ${product_name} at ${store}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_prefix}
       ${store}
       ${products_xcomp_list:var} = Product.find_products(product=${product:var}, product_attribute=${product_attribute_prefix:var}, location=${store:var})
     var: products
-  - text: ${product_attribute_prefix} on ${product.1} ${cc} ${product_attribute_prefix} on ${product.2}
+  - text: ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2}
     code: |
       ${product_attribute_prefix}
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${products_xcomp_list:var} = []
-      for product in [${product.1:var}, ${product.2:var}]:
-        ${products_xcomp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_prefix:var})
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
+        ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var})
     var: products
-  - text: ${product_attribute_prefix} on ${product.1} ${cc} ${product_attribute_prefix} on ${product.2} at ${store}
+  - text: ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2} at ${store}
     code: |
       ${product_attribute_prefix}
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${store}
       ${products_xcomp_list:var} = []
-      for product in [${product.1:var}, ${product.2:var}]:
-        ${products_xcomp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_prefix:var}, location=${store:var})
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
+        ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=${store:var})
     var: products
-  - text: ${product_attribute_prefix} on ${product.1} ${cc} ${product_attribute_prefix} on ${product.2} at ${stores}
+  - text: ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2} at ${stores}
     code: |
       ${product_attribute_prefix}
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${stores}
       ${products_xcomp_list:var} = []
-      for product in [${product.1:var}, ${product.2:var}]:
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
         for location in ${stores:var}:
-          ${products_xcomp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_prefix:var}, location=location)
+          ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=location)
     var: products
-  - text: ${product_attribute_prefix} on ${products} at ${stores}
+  - text: ${product_attribute_prefix} on ${product_names} at ${stores}
     code: |
       ${product_attribute_prefix}
-      ${products}
+      ${product_names}
       ${stores}
       ${products_xcomp_list:var} = []
-      for product in ${products:var}:
+      for product_name in ${product_names:var}:
         for location in ${stores:var}:
-          ${products_xcomp_list:var} += Product.find_products(product=product, product_attribute=${product_attribute_prefix:var}, location=location)
+          ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=location)
     var: products
 
-products_verb:
+products_find_action:
   - check for
   - show me
   - find

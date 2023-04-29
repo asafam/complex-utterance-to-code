@@ -6,7 +6,7 @@ class OrderEntity(Entity, Resolvable):
     pass
 
 
-class Product(Entity, Resolvable):
+class ProductName(Entity, Resolvable):
     pass
 
 

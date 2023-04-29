@@ -208,7 +208,7 @@ def substitute_code(
     if options["strip"]:
         new_code = "\n".join([r for r in new_code.split("\n") if r != "__DELETE__"])
         new_code = re.sub(r"^(.*)[\s]{2,}", r"\1 ", new_code, 1)
-        new_code = re.sub(r"([^\s])\s+\"", r'\1"', new_code, 1)
+        new_code = re.sub(r"(\".*)\s+\"", r'\1"', new_code, 1)
 
     return new_code
 

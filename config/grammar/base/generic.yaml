@@ -39,6 +39,7 @@ numbers:
 
 query_command_verb:
   - check
+  - confirm
   - find
   - let me know
   - tell me

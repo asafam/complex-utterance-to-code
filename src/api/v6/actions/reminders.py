@@ -2,7 +2,7 @@ from typing import Any, List, Mapping, Union, Optional
 from entities.resolvable import Resolvable
 from entities.generic import *
 from entities.reminder import Content, ReminderEntity
-from entities.calendar import CalendarEvent
+from entities.calendar import EventCalendar
 from exceptions.exceptions import UnderspecificationException
 from providers.data_model import DataModel
 
@@ -14,7 +14,7 @@ class Reminders(Resolvable):
         content: Content,
         person_reminded: Optional[Contact] = None,
         date_time: Optional[DateTime] = None,
-        calendar_event: Optional[CalendarEvent] = None,
+        calendar_event: Optional[EventCalendar] = None,
         recovered_args: Optional[Mapping[str, Any]] = None,
     ) -> ReminderEntity:
         if not content:

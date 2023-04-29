@@ -1,5 +1,5 @@
 from entities.generic import *
-from entities.events import *
+from entities.calendar import *
 from entities.home import *
 from entities.map import *
 from entities.message import *
@@ -10,7 +10,7 @@ from entities.shopping import *
 from entities.weather import *
 from actions.calendar import Calendar
 from actions.clock import *
-from actions.events import *
+from actions.calendar import *
 from actions.home import *
 from actions.messages import Map
 from actions.messages import Messages

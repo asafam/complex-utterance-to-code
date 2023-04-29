@@ -132,11 +132,11 @@ navigation_traffic_info_query:
     type: query
 
 navigation_distance_query:
-  - text: ${navigation_distance_command} and ${condition_term} it is more than ${distance}
+  - text: ${navigation_command_distance} and ${condition_term} it is more than ${distance}
     code: |
-      ${navigation_distance_command}
+      ${navigation_command_distance}
       ${distance}
-      ${navigation_distance_query:var} = ${navigation_distance_command:var} > ${distance:var}
+      ${navigation_distance_query:var} = ${navigation_command_distance:var} > ${distance:var}
     var: test_navigation_distance
     type: query
 
@@ -170,11 +170,11 @@ navigation_duration_query:
       ${navigation_driving_duration_query:var} = len(duration)
     var: test_navigation_driving_duration
     type: query
-  - text: ${navigation_duration_command} and ${condition_term} it is more than ${duration}
+  - text: ${navigation_command_duration} and ${condition_term} it is more than ${duration}
     code: |
-      ${navigation_duration_command}
+      ${navigation_command_duration}
       ${duration}
-      ${navigation_distance_query:var} = ${navigation_duration_command:var} > ${duration:var}
+      ${navigation_distance_query:var} = ${navigation_command_duration:var} > ${duration:var}
     var: test_navigation_distance
     type: query
 
@@ -198,7 +198,7 @@ navigation_estimate_arrival_query:
       ${navigation_estimate_arrival_query:var} = bool(departure)
     var: test_navigation_estimate_arrival
     type: query
-  - text: I will arrive ${arrival_date_time} ${destination} ${departure_date_time}
+  - text: I will arrive ${arrival_date_time} ${destination} after leaving ${departure_date_time}
     code: |
       ${arrival_date_time}
       ${destination}
@@ -207,7 +207,7 @@ navigation_estimate_arrival_query:
       ${navigation_estimate_arrival_query:var} = bool(departure)
     var: test_navigation_estimate_arrival
     type: query
-  - text: I will arrive $${arrival_date_time} ${destination} ${departure_date_time} ${origin}
+  - text: I will arrive ${arrival_date_time} ${destination} after leaving ${departure_date_time} ${origin}
     code: |
       ${arrival_date_time}
       ${destination}
@@ -217,7 +217,7 @@ navigation_estimate_arrival_query:
       ${navigation_estimate_arrival_query:var} = bool(departure)
     var: test_navigation_estimate_arrival
     type: query
-  - text: I will arrive $${arrival_date_time} ${destination} ${origin} ${departure_date_time}
+  - text: I will arrive ${arrival_date_time} ${destination} ${origin} ${departure_date_time}
     code: |
       ${arrival_date_time}
       ${destination}
@@ -227,7 +227,7 @@ navigation_estimate_arrival_query:
       ${navigation_estimate_arrival_query:var} = bool(departure)
     var: test_navigation_estimate_arrival
     type: query
-  - text: I will arrive $${arrival_date_time} ${destination} ${departure_date_times}
+  - text: I will arrive ${arrival_date_time} ${destination} ${departure_date_times}
     code: |
       ${arrival_date_time}
       ${destination}
@@ -238,7 +238,7 @@ navigation_estimate_arrival_query:
       ${navigation_estimate_arrival_query:var} = bool(arrival)
     var: test_navigation_estimate_arrival
     type: query
-  - text: I will arrive $${arrival_date_time} ${destination} ${departure_date_times} ${origin}
+  - text: I will arrive ${arrival_date_time} ${destination} after leaving ${departure_date_times} ${origin}
     code: |
       ${arrival_date_time}
       ${destination}
@@ -250,7 +250,7 @@ navigation_estimate_arrival_query:
       ${navigation_estimate_arrival_query:var} = bool(arrival)
     var: test_navigation_estimate_arrival
     type: query
-  - text: I will arrive $${arrival_date_time} ${destination} ${origin} ${departure_date_times}
+  - text: I will arrive ${arrival_date_time} ${destination} ${origin} after leaving ${departure_date_times}
     code: |
       ${arrival_date_time}
       ${destination}

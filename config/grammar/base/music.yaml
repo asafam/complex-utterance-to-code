@@ -80,6 +80,14 @@ genre_name:
   - electronic
   - alternative
   - indie
+  - funk
+  - grunge
+  - techno
+  - house
+  - r&b
+  - gospel
+  - romantic
+  - dance
 
 song:
   - text: ${song_name}

@@ -5,7 +5,7 @@ at_date_time:
     syn:
       num: sg
       label: pp
-    coreference_value: 
+    coreference_value:
       - value: at that time
 
 at_date_times:
@@ -15,7 +15,7 @@ at_date_times:
     syn:
       num: pl
       label: pp
-    coreference_value: 
+    coreference_value:
       - value: at these times
 
 every_date_time:
@@ -220,10 +220,14 @@ now_date_time_item:
 
 exact_date_time_item:
   - ${date_time_hour}
+  - ${holiday}
 
 exact_date_times_item:
   - ${exact_date_time_item.1} ${cc} ${exact_date_time_item.2}
-  - ${exact_date_time_item.1}, ${exact_date_time_item.2} ${cc} ${exact_date_time_item.3}
+  - text: ${exact_date_time_item.1}, ${exact_date_time_item.2} ${cc} ${exact_date_time_item.3}
+    code: ${exact_date_time_item.1}, ${exact_date_time_item.2} ${cc} ${exact_date_time_item.3}
+    weight: 0.1
+  - between ${exact_date_time_item.1} and ${exact_date_time_item.2}
 
 month_name:
   - ${faker_month_name}
@@ -231,8 +235,6 @@ month_name:
 date_time_hour:
   - ${date_time_hour_term}
   - ${date_time_hour_term} ${date_time_future}
-  # - text: ${date_time_future} at ${date_time_hour_term}
-  #   code: "${date_time_future} at ${date_time_hour_term}"
 
 date_time_future:
   - tomorrow
@@ -246,10 +248,6 @@ date_time_hour_term:
   - ${faker_time_hour_minutes}
   - mindnight
   - noon
-  # - at ${faker_time_hour} am tomorrow morning
-  # - tomorrow morning at ${faker_time_hour} am
-  # - at ${faker_time_hour} pm tonight
-  # - tonight at ${faker_time_hour} pm
 
 past_date_time_term:
   - today
@@ -267,6 +265,34 @@ times_of_day:
   - afternoon
   - evening
   - night
+
+holiday:
+  - New Year's Day
+  - Independence Day
+  - Thanksgiving Day
+  - Christmas Day
+  - Martin Luther King, Jr. Day
+  - Washington's Birthday
+  - Memorial Day
+  - Labor Day
+  - Columbus Day
+  - Veterans Day
+  - Halloween
+  - Valentine's Day
+  - St. Patrick's Day
+  - April Fool's Day
+  - Earth Day
+  - Mother's Day
+  - Father's Day
+  - Flag Day
+  - Grandparents Day
+  - Patriot Day
+  - Rosh Hashanah
+  - Yom Kippur
+  - Hanukkah
+  - Kwanzaa
+  - Christmas Eve
+  - New Year's Eve
 
 ordinal:
   - first

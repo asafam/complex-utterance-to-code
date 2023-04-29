@@ -2,6 +2,7 @@ message_verb:
   - text
   - email
   - message
+  - shoot
 
 messages_possession_verb:
   - have
@@ -46,8 +47,18 @@ message_date_times:
     code: ${date_times}
     var: ${date_times:var}
 
+message_content_type:
+  - text: ${message_content_type_item}
+    code: ${message_content_type:var} = ContentType.resolve_from_text("${message_content_type_item}")
+    var: message_content_type
+
+message_content_type_item:
+  - an email
+  - a message
+  - a text
+
 message_exact_content:
-  - text: ${message_content_item}
+  - text: ${containing|saying|letting her know|} ${message_content_item}
     code: |
       ${message_exact_content:var} = Content.resolve_from_text("${message_content_item}")
     var: exact_content

@@ -67,11 +67,32 @@ weather_condition_gerund_term:
   - raining
   - snowing
   - freezing
-  - sunny
   - nice
   - warm
-  - cold
+  - sunny
+  - windy
+  - foggy
+  - cloudy
   - chilly
+  - humid
+  - dry
+  - hot
+  - cold
+  - cool
+  - breezy
+  - stormy
+  - hailing
+  - sleeting
+  - drizzling
+  - pouring
+  - misting
+  - sprinkling
+  - blizzarding
+  - thundering
+  - lightning
+  - hazy
+  - smoggy
+  - dusty
 
 weather_condition_gerund_terms:
   - ${weather_condition_gerund_term.1} ${cc} ${weather_condition_gerund_term.2}

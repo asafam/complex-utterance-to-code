@@ -3,6 +3,14 @@ messages_command:
   - ${messages_command_send}
   - ${messages_command_delete}
 
+messages_command_sequence:
+  - ${messages_command_sequence_send}
+
+navigation_param_result_command:
+  - ${map_result_command}
+  - ${navigation_result_command}
+  - ${weather_result_command}
+
 messages_command_query:
   - text: ${query_command_verb} if ${messages_query}
     code: |
@@ -38,6 +46,54 @@ messages_command_send:
       for recipient in [${recipient.1:var}, ${recipient.2:var}]:
         for exact_content in [${message_exact_content.1:var}, ${message_exact_content.2:var}]:
           Message.send_message(recipient=recipient, exact_content=exact_content)
+  - text: ${message_verb} ${recipient} ${message_content_type} ${message_exact_content}
+    code: |
+      ${recipient}
+      ${message_content_type}
+      ${message_exact_content}
+      Message.send_message(recipient=${recipient:var}, message_content_type=${message_content_type:var}, exact_content=${message_exact_content:var})
+  - text: ${message_verb} ${recipients} ${message_content_type} ${message_exact_content}
+    code: |
+      ${recipients}
+      ${message_content_type}
+      ${message_exact_content}
+      for recipient in ${recipients:var}:
+        Message.send_message(recipient=recipient, message_content_type=${message_content_type:var}, exact_content=${message_exact_content:var})
+  - text: ${message_verb} ${recipients} ${message_content_type} ${message_exact_contents}
+    code: |
+      ${recipients}
+      ${message_content_type}
+      ${message_exact_contents}
+      for recipient in ${recipients:var}:
+        for exact_content in ${message_exact_contents:var}:
+          Message.send_message(recipient=recipient, message_content_type=${message_content_type:var}, exact_content=exact_content)
+  - text: ${message_verb} ${recipient.1} ${message_content_type.1} ${message_exact_content.1} and ${recipient.2} ${message_content_type.2} ${message_exact_content.2}
+    code: |
+      ${recipient.1}
+      ${recipient.2}
+      ${message_content_type.1}
+      ${message_content_type.2}
+      ${message_exact_content.1}
+      ${message_exact_content.2}
+      for recipient in [${recipient.1:var}, ${recipient.2:var}]:
+        for message_content_type in [${message_content_type.1:var}, ${message_content_type.2:var}]:
+          for exact_content in [${message_exact_content.1:var}, ${message_exact_content.2:var}]:
+            Message.send_message(recipient=recipient, message_content_type=message_content_type, exact_content=exact_content)
+
+messages_command_sequence_send:
+  - text: ${navigation_result_command} and ${message_verb} it to ${recipient}
+    code: |
+      ${navigation_result_command}
+      ${recipient}
+      exact_content = Content.resolve_from_entity(entity=${navigation_result_command:var})
+      Message.send_message(recipient=${recipient:var}, exact_content=exact_content)
+  - text: ${navigation_result_command} and ${message_verb} it to ${recipients}
+    code: |
+      ${navigation_result_command}
+      ${recipients}
+      exact_content = Content.resolve_from_entity(entity=${navigation_result_command:var})
+      for recipient in ${recipients:var}:
+        Message.send_message(recipient=recipient, exact_content=exact_content)
 
 messages_command_delete:
   - text: ${remove|delete} ${quantifier(messages, det=the)}

@@ -1,24 +1,24 @@
 products_query:
-  - text: ${product} are ${product_attribute_suffix}
+  - text: ${product_name} are ${product_attribute_suffix}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_suffix}
       products = Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${product} are ${product_attribute_suffix} at ${store}
+  - text: ${product_name} are ${product_attribute_suffix} at ${store}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_suffix}
       ${store}
       products = Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var}, location=${store:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${product} are ${product_attribute_suffix} at ${stores}
+  - text: ${product_name} are ${product_attribute_suffix} at ${stores}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_suffix}
       ${stores}
       products = []
@@ -27,163 +27,163 @@ products_query:
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${product.1} are ${product_attribute_suffix} ${cc} ${product.2} are ${product_attribute_suffix}
+  - text: ${product_name.1} are ${product_attribute_suffix} ${cc} ${product_name.2} are ${product_attribute_suffix}
     code: |
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${product_attribute_suffix}
       products = []
-      for product in [${product.1:var}, ${product.2:var}]:
-        products = products ${cc} Product.find_products(product=product, product_attribute=${product_attribute_suffix:var})
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
+        products = products ${cc} Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${product.1} are ${product_attribute_suffix} ${cc} ${product.2} are ${product_attribute_suffix} at ${store}
+  - text: ${product_name.1} are ${product_attribute_suffix} ${cc} ${product_name.2} are ${product_attribute_suffix} at ${store}
     code: |
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${product_attribute_suffix}
       ${store}
       products = []
-      for product in [${product.1:var}, ${product.2:var}]:
-        products = products ${cc} Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
+        products = products ${cc} Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${product.1} are ${product_attribute_suffix} ${cc} ${product.2} are ${product_attribute_suffix} at ${stores}
+  - text: ${product_name.1} are ${product_attribute_suffix} ${cc} ${product_name.2} are ${product_attribute_suffix} at ${stores}
     code: |
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${product_attribute_suffix}
       ${stores}
       products = []
-      for product in [${product.1:var}, ${product.2:var}]:
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
         for store in ${stores:var}:
-          products = products ${cc} Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+          products = products ${cc} Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${products} are ${product_attribute_suffix}
+  - text: ${product_names} are ${product_attribute_suffix}
     code: |
-      ${products}
+      ${product_names}
       ${product_attribute_suffix}
       products = []
-      for product in ${products:var}:
-        products += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var})
+      for product_name in ${product_names:var}:
+        products += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${products} are ${product_attribute_suffix} at ${store}
+  - text: ${product_names} are ${product_attribute_suffix} at ${store}
     code: |
-      ${products}
+      ${product_names}
       ${product_attribute_suffix}
       ${store}
       products = []
-      for product in ${products:var}:
-        products += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+      for product_name in ${product_names:var}:
+        products += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${products} are ${product_attribute_suffix} at ${stores}
+  - text: ${product_names} are ${product_attribute_suffix} at ${stores}
     code: |
-      ${products}
+      ${product_names}
       ${product_attribute_suffix}
       ${stores}
       products = []
-      for product in ${products:var}:
+      for product_name in ${product_names:var}:
         for location in ${stores:var}:
-          products += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=location)
+          products += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=location)
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: there is ${product_attribute_prefix} on ${product}
+  - text: there is ${product_attribute_prefix} on ${product_name}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_prefix}
       products = Product.find_products(product=${product:var}, product_attribute=${product_attribute_prefix:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: there is ${product_attribute_prefix} on ${products}
+  - text: there is ${product_attribute_prefix} on ${product_names}
     code: |
       ${product_attribute_prefix}
-      ${products}
+      ${product_names}
       products = []
-      for product in ${products:var}:
-        products += Product.find_products(product=product, product_attribute=${product_attribute_prefix:var})
+      for product_name in ${product_names:var}:
+        products += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: there is ${product_attribute_prefix} on ${product} at ${store}
+  - text: there is ${product_attribute_prefix} on ${product_name} at ${store}
     code: |
-      ${product}
+      ${product_name}
       ${product_attribute_prefix}
       ${store}
       products = Product.find_products(product=${product:var}, product_attribute=${product_attribute_prefix:var}, location=${store:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: there is ${product_attribute_prefix} on ${product.1} ${cc} ${product_attribute_prefix} on ${product.2}
+  - text: there is ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2}
     code: |
       ${product_attribute_prefix}
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       products = []
-      for product in [${product.1:var}, ${product.2:var}]:
-        products = products ${cc} Product.find_products(product=product, product_attribute=${product_attribute_prefix:var})
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
+        products = products ${cc} Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: there is ${product_attribute_prefix} on ${product.1} ${cc} ${product_attribute_prefix} on ${product.2} at ${store}
+  - text: there is ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2} at ${store}
     code: |
       ${product_attribute_prefix}
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${store}
       products = []
-      for product in [${product.1:var}, ${product.2:var}]:
-        products = products ${cc} Product.find_products(product=product, product_attribute=${product_attribute_prefix:var}, location=${store:var})
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
+        products = products ${cc} Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=${store:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: there is ${product_attribute_prefix} on ${product.1} ${cc} ${product_attribute_prefix} on ${product.2} at ${stores}
+  - text: there is ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2} at ${stores}
     code: |
       ${product_attribute_prefix}
-      ${product.1}
-      ${product.2}
+      ${product_name.1}
+      ${product_name.2}
       ${stores}
       products = []
-      for product in [${product.1:var}, ${product.2:var}]:
+      for product in [${product_name.1:var}, ${product_name.2:var}]:
         for location in ${stores:var}:
-          products = products ${cc} Product.find_products(product=product, product_attribute=${product_attribute_prefix:var}, location=location)
+          products = products ${cc} Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=location)
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: there is ${product_attribute_prefix} on ${products} at ${stores}
+  - text: there is ${product_attribute_prefix} on ${product_names} at ${stores}
     code: |
       ${product_attribute_prefix}
-      ${products}
+      ${product_names}
       ${stores}
       products = []
-      for product in ${products:var}:
+      for product_name in ${product_names:var}:
         for location in ${stores:var}:
-          products += Product.find_products(product=product, product_attribute=${product_attribute_prefix:var}, location=location)
+          products += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=location)
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${store} has ${product} ${product_attribute_suffix}
+  - text: ${store} has ${product_name} ${product_attribute_suffix}
     code: |
       ${store}
-      ${product}
+      ${product_name}
       ${product_attribute_suffix}
       products = Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var}, location=${store:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${stores} have ${product} ${product_attribute_suffix}
+  - text: ${stores} have ${product_name} ${product_attribute_suffix}
     code: |
       ${stores}
-      ${product}
+      ${product_name}
       ${product_attribute_suffix}
       products = []
       for location in ${stores:var}:
@@ -191,26 +191,26 @@ products_query:
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${store} has ${products} ${product_attribute_suffix}
+  - text: ${store} has ${product_names} ${product_attribute_suffix}
     code: |
       ${store}
-      ${products}
+      ${product_names}
       ${product_attribute_suffix}
       products = []
-      for product in ${products:var}:
-        products += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+      for product_name in ${product_names:var}:
+        products += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
       ${products_query:var} = bool(products)
     var: test_products
     type: query
-  - text: ${stores} have ${products} ${product_attribute_suffix}
+  - text: ${stores} have ${product_names} ${product_attribute_suffix}
     code: |
       ${stores}
-      ${products}
+      ${product_names}
       ${product_attribute_suffix}
       products = []
       for location in ${stores:var}:
-        for product in ${products:var}:
-          products += Product.find_products(product=product, product_attribute=${product_attribute_suffix:var}, location=location)
+        for product_name in ${product_names:var}:
+          products += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=location)
       ${products_query:var} = bool(products)
     var: test_products
     type: query

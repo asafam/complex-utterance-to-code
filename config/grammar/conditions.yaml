@@ -1,5 +1,5 @@
 query:
-  # events
+  # calendar
   - text: ${events_query}
     code: ${events_query}
     var: ${events_query:var}
@@ -38,10 +38,10 @@ query:
     var: ${weather_query:var}
 
 command_query:
-  # events
-  - text: ${events_command_query}
-    code: ${events_command_query}
-    var: ${events_command_query:var}
+  # calendar
+  - text: ${calendar_command_query}
+    code: ${calendar_command_query}
+    var: ${calendar_command_query:var}
   # home
   - text: ${home_command_query}
     code: ${home_command_query}

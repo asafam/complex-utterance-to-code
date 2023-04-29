@@ -1,6 +1,6 @@
 from entities.generic import *
 from entities.clock import *
-from entities.events import *
+from entities.calendar import *
 from entities.home import *
 from entities.message import *
 from entities.music import *
@@ -10,7 +10,7 @@ from entities.shopping import *
 from entities.weather import *
 from actions.calendar import Calendar
 from actions.clock import Clock
-from actions.events import Events
+from actions.calendar import Events
 from actions.home import Home
 from actions.messages import Messages
 from actions.music import Music

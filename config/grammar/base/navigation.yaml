@@ -1,4 +1,4 @@
-directions_verb:
+directions_action:
   - ${get|show|show me|tell me|display} ${the|} ${directions|route}
 
 distance:

@@ -1,13 +1,14 @@
 utterance:
-  - ${condition}
-  - ${sequence}
-  - ${simple}
+  # - ${condition}
+  # - ${sequence}
+  # - ${simple}
+  - ${navigation_command_directions}
 
 simple:
   - ${command}
 
 command:
-  - ${events_command}
+  - ${calendar_command}
   - ${home_command}
   - ${messages_command}
   - ${music_command}

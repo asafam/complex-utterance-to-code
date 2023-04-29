@@ -1,5 +1,5 @@
 from entities.generic import *
-from entities.events import *
+from entities.calendar import *
 from entities.home import *
 from entities.map import *
 from entities.message import *
@@ -8,18 +8,17 @@ from entities.navigation import *
 from entities.reminder import *
 from entities.shopping import *
 from entities.weather import *
-from actions.calendar import Calendar
+from actions.calendar import *
 from actions.clock import *
-from actions.events import *
+from actions.calendar import *
 from actions.home import *
-from actions.messages import Map
-from actions.messages import Messages
-from actions.music import Music
-from actions.navigation import Navigation
-from actions.reminders import Reminders
-from actions.responder import Responder
-from actions.shopping import Shopping
-from actions.weather import Weather
+from actions.messages import *
+from actions.music import *
+from actions.navigation import *
+from actions.reminders import *
+from actions.responder import *
+from actions.shopping import *
+from actions.weather import *
 from providers.data_model import DataModel
 from datetime import datetime, timedelta
 import utils
@@ -58,9 +57,15 @@ def test_22():
     data_alarms = data_model.get_data(HomeDeviceEntity)
     assert_equal(len(data_alarms), 1, test_results)
     data_alarm = data_alarms[0]
-    assert_equal(data_alarm.data.get("device_action"), data_home_device_action, test_results)
-    assert_equal(data_alarm.data.get("device_name"), data_home_device_name, test_results)
-    assert_equal(data_alarm.data.get("device_value"), data_home_device_value, test_results)
+    assert_equal(
+        data_alarm.data.get("device_action"), data_home_device_action, test_results
+    )
+    assert_equal(
+        data_alarm.data.get("device_name"), data_home_device_name, test_results
+    )
+    assert_equal(
+        data_alarm.data.get("device_value"), data_home_device_value, test_results
+    )
     assert_equal(data_alarm.data.get("start_date_time"), data_date_time2, test_results)
     assert_test(test_results)
 
@@ -222,17 +227,25 @@ def test_31():
     assert_equal(len(data_home_devices), 1, test_results)
     data_home_device = data_home_devices[0]
     assert_equal(
-        data_home_device.data.get("device_action"), data_home_device_action, test_results
+        data_home_device.data.get("device_action"),
+        data_home_device_action,
+        test_results,
     )
-    assert_equal(data_home_device.data.get("device_name"), data_home_device_name, test_results)
-    assert_equal(data_home_device.data.get("device_value"), data_home_device_value, test_results)
+    assert_equal(
+        data_home_device.data.get("device_name"), data_home_device_name, test_results
+    )
+    assert_equal(
+        data_home_device.data.get("device_value"), data_home_device_value, test_results
+    )
 
     data_navigation_directions_lists = data_model.get_data(NavigationDirectionEntity)
     assert_equal(len(data_navigation_directions_lists), 1, test_results)
     data_navigation_directions = data_navigation_directions_lists[0]
     assert_equal(len(data_navigation_directions), 1, test_results)
     assert_equal(
-        data_navigation_directions[0].data.get("destination"), data_destination, test_results
+        data_navigation_directions[0].data.get("destination"),
+        data_destination,
+        test_results,
     )
     assert_test(test_results)
 
@@ -259,7 +272,11 @@ def test_32():
     data_navigation_directions_lists = data_model.get_data(NavigationDirectionEntity)
     assert_equal(len(data_navigation_directions_lists), 1, test_results)
     data_navigation_directions = data_navigation_directions_lists[0]
-    assert_equal(data_navigation_directions[0].data.get("destination"), data_destination, test_results)
+    assert_equal(
+        data_navigation_directions[0].data.get("destination"),
+        data_destination,
+        test_results,
+    )
 
     data_messages = data_model.get_data(MessageEntity)
     assert_equal(len(data_messages), 1, test_results)
@@ -465,7 +482,9 @@ def test_38():
     data_event_tickets = data_model.get_data(EventTicketEntity)
     assert_equal(len(data_event_tickets), 1, test_results)
     data_event_ticket = data_event_tickets[0]
-    assert_equal(data_event_ticket.data.get("event_name"), data_event_name, test_results)
+    assert_equal(
+        data_event_ticket.data.get("event_name"), data_event_name, test_results
+    )
 
     data_messages = data_model.get_data(MessageEntity)
     assert_equal(len(data_messages), 1, test_results)
@@ -662,10 +681,16 @@ def test_41():
     assert_equal(len(data_home_devices), 1, test_results)
     data_home_device = data_home_devices[0]
     assert_equal(
-        data_home_device.data.get("device_action"), data_home_device_action, test_results
+        data_home_device.data.get("device_action"),
+        data_home_device_action,
+        test_results,
     )
-    assert_equal(data_home_device.data.get("device_name"), data_home_device, test_results)
-    assert_equal(data_home_device.data.get("device_value"), data_home_device_value, test_results)
+    assert_equal(
+        data_home_device.data.get("device_name"), data_home_device, test_results
+    )
+    assert_equal(
+        data_home_device.data.get("device_value"), data_home_device_value, test_results
+    )
     data_timers = data_model.get_data(TimerEntity)
     assert_equal(len(data_timers), 1, test_results)
     data_timer = data_timers[0]
@@ -706,7 +731,9 @@ def test_44():
     assert_equal(len(data_weather_forecasts_list), 1, test_results)
     data_weather_forecasts = data_weather_forecasts_list[0]
     assert_equal(len(data_weather_forecasts), 1, test_results)
-    assert_equal(data_weather_forecasts[0].data.get("date_time"), data_date_time, test_results)
+    assert_equal(
+        data_weather_forecasts[0].data.get("date_time"), data_date_time, test_results
+    )
     assert_test(test_results)
 
 
@@ -811,9 +838,15 @@ def test_47():
     data_home_devices = data_model.get_data(HomeDeviceValue)
     assert_equal(len(data_home_devices), 1, test_results)
     data_home_device = data_home_devices[0]
-    assert_equal(data_home_device.data.get("device_name"), data_home_device_name, test_results)
-    assert_equal(data_home_device.data.get("device_value"), data_home_device_value, test_results)
-    assert_equal(data_home_device.data.get("date_time"), data_date_time_6am, test_results)
+    assert_equal(
+        data_home_device.data.get("device_name"), data_home_device_name, test_results
+    )
+    assert_equal(
+        data_home_device.data.get("device_value"), data_home_device_value, test_results
+    )
+    assert_equal(
+        data_home_device.data.get("date_time"), data_date_time_6am, test_results
+    )
     assert_test(test_results)
 
 
@@ -848,9 +881,15 @@ def test_48():
     data_home_devices = data_model.get_data(HomeDeviceValue)
     assert_equal(len(data_home_devices), 1, test_results)
     data_home_device = data_home_devices[0]
-    assert_equal(data_home_device.data.get("device_name"), data_home_device_name, test_results)
-    assert_equal(data_home_device.data.get("device_value"), data_home_device_value, test_results)
-    assert_equal(data_home_device.data.get("date_time"), data_date_time_7pm, test_results)
+    assert_equal(
+        data_home_device.data.get("device_name"), data_home_device_name, test_results
+    )
+    assert_equal(
+        data_home_device.data.get("device_value"), data_home_device_value, test_results
+    )
+    assert_equal(
+        data_home_device.data.get("date_time"), data_date_time_7pm, test_results
+    )
     data_musics = data_model.get_data(MusicEntity)
     assert_equal(len(data_musics), 1, test_results)
     data_music = data_musics[0]

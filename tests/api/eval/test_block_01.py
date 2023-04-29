@@ -1,14 +1,13 @@
 from entities.generic import *
-from entities.events import *
+from entities.calendar import *
 from entities.message import *
 from entities.music import *
 from entities.navigation import *
 from entities.reminder import *
 from entities.shopping import *
 from entities.weather import *
-from actions.calendar import Calendar
 from actions.clock import *
-from actions.events import *
+from actions.calendar import *
 from actions.messages import Messages
 from actions.music import Music
 from actions.navigation import Navigation
@@ -354,10 +353,10 @@ def test_5():
     # start code block to test
     event_name = EventName.resolve_from_text("Blink 182")
     location = Location.resolve_from_text("Chicago")
-    events = Events.find_events(event_name=event_name, location=location)
+    events = Calendar.find_events(event_name=event_name, location=location)
     Responder.respond(response=events)
 
-    tickets = Events.find_events_tickets(events=events)
+    tickets = Calendar.find_events_tickets(events=events)
     Responder.respond(response=tickets)
     # end code block to test
 
@@ -403,7 +402,7 @@ def test_6():
     )
     date_time = DateTime.resolve_from_text("noon")
     location = Location.resolve_from_text("the cafe")
-    Events.schedule_event(date_time=date_time, location=location)
+    Calendar.schedule_event(date_time=date_time, location=location)
     # end code block to test
 
     # assertions
@@ -419,8 +418,8 @@ def test_6():
     data_events_list = data_model.get_data(EventEntity)
     assert_equal(len(data_events_list), 1, test_results)
     data_events = data_events_list[0]
-    assert_equal(data_events.data.get("date_time"), data_date_time_noon, test_results)
-    assert_equal(data_events.data.get("location"), data_location, test_results)
+    assert_equal(data_Calendar.data.get("date_time"), data_date_time_noon, test_results)
+    assert_equal(data_Calendar.data.get("location"), data_location, test_results)
     assert_test(test_results)
 
 

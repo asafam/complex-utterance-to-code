@@ -11,19 +11,19 @@ home_device_date_time:
       label: PP
 
 home_device_temperature_action:
-  - text: home_device_temperature_action_item
+  - text: ${home_device_temperature_action_item}
     code: |
       ${home_device_temperature_action:var} = HomeDeviceAction.resolve_from_text("${home_device_temperature_action_item}")
     var: device_action
 
 home_device_temperature_name:
-  - text: home_device_temperature_name_item
+  - text: ${home_device_temperature_name_item}
     code: |
-      ${home_device_temperature_name:var} = omeDeviceName.resolve_from_text("${home_device_temperature_name_item}")
+      ${home_device_temperature_name:var} = HomeDeviceName.resolve_from_text("${home_device_temperature_name_item}")
     var: device_name
 
 home_device_temperature_value:
-  - text: home_device_temperature_value_item
+  - text: ${home_device_temperature_value_item}
     code: |
       ${home_device_temperature_value:var} = HomeDeviceValue.resolve_from_text("${home_device_temperature_value_item}")
     var: device_value
@@ -43,19 +43,19 @@ home_device_temperature_value_item:
   - ${faker_random_int} ${degrees|} ${c|celsius|f|fahrenheit|}
 
 home_device_states_action:
-  - text: home_device_states_action_item
+  - text: ${home_device_states_action_item}
     code: |
       ${home_device_states_action:var} = HomeDeviceAction.resolve_from_text("${home_device_states_action_item}")
     var: device_action
 
 home_device_states_name:
-  - text: home_device_states_name_item
+  - text: ${home_device_states_name_item}
     code: |
-      ${home_device_states_name:var} = omeDeviceName.resolve_from_text("${home_device_states_name_item}")
+      ${home_device_states_name:var} = HomeDeviceName.resolve_from_text("${home_device_states_name_item}")
     var: device_name
 
 home_device_states_value:
-  - text: home_device_states_value_item
+  - text: ${home_device_states_value_item}
     code: |
       ${home_device_states_value:var} = HomeDeviceValue.resolve_from_text("${home_device_states_value_item}")
     var: device_value

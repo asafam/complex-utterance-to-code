@@ -1,12 +1,12 @@
 from typing import Optional, Any, Iterable, List, Tuple
 from representations.builders.lang.parsers.base_parser import BaseParser
 import stanza
-stanza.download("en")  # download English model
 
 
 class StanzaParser(BaseParser):
     def __init__(self) -> None:
         super().__init__(name="stanza")
+        stanza.download("en")  # download English model
         print(f"Using Stanza version: {stanza.__version__}")
         self.nlp = stanza.Pipeline(
             lang="en", processors="tokenize,mwt,pos,lemma,depparse"

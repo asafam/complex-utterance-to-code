@@ -1,0 +1,111 @@
+messages_command:
+  - ${messages_command_query}
+  - ${messages_command_send}
+  - ${messages_command_delete}
+
+messages_command_query:
+  - text: ${query_command_verb} if ${messages_query}
+    code: |
+      ${messages_query}
+      Responder.respond(response=${messages_query:var})
+    var: ${messages_query:var}
+
+messages_command_send:
+  - text: ${message_verb} ${recipient} ${message_exact_content}
+    code: |
+      ${recipient}
+      ${message_exact_content}
+      Message.send_message(recipient=${recipient:var}, exact_content=${message_exact_content:var})
+  - text: ${message_verb} ${recipients} ${message_exact_content}
+    code: |
+      ${recipients}
+      ${message_exact_content}
+      for recipient in ${recipients:var}:
+        Message.send_message(recipient=recipient, exact_content=${message_exact_content:var})
+  - text: ${message_verb} ${recipients} ${message_exact_contents}
+    code: |
+      ${recipients}
+      ${message_exact_contents}
+      for recipient in ${recipients:var}:
+        for exact_content in ${message_exact_contents:var}:
+          Message.send_message(recipient=recipient, exact_content=exact_content)
+  - text: ${message_verb} ${recipient.1} ${message_exact_content.1} and ${recipient.2} ${message_exact_content.2}
+    code: |
+      ${recipient.1}
+      ${recipient.2}
+      ${message_exact_content.1}
+      ${message_exact_content.2}
+      for recipient in [${recipient.1:var}, ${recipient.2:var}]:
+        for exact_content in [${message_exact_content.1:var}, ${message_exact_content.2:var}]:
+          Message.send_message(recipient=recipient, exact_content=exact_content)
+
+messages_command_delete:
+  - text: ${remove|delete} ${quantifier(messages, det=the)}
+    code: |
+      messages = Message.find_messages()
+      messages = ${quantifier(messages, det=the)}
+      Message.delete_messages(messages=messages)
+  - text: ${remove|delete} ${quantifier(messages, det=the)} that are from ${sender}
+    code: |
+      ${sender}
+      messages = Message.find_messages(sender=${sender:var})
+      messages = ${quantifier(messages, det=the)}
+      Message.delete_messages(messages=messages)
+  - text: ${remove|delete} ${quantifier(messages, det=the)} that are from ${senders}
+    code: |
+      ${senders}
+      for sender in [${senders:var}]:
+        messages = Message.find_messages(sender=sender)
+        messages = ${quantifier(messages, det=the)}
+        Message.delete_messages(messages=messages)
+  - text: ${remove|delete} ${quantifier(messages, det=the)} from ${message_date_time}
+    code: |
+      ${message_date_time}
+      messages = Message.find_messages(date_time=${message_date_time:var})
+      messages = ${quantifier(messages, det=the)}
+      Message.delete_messages(messages=messages)
+  - text: ${remove|delete} ${quantifier(messages, det=the)} from ${message_date_time} that are from ${sender}
+    code: |
+      ${message_date_time}
+      ${sender}
+      messages = Message.find_messages(date_time=${message_date_time:var}, sender=${sender:var})
+      messages = ${quantifier(messages, det=the)}
+      Message.delete_messages(messages=messages)
+  - text: ${remove|delete} ${quantifier(messages, det=the)} from ${message_date_time} that are from ${senders}
+    code: |
+      ${message_date_time}
+      ${senders}
+      for sender in [${senders:var}]:
+        messages = Message.find_messages(date_time=${message_date_time:var}, sender=sender)
+        messages = ${quantifier(messages, det=the)}
+        Message.delete_messages(messages=messages)
+  - text: ${remove|delete} ${quantifier(messages, det=the)} from ${message_date_times}
+    code: |
+      ${message_date_times}
+      all_messages = []
+      for date_time in ${message_date_times:var}:
+        messages = Message.find_messages(date_time=date_time)
+        messages = ${quantifier(messages, det=the)}
+        all_messages += messages
+      Message.delete_messages(messages=all_messages)
+  - text: ${remove|delete} ${quantifier(messages, det=the)} from ${message_date_times} that are from ${sender}
+    code: |
+      ${message_date_times}
+      ${sender}
+      all_messages = []
+      for date_time in ${message_date_times:var}:
+        messages = Message.find_messages(date_time=date_time, sender=${sender:var})
+        messages = ${quantifier(messages, det=the)}
+        all_messages += messages
+      Message.delete_messages(messages=all_messages)
+  - text: ${remove|delete} ${quantifier(messages, det=the)} from ${message_date_times} that are from ${senders}
+    code: |
+      ${message_date_times}
+      ${senders}
+      all_messages = []
+      for date_time in ${message_date_times:var}:
+        for sender in [${senders:var}]:
+          messages = Message.find_messages(date_time=date_time, sender=sender)
+          messages = ${quantifier(messages, det=the)}
+          all_messages += messages
+      Message.delete_messages(messages=all_messages)

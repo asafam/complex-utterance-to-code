@@ -1,21 +1,21 @@
 sequence:
-  - text: after you ${command.1}, ${command.2}
-    code: |
-      ${command.1}
-
-      ${command.2}
-    weight: 0.3
-  - text: before you ${command.1}, ${command.2}
-    code: |
-      ${command.2}
-
-      ${command.1}
-    weight: 0.3
   - text: ${command.1} and ${command.2}
     code: |
       ${command.1}
 
       ${command.2}
+  - text: after you ${command.1}, ${command.2}
+    code: |
+      ${command.1}
+
+      ${command.2}
+    weight: 0.25
+  - text: before you ${command.1}, ${command.2}
+    code: |
+      ${command.2}
+
+      ${command.1}
+    weight: 0.25
   - text: ${sequence}, ${command.1} and ${command.2}
     code: |
       ${sequence}

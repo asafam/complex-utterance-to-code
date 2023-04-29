@@ -1,26 +1,17 @@
 utterance:
   - ${condition}
   - ${sequence}
-  # - ${simple}
+  - ${simple}
 
 simple:
   - ${command}
 
 command:
+  - ${events_command}
+  - ${home_command}
   - ${messages_command}
+  - ${music_command}
   - ${navigation_command}
+  - ${products_command}
   - ${reminders_command}
   - ${weather_command}
-
-query:
-  - text: ${weather_query}
-    code: ${weather_query}
-    var: ${weather_query:var}
-  - text: ${event_query}
-    code: ${event_query}
-    var: ${event_query:var}
-  # - text: ${navigation_traffic_query}
-  #   code: ${navigation_traffic_query}
-  #   var: ${navigation_traffic_query:var}
-  # - ${navigation_estimate_arrival_query}
-  # - ${navigation_estimate_departure_query}

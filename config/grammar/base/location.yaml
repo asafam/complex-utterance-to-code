@@ -1,0 +1,267 @@
+to_location:
+  - text: to ${location_exact}
+    code: |
+      ${to_location:var} = Location.resolve_from_text("to ${location_exact}")
+    var: location
+    syn:
+      label: NN
+    type: location
+    coreference_value:
+      - value: there
+
+to_locations:
+  - text: to ${locations_exact}
+    code: |
+      ${to_locations:var} = Location.resolve_many_from_text("to ${locations_exact}")
+    var: location
+    syn:
+      label: NN
+    type: locations
+    coreference_value:
+      - value: there
+
+from_location:
+  - text: from ${location_exact}
+    code: |
+      ${from_location:var} = Location.resolve_from_text("from ${location_exact}")
+    var: location
+    syn:
+      label: NN
+    type: location
+    coreference_value:
+      - value: there
+
+from_locations:
+  - text: from ${locations_exact}
+    code: |
+      ${from_locations:var} = Location.resolve_many_from_text("from ${locations_exact}")
+    var: location
+    syn:
+      label: NN
+    type: locations
+    coreference_value:
+      - value: there
+
+at_location:
+  - text: at ${location_exact}
+    code: |
+      ${at_location:var} = Location.resolve_from_text("at ${location_exact}")
+    var: location
+    syn:
+      label: NN
+    type: location
+    coreference_value:
+      - value: there
+
+at_locations:
+  - text: at ${locations_exact}
+    code: |
+      ${at_locations:var} = Location.resolve_many_from_text("at ${locations_exact}")
+    var: location
+    syn:
+      label: NN
+    type: locations
+    coreference_value:
+      - value: there
+
+in_location:
+  - text: in ${location_exact}
+    code: |
+      ${in_location:var} = Location.resolve_from_text("in ${location_exact}")
+    var: location
+    syn:
+      label: NN
+    type: location
+    coreference_value:
+      - value: there
+
+in_locations:
+  - text: in ${locations_exact}
+    code: |
+      ${in_locations:var} = Location.resolve_many_from_text("in ${locations_exact}")
+    var: locations
+    syn:
+      label: NN
+    type: location
+    coreference_value:
+      - value: there
+
+near_location:
+  - text: near ${location_landmark}
+    code: |
+      ${near_location:var} = Location.resolve_from_text("near ${location_landmark}")
+    var: location
+    syn:
+      label: PP
+
+on_location:
+  - text: on ${on_location_item}
+    code: |
+      ${on_location:var} = Location.resolve_from_text("${on_location_item}")
+    var: location
+    type: location
+    syn:
+      num: sg
+      label: PP
+    coreference_value:
+      - value: there
+
+on_locations:
+  - text: on ${on_location_item}
+    code: |
+      ${on_locations:var} = Location.resolve_many_from_text("${on_locations_item}")
+    var: locations
+    type: location
+    syn:
+      num: pl
+      label: PP
+    coreference_value:
+      - value: there
+
+location_proximity:
+  - text: ${location_proximity_item}
+    code: |
+      ${location_proximity:var} = Location.resolve_from_text("${location_proximity_item}")
+    var: location
+    type: location
+    syn:
+      label: PP
+
+locations_proximity:
+  - text: ${locations_proximity_item}
+    code: |
+      ${location_proximity:var} = Location.resolve_from_text("${location_proximity_item}")
+    var: location
+    type: location
+    syn:
+      label: PP
+
+location:
+  - text: ${location_exact}
+    code: |
+      ${location:var} = Location.resolve_from_text("${location_exact}")
+    var: location
+    syn:
+      label: NN
+    type: location
+    coreference_value:
+      - value: there
+
+locations:
+  - text: ${locations_exact}
+    code: |
+      ${locations:var} = Location.resolve_many_from_text("${locations_exact}")
+    var: location
+    syn:
+      label: NN
+    type: location
+    coreference_value:
+      - value: there
+
+location_proximity_item:
+  - near ${location_exact}
+
+locations_proximity_item:
+  - near ${locations_exact}
+
+location_exact:
+  - ${location_general}
+  - ${location_relative}
+  - text: ${location_landmark}
+    code: ${location_landmark}
+    weight: 0.1
+
+locations_exact:
+  - ${location_general.1} ${cc} ${location_general.2}
+  - ${location_relative.1} ${cc} ${location_relative.2}
+  - text: ${location_landmark.1} ${cc} ${location_landmark.2}
+    code: ${location_landmark.1} ${cc} ${location_landmark.2}
+    weight: 0.1
+
+location_exact_micro:
+  - ${location_street_address}
+  - text: ${location_landmark}
+    code: ${location_landmark}
+    weight: 0.1
+
+location_general:
+  - ${faker_country}
+  - ${faker_city}
+  - ${faker_street_name}
+
+location_relative:
+  - my neighborhood
+  - my parents neighborhood
+  - my work place
+  - my office
+
+location_landmark:
+  - the airport
+  - the bank
+  - the bar
+  - the beach
+  - the bridge
+  - the boulevard
+  - the city center
+  - the harbor
+  - the park
+  - the river
+  - the sea
+  - the sea shore
+  - the hospital
+  - the school
+  - the university
+  - the lake
+  - the mall
+  - the stadium
+  - the theater
+  - the YMCA
+  - the museum
+  - the zoo
+  - the ${faker_brand} building
+  - the ${faker_brand} office
+  - the ${faker_brand} headquarters
+  - the ${faker_brand} factory
+  - the ${faker_brand} warehouse
+  - the ${faker_brand} plant
+  - the ${faker_brand} school
+  - the ${faker_brand} hospital
+  - the ${faker_brand} stadium
+  - the ${faker_brand} theater
+  - the ${faker_brand} mall
+  - the ${faker_brand} store
+
+on_location_item:
+  - ${faker_street_name} ${road|street|avenue}
+
+on_locations_item:
+  - ${on_location_item.1} ${cc} ${on_location_item.2}
+
+location_path:
+  - text: ${location_path_item}
+    code: |
+      ${location_path_item:var} = Location.resolve_from_text("${location_path_item}")
+    var: location
+    type: location
+
+location_path_item:
+  - text: highway ${faker_digit}
+    code: "highway ${faker_digit}"
+  - text: highway ${faker_two_digits}
+    code: "highway ${faker_two_digits}"
+  - text: hwy ${faker_digit}
+    code: "hwy ${faker_digit}"
+  - text: hwy ${faker_two_digits}
+    code: "hwy ${faker_two_digits}"
+  - text: I-${faker_digit}
+    code: "I-${faker_digit}"
+  - text: I-${faker_two_digits}
+    code: "I-${faker_two_digits}"
+  - text: Route ${faker_two_digits}
+    code: "Route ${faker_two_digits}"
+  - text: the freeway
+    code: "the freeway"
+  - text: the highway
+    code: "the highway"
+  - text: the tollroad
+    code: "the tollroad"

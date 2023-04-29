@@ -1,0 +1,56 @@
+site_name: API Docs
+nav:
+  - Home: index.md
+  - "Getting started": get_started.md
+  - "Advanced topics": advanced.md
+  - "API Reference":
+      - "API Reference": reference/index.md
+      - Actions:
+          - Event: reference/actions/event.md
+          - Message: reference/actions/message.md
+          - Navigation: reference/actions/navigation.md
+          - Reminder: reference/actions/reminder.md
+          - Responder: reference/actions/responder.md
+          - Shopping: reference/actions/shopping.md
+          - Weather: reference/actions/weather.md
+      - "Data Types":
+          - Contact: reference/types/contact.md
+          - DateTime: reference/types/date_time.md
+          - EventCalendar: reference/types/event_calendar.md
+          - EventName: reference/types/event_name.md
+          - Location: reference/types/location.md
+          - MessageContentType: reference/types/message_content_type.md
+          - MessageStatus: reference/types/message_status.md
+          - NavRoadCondition: reference/types/nav_road_condition.md
+          - NavTravelMethod: reference/types/nav_travel_method.md
+          - PlaceAttribute: reference/types/place_attribute.md
+          - Product: reference/types/product.md
+          - Resource: reference/types/resource.md
+          - WeatherAttribute: reference/types/weather_attribute.md
+          - WeatherTemperatureUnit: reference/types/weather_temperature_unit.md
+  - Exercises: exercises.md
+  - Tests: tests.md
+  - "Excercise writing tests": exercise_writing_tests.md
+theme:
+  name: material
+  custom_dir: public/material
+  language: en
+  palette:
+    scheme: slate
+  features:
+    - content.code.annotate
+markdown_extensions:
+  - tables
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list

@@ -4,7 +4,7 @@ import random
 import re
 import pandas as pd
 import numpy as np
-from synthetics.sampler import sample
+from synthetics.sampler import Sampler
 from main_representations import (
     generate_text_representation,
     generate_code_representation,
@@ -68,8 +68,9 @@ def main(
             )
     else:
         # printProgressBar(0, k, prefix = 'Progress:', suffix = 'Complete', length = 50)
+        sampler = Sampler(seed=seed)
         for i in range(k):
-            s = sample(seed=seed)
+            s = sampler.sample(seed=seed)
             text = s.to_text()
             code = s.to_code()
 
@@ -90,7 +91,7 @@ def main(
                 "code_rep": code_rep,
             }
             samples.append(item)
-            printProgressBar(i + 1, k, prefix="Progress:", suffix="Complete", length=50)
+            printProgressBar(i + 1, k, prefix="Progress:", suffix=f"Complete ({i+1}/{k})", length=50)
 
     if print_console:
         print_sample_to_console(samples)

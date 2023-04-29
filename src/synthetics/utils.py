@@ -3,11 +3,10 @@ import re
 import uuid
 from collections import Counter
 from typing import List, Union, Tuple, Optional, Dict
+import glob
 import csv
 import os
 import json
-import yaml
-from pathlib import Path
 from synthetics.key import Key
 
 
@@ -106,24 +105,6 @@ def get_var(value: dict, context: List[str]) -> Optional[str]:
     return var
 
 
-def load_grammar(grammar_dir: str, file_exts: List[str] = [".yaml", ".yml"]) -> dict:
-    grammar = {}
-    grammar_files = [
-        f
-        for f in os.listdir(grammar_dir)
-        if os.path.isfile(os.path.join(grammar_dir, f))
-        and Path(os.path.join(grammar_dir, f)).suffix in file_exts
-    ]
-    for grammar_file in grammar_files:
-        with open(os.path.join(grammar_dir, grammar_file), "r") as stream:
-            try:
-                data = yaml.safe_load(stream)
-                grammar = {**grammar, **data}
-            except yaml.YAMLError as exc:
-                print(exc)
-    return grammar
-
-
 def normalize_data(
     data: Optional[Union[str, dict]],
     key: Key,
@@ -162,7 +143,7 @@ def substitute_text(text: str, key: Key, value: str, options: Dict = {}) -> str:
 
     # post processing
     if options["strip"]:
-        new_text = re.sub(rf"\s+", " ", new_text, 1)
+        new_text = re.sub(r"[\s]{2,}", r" ", new_text, 1)
 
     return new_text
 
@@ -197,7 +178,7 @@ def substitute_code(
         code_value = re.sub(escaped_regex, f"{var_value} =", code_value)
 
         # {label:var} = ... with var_value = ...
-        escaped_regex = re.escape(f"${{{key.label}:var}}")
+        escaped_regex = re.escape(f"${{{key.key}:var}}")
         code_value = re.sub(escaped_regex, var_value, code_value)
 
     # replace child key with child code
@@ -226,6 +207,8 @@ def substitute_code(
 
     if options["strip"]:
         new_code = "\n".join([r for r in new_code.split("\n") if r != "__DELETE__"])
+        new_code = re.sub(r"^(.*)[\s]{2,}", r"\1 ", new_code, 1)
+        new_code = re.sub(r"([^\s])\s+\"", r'\1"', new_code, 1)
 
     return new_code
 

@@ -1,0 +1,349 @@
+navigation_traffic_info_query:
+  - text: there is ${traffic_condition} ${traffic_location}
+    code: |
+      ${traffic_condition}
+      ${traffic_location}
+      navigation_traffic_info = Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var})
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there is ${traffic_condition} ${traffic_location} ${at_date_time}
+    code: |
+      ${traffic_condition}
+      ${traffic_location}
+      ${at_date_time}
+      navigation_traffic_info = Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var}, date_time=${at_date_time:var})
+      Responder.respond(response=navigation_traffic_info)
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there is ${traffic_condition} ${traffic_location} ${at_date_times}
+    code: |
+      ${traffic_condition}
+      ${traffic_location}
+      ${at_date_times}
+      navigation_traffic_info = []
+      for date_time in ${at_date_times}:
+        navigation_traffic_info += Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=${traffic_condition:var}, date_time=date_time)
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there are ${traffic_conditions} ${traffic_location}
+    code: |
+      ${traffic_conditions}
+      ${traffic_location}
+      navigation_traffic_info = []
+      for traffic_condition in ${traffic_conditions:var}:
+        navigation_traffic_info += Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=traffic_condition)
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there are ${traffic_conditions} ${traffic_location} ${at_date_time}
+    code: |
+      ${traffic_conditions}
+      ${traffic_location}
+      ${at_date_time}
+      navigation_traffic_info = []
+      for traffic_condition in ${traffic_conditions:var}:
+        navigation_traffic_info += Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=traffic_condition, date_time=${at_date_time:var})
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there are ${traffic_conditions} ${traffic_location} ${at_date_times}
+    code: |
+      ${traffic_conditions}
+      ${traffic_location}
+      ${at_date_times}
+      navigation_traffic_info = []
+      for traffic_condition in ${traffic_conditions:var}:
+        for date_time in ${at_date_times}:
+          navigation_traffic_info += Navigation.find_traffic_info(location=${traffic_location:var}, traffic_condition=traffic_condition, date_time=${at_date_time:var})
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there is ${traffic_condition} ${traffic_locations}
+    code: |
+      ${traffic_condition}
+      ${traffic_locations}
+      navigation_traffic_info = []
+      for location in ${traffic_locations:var}:
+        navigation_traffic_info += Navigation.find_traffic_info(location=location, traffic_condition=${traffic_condition:var})
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there is ${traffic_condition} ${traffic_locations} ${at_date_time}
+    code: |
+      ${traffic_condition}
+      ${traffic_locations}
+      ${at_date_time}
+      navigation_traffic_info = []
+      for location in ${traffic_locations:var}:
+        navigation_traffic_info = Navigation.find_traffic_info(location=location, traffic_condition=${traffic_condition:var}, date_time=${at_date_time:var})
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there is ${traffic_condition} ${traffic_locations} ${at_date_times}
+    code: |
+      ${traffic_condition}
+      ${traffic_locations}
+      ${at_date_times}
+      navigation_traffic_info = []
+      for location in ${traffic_locations}:
+        for date_time in ${at_date_times}:
+          navigation_traffic_info += Navigation.find_traffic_info(location=location, traffic_condition=${traffic_condition:var}, date_time=date_time)
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there are ${traffic_conditions} ${traffic_locations}
+    code: |
+      ${traffic_conditions}
+      ${traffic_locations}
+      navigation_traffic_info = []
+      for traffic_condition in ${traffic_conditions:var}:
+        for location in ${traffic_locations:var}:
+          navigation_traffic_info += Navigation.find_traffic_info(location=location, traffic_condition=traffic_condition)
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there are ${traffic_conditions} ${traffic_locations} ${at_date_time}
+    code: |
+      ${traffic_conditions}
+      ${traffic_locations}
+      ${at_date_time}
+      navigation_traffic_info = []
+      for traffic_condition in ${traffic_conditions:var}:
+        for location in ${traffic_locations:var}:
+          navigation_traffic_info += Navigation.find_traffic_info(location=location, traffic_condition=traffic_condition, date_time=${at_date_time:var})
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+  - text: there are ${traffic_conditions} ${traffic_locations} ${at_date_times}
+    code: |
+      ${traffic_conditions}
+      ${traffic_locations}
+      ${at_date_times}
+      navigation_traffic_info = []
+      for traffic_condition in ${traffic_conditions:var}:
+        for location in ${traffic_locations:var}:
+          for date_time in ${at_date_times}:
+            navigation_traffic_info += Navigation.find_traffic_info(location=location, traffic_condition=traffic_condition, date_time=date_time)
+      ${navigation_traffic_info_query:var} = bool(navigation_traffic_info)
+    var: test_navigation_traffic_info
+    type: query
+
+navigation_distance_query:
+  - text: ${navigation_distance_command} and ${condition_term} it is more than ${distance}
+    code: |
+      ${navigation_distance_command}
+      ${distance}
+      ${navigation_distance_query:var} = ${navigation_distance_command:var} > ${distance:var}
+    var: test_navigation_distance
+    type: query
+
+navigation_duration_query:
+  - text: it will take me ${time_duration} to arrive at ${destination}
+    code: |
+      ${time_duration}
+      ${destination}
+      duration = Navigation.find_duration(destination=${destination:var}, time_duration=${time_duration:var})
+      ${navigation_driving_duration_query:var} = len(duration)
+    var: test_navigation_driving_duration
+    type: query
+  - text: it will take me ${time_duration} to arrive at ${destination} ${at_date_time}
+    code: |
+      ${time_duration}
+      ${destination}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      duration = Navigation.find_duration(destination=${destination:var}, time_duration=${time_duration:var})
+      ${navigation_driving_duration_query:var} = len(duration)
+    var: test_navigation_driving_duration
+    type: query
+  - text: it will take me ${time_duration} ${at_date_time} to arrive at ${destination} ${origin}
+    code: |
+      ${time_duration}
+      ${at_date_time}
+      date_time = ${at_date_time:var}
+      ${destination}
+      ${origin}
+      duration = Navigation.find_duration(destination=${destination:var}, time_duration=${time_duration:var})
+      ${navigation_driving_duration_query:var} = len(duration)
+    var: test_navigation_driving_duration
+    type: query
+  - text: ${navigation_duration_command} and ${condition_term} it is more than ${duration}
+    code: |
+      ${navigation_duration_command}
+      ${duration}
+      ${navigation_distance_query:var} = ${navigation_duration_command:var} > ${duration:var}
+    var: test_navigation_distance
+    type: query
+
+navigation_estimate_arrival_query:
+  - text: I leave ${departure_date_time} to get ${destination} ${arrival_date_time}
+    code: |
+      ${departure_date_time}
+      ${destination}
+      ${arrival_date_time}
+      arrival = Navigation.find_estimated_arrival(destination=${destination:var}, departure_date_time=${departure_date_time:var}, arrival_date_time=${arrival_date_time:var})
+      ${navigation_estimate_arrival_query:var} = bool(arrival)
+    var: test_navigation_estimate_arrival
+    type: query
+  - text: I leave ${departure_date_time} ${origin} to get ${destination} ${arrival_date_time}
+    code: |
+      ${arrival_date_time}
+      ${departure_date_time}
+      ${origin}
+      ${destination}
+      arrival = Navigation.find_estimated_arrival(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=${departure_date_time:var})
+      ${navigation_estimate_arrival_query:var} = bool(departure)
+    var: test_navigation_estimate_arrival
+    type: query
+  - text: I will arrive ${arrival_date_time} ${destination} ${departure_date_time}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${departure_date_time}
+      arrival = Navigation.find_estimated_arrival(destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=${departure_date_time:var})
+      ${navigation_estimate_arrival_query:var} = bool(departure)
+    var: test_navigation_estimate_arrival
+    type: query
+  - text: I will arrive $${arrival_date_time} ${destination} ${departure_date_time} ${origin}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${departure_date_time}
+      ${origin}
+      arrival = Navigation.find_estimated_arrival(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=${departure_date_time:var})
+      ${navigation_estimate_arrival_query:var} = bool(departure)
+    var: test_navigation_estimate_arrival
+    type: query
+  - text: I will arrive $${arrival_date_time} ${destination} ${origin} ${departure_date_time}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${origin}
+      ${departure_date_time}
+      arrival = Navigation.find_estimated_arrival(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=${departure_date_time:var})
+      ${navigation_estimate_arrival_query:var} = bool(departure)
+    var: test_navigation_estimate_arrival
+    type: query
+  - text: I will arrive $${arrival_date_time} ${destination} ${departure_date_times}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${departure_date_times}
+      arrival = []
+      for departure_date_time in ${departure_date_times:var}:
+        arrival += Navigation.find_estimated_arrival(destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=departure_date_time)
+      ${navigation_estimate_arrival_query:var} = bool(arrival)
+    var: test_navigation_estimate_arrival
+    type: query
+  - text: I will arrive $${arrival_date_time} ${destination} ${departure_date_times} ${origin}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${departure_date_times}
+      ${origin}
+      arrival = []
+      for departure_date_time in ${departure_date_times:var}:
+        arrival += Navigation.find_estimated_arrival(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=departure_date_time)
+      ${navigation_estimate_arrival_query:var} = bool(arrival)
+    var: test_navigation_estimate_arrival
+    type: query
+  - text: I will arrive $${arrival_date_time} ${destination} ${origin} ${departure_date_times}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${origin}
+      ${departure_date_times}
+      arrival = []
+      for departure_date_time in ${departure_date_times:var}:
+        arrival += Navigation.find_estimated_arrival(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=departure_date_time)
+      ${navigation_estimate_arrival_query:var} = bool(arrival)
+    var: test_navigation_estimate_arrival
+    type: query
+
+navigation_estimate_departure_query:
+  - text: I ${need to|should} leave ${departure_date_time} to get ${destination} ${arrival_date_time}
+    code: |
+      ${departure_date_time}
+      ${destination}
+      ${arrival_date_time}
+      departure = Navigation.find_estimated_departure(destination=${destination:var}, departure_date_time=${departure_date_time:var}, arrival_date_time=${arrival_date_time:var})
+      ${navigation_estimate_departure_query:var} = bool(departure)
+    var: test_navigation_estimate_departure
+    type: query
+  - text: I ${need to|should} leave ${departure_date_time} ${origin} to get ${destination} ${arrival_date_time}
+    code: |
+      ${arrival_date_time}
+      ${departure_date_time}
+      ${origin}
+      ${destination}
+      departure = Navigation.find_estimated_departure(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=${departure_date_time:var})
+      ${navigation_estimate_departure_query:var} = bool(departure)
+    var: test_navigation_estimate_departure
+    type: query
+  - text: I ${need to|should} leave to get ${arrival_date_time} ${destination} ${departure_date_time}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${departure_date_time}
+      departure = Navigation.find_estimated_departure(destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=${departure_date_time:var})
+      ${navigation_estimate_departure_query:var} = bool(departure)
+    var: test_navigation_estimate_departure
+    type: query
+  - text: I ${need to|should} leave to get ${arrival_date_time} ${destination} ${departure_date_time} ${origin}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${departure_date_time}
+      ${origin}
+      departure = Navigation.find_estimated_departure(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=${departure_date_time:var})
+      ${navigation_estimate_departure_query:var} = bool(departure)
+    var: test_navigation_estimate_departure
+    type: query
+  - text: I ${need to|should} leave to get ${arrival_date_time} ${destination} ${origin} ${departure_date_time}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${origin}
+      ${departure_date_time}
+      departure = Navigation.find_estimated_departure(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=${departure_date_time:var})
+      ${navigation_estimate_departure_query:var} = bool(departure)
+    var: test_navigation_estimate_departure
+    type: query
+  - text: I ${need to|should} leave to get ${arrival_date_time} ${destination} ${departure_date_times}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${departure_date_times}
+      departure = []
+      for departure_date_time in ${departure_date_times:var}:
+        departure += Navigation.find_estimated_departure(destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=departure_date_time)
+      ${navigation_estimate_departure_query:var} = bool(departure)
+    var: test_navigation_estimate_departure
+    type: query
+  - text: I ${need to|should} leave to get ${arrival_date_time} ${destination} ${departure_date_times} ${origin}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${departure_date_times}
+      ${origin}
+      departure = []
+      for departure_date_time in ${departure_date_times:var}:
+        departure += Navigation.find_estimated_departure(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=departure_date_time)
+      ${navigation_estimate_departure_query:var} = bool(departure)
+    var: test_navigation_estimate_departure
+    type: query
+  - text: I ${need to|should} leave to get ${arrival_date_time} ${destination} ${origin} ${departure_date_times}
+    code: |
+      ${arrival_date_time}
+      ${destination}
+      ${origin}
+      ${departure_date_times}
+      departure = []
+      for departure_date_time in ${departure_date_times:var}:
+        departure += Navigation.find_estimated_departure(source=${origin:var}, destination=${destination:var}, arrival_date_time=${arrival_date_time:var}, departure_date_time=departure_date_time)
+      ${navigation_estimate_departure_query:var} = bool(departure)
+    var: test_navigation_estimate_departure
+    type: query

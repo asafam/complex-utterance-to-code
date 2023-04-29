@@ -1,0 +1,136 @@
+weather_condition:
+  - text: it ${weather_condition_term}
+    code: |
+      ${weather_condition:var} = WeatherCondition.resolve_from_text("${weather_condition_term}")
+    var: weather_condition
+    syn:
+      label: VP
+  - text: it is expected to be ${weather_condition_gerund_term}
+    code: |
+      ${weather_condition:var} = WeatherCondition.resolve_from_text("${weather_condition_term}")
+    var: weather_condition
+    syn:
+      label: VP
+
+weather_conditions:
+  - text: it ${weather_condition_terms}
+    code: |
+      ${weather_conditions:var} = WeatherCondition.resolve_many_from_text("${weather_condition_terms}")
+    var: weather_conditions
+    syn:
+      label: VP
+  - text: it ${weather_condition_gerund_terms}
+    code: |
+      ${weather_conditions:var} = WeatherCondition.resolve_many_from_text("${weather_condition_gerund_terms}")
+    var: weather_conditions
+    syn:
+      label: VP
+
+weather_condition_term:
+  - text: rains
+    code: rains
+    syn:
+      label: VB
+  - text: snows
+    code: snows
+    syn:
+      label: VB
+  - text: freezes
+    code: freezes
+    syn:
+      label: VB
+  - text: will be sunny
+    code: sunny
+    syn:
+      label: VB
+  - text: will be nice
+    code: nice
+    syn:
+      label: VB
+  - text: will be warm
+    code: warm
+    syn:
+      label: VB
+  - text: will be cold
+    code: cold
+    syn:
+      label: VB
+  - text: will be chilly
+    code: chilly
+    syn:
+      label: VB
+
+weather_condition_terms:
+  - ${weather_condition_term.1} ${cc} ${weather_condition_term.2}
+
+weather_condition_gerund_term:
+  - raining
+  - snowing
+  - freezing
+  - sunny
+  - nice
+  - warm
+  - cold
+  - chilly
+
+weather_condition_gerund_terms:
+  - ${weather_condition_gerund_term.1} ${cc} ${weather_condition_gerund_term.2}
+
+weather_location:
+  - text: ${at_location}
+    code: ${at_location}
+    var: location
+    weight: 0.25
+  - text: ${in_location}
+    code: ${in_location}
+    var: location
+  - text: ${on_location}
+    code: ${on_location}
+    var: location
+    weight: 0.25
+
+weather_locations:
+  - text: ${at_locations}
+    code: ${at_locations}
+    var: location
+    weight: 0.25
+  - text: ${in_locations}
+    code: ${in_locations}
+    var: location
+  - text: ${on_locations}
+    code: ${on_locations}
+    var: location
+    weight: 0.25
+
+weather_date_time:
+  - text: ${at_date_time}
+    code: ${at_date_time}
+    var: date_time
+    type: date_time
+    coreference_value:
+      - value: at that time
+  - text: ${on_date_time}
+    code: ${on_date_time}
+    var: date_time
+    type: date_time
+    coreference_value:
+      - value: at that time
+  - text: ${now_date_time}
+    code: ${now_date_time}
+    var: date_time
+    type: date_time
+    coreference_value:
+      - value: at that time
+    weight: 0.25
+
+weather_date_times:
+  - text: ${every_date_times}
+    code: ${every_date_times}
+    var: date_times
+    coreference_value:
+      - value: at that time
+  - text: ${on_date_times}
+    code: ${on_date_times}
+    var: date_times
+    coreference_value:
+      - value: at that time

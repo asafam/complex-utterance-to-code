@@ -1,0 +1,71 @@
+weather_command:
+  - ${weather_command_plain}
+  - ${weather_command_query}
+
+weather_command_plain:
+  - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_date_time}
+    code: |
+      ${weather_date_time}
+      weather_forecasts = Weather.find_weather_forecasts(date_time=${weather_date_time:var})
+      Responder.respond(response=weather_forecasts)
+  - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_date_times}
+    code: |
+      ${weather_date_times}
+      weather_forecasts = []
+      for date_time in ${weather_date_times:var}:
+        weather_forecasts += Weather.find_weather_forecasts(date_time=date_time_future)
+      Responder.respond(response=weather_forecasts)
+  - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_location}
+    code: |
+      ${weather_location}
+      weather_forecasts = Weather.find_weather_forecasts(location=${weather_location:var})
+      Responder.respond(response=weather_forecasts)
+  - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_locations}
+    code: |
+      ${weather_locations}
+      weather_forecasts = []
+      for location in ${weather_locations:var}:
+        weather_forecasts += Weather.find_weather_forecasts(location=location)
+      Responder.respond(response=weather_forecasts)
+  - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_date_time} ${weather_location}
+    code: |
+      ${weather_date_time}
+      ${weather_location}
+      weather_forecasts = Weather.find_weather_forecasts(date_time=${weather_date_time:var}, location=${weather_location:var})
+      Responder.respond(response=weather_forecasts)
+  - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_date_times} ${weather_location}
+    code: |
+      ${weather_date_times}
+      ${weather_location}
+      weather_forecasts = []
+      for date_time in ${weather_date_times:var}:
+        weather_forecasts += Weather.find_weather_forecasts(date_time=date_time, location=${weather_location:var})
+      Responder.respond(response=weather_forecasts)
+  - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_date_time} ${weather_locations}
+    code: |
+      ${weather_date_time}
+      ${weather_locations}
+      weather_forecasts = []
+      for location in ${weather_locations:var}:
+        weather_forecasts += Weather.find_weather_forecasts(date_time=${weather_date_time:var}, location=location)
+      Responder.respond(response=weather_forecasts)
+  - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_date_times} ${weather_locations}
+    code: |
+      ${weather_date_times}
+      ${weather_locations}
+      weather_forecasts = []
+      for date_time in ${weather_date_times:var}:
+        for location in ${weather_locations:var}:
+          weather_forecasts += Weather.find_weather_forecasts(date_time=date_time, location=location)
+      Responder.respond(response=weather_forecasts)
+
+weather_command_query:
+  - text: ${query_command_verb} if ${weather_query}
+    code: |
+      ${weather_query}
+      Responder.respond(response=${weather_query:var})
+    var: ${weather_query:var}
+    type: command
+
+weather_command_instruction:
+  - ${tell|give|show} me

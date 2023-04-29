@@ -1,0 +1,137 @@
+reminders_query:
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_exact_content}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_content}
+      reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, exact_content=${reminder_exact_content:var})
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_exact_contents}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_contents}
+      reminders = []
+      for exact_content in ${reminder_exact_contents:var}:
+        reminders += Reminder.find_reminders(person_reminded=${person_reminded_i:var}, exact_content=exact_content)
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_time}
+    code: |
+      ${person_reminded_i}
+      ${reminder_date_time}
+      reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var})
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_times}
+    code: |
+      ${person_reminded_i}
+      ${reminder_date_times}
+      reminders = []
+      for date_time in ${reminder_date_times:var}:
+        reminders += Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time)
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_time} ${reminder_exact_content}
+    code: |
+      ${person_reminded_i}
+      ${reminder_date_time}
+      ${reminder_exact_content}
+      reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var}, exact_content=${reminder_exact_content:var})
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_exact_content} ${reminder_date_time}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_content}
+      ${reminder_date_time}
+      reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var}, exact_content=${reminder_exact_content:var})
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_times} ${reminder_exact_content}
+    code: |
+      ${person_reminded_i}
+      ${reminder_date_times}
+      ${reminder_exact_content}
+      reminders = []
+      for date_time in ${reminder_date_times:var}:
+        reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, exact_content=${reminder_exact_content:var})
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_exact_content} ${reminder_date_times}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_content}
+      ${reminder_date_times}
+      reminders = []
+      for date_time in ${reminder_date_times:var}:
+        reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, exact_content=${reminder_exact_content:var})
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_time} ${reminder_exact_contents}
+    code: |
+      ${person_reminded_i}
+      ${reminder_date_time}
+      ${reminder_exact_contents}
+      reminders = []
+      for exact_content in ${reminder_exact_contents:var}:
+        reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var}, exact_content=exact_content)
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_exact_contents} ${reminder_date_time}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_contents}
+      ${reminder_date_time}
+      reminders = []
+      for exact_content in ${reminder_exact_contents:var}:
+        reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var}, exact_content=exact_content)
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_times} ${reminder_exact_contents}
+    code: |
+      ${person_reminded_i}
+      ${reminder_date_times}
+      ${reminder_exact_contents}
+      reminders = []
+      for date_time in ${reminder_date_times:var}:
+        for exact_content in ${reminder_exact_contents:var}:
+          reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, exact_content=exact_content)
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_exact_contents} ${reminder_date_times}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_contents}
+      ${reminder_date_times}
+      reminders = []
+      for exact_content in ${reminder_exact_contents:var}:
+        for date_time in ${reminder_date_times:var}:
+          reminders = Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, exact_content=exact_content)
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query
+  - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_exact_content.1} ${reminder_date_time.1} ${cc} ${reminder_exact_content.2} ${reminder_date_time.2}
+    code: |
+      ${person_reminded_i}
+      ${reminder_exact_content.1}
+      ${reminder_exact_content.2}
+      ${reminder_date_time.1}
+      ${reminder_date_time.2}
+      reminders = []
+      for exact_content in [${reminder_exact_content.1:var}, ${reminder_exact_content.2:var}]:
+        for date_time in [${reminder_date_time.1:var}, ${reminder_date_time.2:var}]:
+          reminders += Reminder.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, exact_content=exact_content)
+      ${reminders_query:var} = bool(reminders)
+    var: test_reminders
+    type: query

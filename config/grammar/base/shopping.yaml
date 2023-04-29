@@ -1,0 +1,163 @@
+product:
+  - text: ${product_item}
+    code: |
+      ${product:var} = Product.resolve_from_text("${product_item}")
+    var: product
+
+products:
+  - text: ${product_items}
+    code: |
+      ${products:var} = Product.resolve_many_from_text("${product_items}")
+    var: products
+
+product_attribute_prefix:
+  - text: ${product_attribute_prefix_item}
+    code: |
+      ${product_attribute_prefix:var} = ProductAttribute.resolve_from_text("${product_attribute_prefix_item}")
+    var: product_attribute
+
+product_attribute_suffix:
+  - text: ${product_attribute_suffix_item}
+    code: |
+      ${product_attribute_suffix_item:var} = ProductAttribute.resolve_from_text("${product_attribute_suffix_item}")
+    var: product_attribute
+
+store:
+  - text: ${store_item}
+    code: |
+      ${store:var} = Location.resolve_from_text("${store_item}")
+    var: location
+
+stores:
+  - text: ${faker_company.1} ${cc} ${faker_company.2}
+    code: |
+      ${stores:var} = Location.resolve_many_from_text("${faker_company.1} ${cc} ${faker_company.2}")
+    var: locations
+
+store_item:
+  - ${faker_company}
+
+product_item:
+  - ${grocery}
+  - ${goods}
+  - ${fashion}
+  - ${shoes}
+
+product_items:
+  - all ${product_item}
+  - text: ${product_item.1} ${cc} ${product_item.2}
+    code: ${product_item.1} ${cc} ${product_item.2}
+    weight: 0.3
+  - text: ${product_item.1}, ${product_item.2} ${cc} ${product_item.3}
+    code: ${product_item.1}, ${product_item.2} ${cc} ${product_item.3}
+    weight: 0.1
+
+product_attribute_prefix_item:
+  - a sale
+  - a clearance
+  - a discount
+
+product_attribute_suffix_item:
+  - on sale
+  - on clearance
+  - on discount
+  - in stock
+
+grocery:
+  - peanut butter
+  - jelly jams
+  - bread loafs
+  - milk
+  - eggs
+  - cereal
+  - coffee
+  - tea
+  - butter
+  - cheese
+  - chicken breasts
+  - beef steaks
+  - pork chops
+  - fish
+  - beans
+  - potatoes
+  - carrots
+  - lettuce
+  - tomatoes
+  - onions
+  - Oreo cookies
+  - Cheetos bags
+  - Ritz crackers
+  - Goldfish crackers
+  - Pringles
+  - Pop Tarts
+  - Rice Krispies
+  - Froot Loops
+  - Lucky Charms
+  - Cocoa Puffs
+  - M&Ms
+  - Nutella jars
+
+goods:
+  - flat screen tv
+  - laptop
+  - computer
+  - tablet
+  - phone
+  - headphones
+  - speakers
+  - printer
+  - monitor
+  - washing machine
+  - dryer
+  - dishwasher
+  - refrigerator
+  - freezer
+  - oven
+  - microwave
+  - toaster
+  - blender
+  - mixer
+  - vaccuum
+  - iron
+  - fan
+
+fashion:
+  - jeans
+  - dresses
+  - skirts
+  - pants
+  - swimwear
+  - underwear
+  - socks
+  - t-shirts
+  - shirts
+  - blouses
+  - sweaters
+  - jackets
+  - coats
+  - hats
+  - gloves
+  - scarves
+  - belts
+  - shoes
+  - boots
+  - sandals
+  - sneakers
+  - slippers
+  - jewelry
+  - watches
+
+shoes:
+  - ${shoes_item}
+  - ${faker_brand} ${shoes_item}
+
+shoes_item:
+  - shoes
+  - boots
+  - sandals
+  - sneakers
+  - slippers
+  - loafers
+  - heels
+  - flats
+  - wedges

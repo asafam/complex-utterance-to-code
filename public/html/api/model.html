@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>model</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/asaf/Workspace/python/thesis-api/api/v2/model.py">/Users/asaf/Workspace/python/thesis-api/api/v2/model.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="model.html#Model">Model</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Model">class <strong>Model</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Model">Model</a>(query:&nbsp;'Query')<br>
+&nbsp;<br>
+Abstract&nbsp;class&nbsp;that&nbsp;handles&nbsp;data&nbsp;and&nbsp;commands.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Model-__init__"><strong>__init__</strong></a>(self, query: 'Query')</dt><dd><tt>The&nbsp;class&nbsp;constructor&nbsp;that&nbsp;takes&nbsp;a&nbsp;&lt;a&nbsp;href='query.html&gt;Query&lt;/a&gt;&nbsp;that&nbsp;should&nbsp;yield&nbsp;the&nbsp;concrete&nbsp;model&nbsp;instance.<br>
+&nbsp;<br>
+params:<br>
+query&nbsp;(Query):&nbsp;A&nbsp;user&nbsp;query&nbsp;<br>
+&nbsp;<br>
+returns:<br>
+A&nbsp;model&nbsp;instance</tt></dd></dl>
+
+<dl><dt><a name="Model-__iter__"><strong>__iter__</strong></a>(self, model: 'Model') -&gt; 'Iterable[Entity]'</dt><dd><tt>Fetches&nbsp;a&nbsp;model&nbsp;specific&nbsp;iterable<br>
+&nbsp;<br>
+params:<br>
+N/A<br>
+&nbsp;<br>
+retruns:<br>
+An&nbsp;iterable&nbsp;<a href="builtins.html#object">object</a>&nbsp;of&nbsp;Entity&nbsp;instances</tt></dd></dl>
+
+<dl><dt><a name="Model-create"><strong>create</strong></a>(self, params: 'EntityDescriptor') -&gt; 'Entity'</dt><dd><tt>Creates&nbsp;a&nbsp;model&nbsp;entity<br>
+&nbsp;<br>
+params:<br>
+params&nbsp;(EntityDescriptor):&nbsp;An&nbsp;entity&nbsp;descriptor&nbsp;that&nbsp;defines&nbsp;the&nbsp;entity<br>
+&nbsp;<br>
+returns:<br>
+A&nbsp;new&nbsp;entity</tt></dd></dl>
+
+<dl><dt><a name="Model-extract_value"><strong>extract_value</strong></a>(self, query: 'Query') -&gt; 'Callable[[Entity], any]'</dt><dd><tt>An&nbsp;abstract&nbsp;method&nbsp;that&nbsp;returns&nbsp;the&nbsp;model's&nbsp;sort&nbsp;keye,&nbsp;which&nbsp;is&nbsp;associate&nbsp;with&nbsp;the&nbsp;given&nbsp;input&nbsp;entity&nbsp;properties.<br>
+When&nbsp;provided&nbsp;with&nbsp;empty&nbsp;keys&nbsp;value&nbsp;this&nbsp;method&nbsp;should&nbsp;return&nbsp;the&nbsp;natural&nbsp;sorting&nbsp;keys&nbsp;for&nbsp;this&nbsp;model.&nbsp;<br>
+For&nbsp;example,&nbsp;the&nbsp;natural&nbsp;sort&nbsp;key&nbsp;for&nbsp;messages&nbsp;is&nbsp;the&nbsp;date&nbsp;and&nbsp;time&nbsp;field.<br>
+&nbsp;<br>
+params:<br>
+query&nbsp;(Query):&nbsp;A&nbsp;user&nbsp;query<br>
+&nbsp;<br>
+returns:<br>
+A&nbsp;callable&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;takes&nbsp;an&nbsp;entity&nbsp;as&nbsp;its&nbsp;input&nbsp;and&nbsp;return&nbsp;a&nbsp;boolean</tt></dd></dl>
+
+<dl><dt><a name="Model-get_intent"><strong>get_intent</strong></a>(self, query: 'Query') -&gt; 'Intent'</dt><dd><tt>A&nbsp;class&nbsp;abstract&nbsp;method&nbsp;that&nbsp;takes&nbsp;and&nbsp;identifier&nbsp;and&nbsp;returns&nbsp;an&nbsp;intent&nbsp;<br>
+&nbsp;<br>
+params:<br>
+query&nbsp;(Query):&nbsp;A&nbsp;user&nbsp;query<br>
+&nbsp;<br>
+returns:<br>
+An&nbsp;intent&nbsp;class</tt></dd></dl>
+
+<dl><dt><a name="Model-get_predicate"><strong>get_predicate</strong></a>(self, query: 'Query', op: 'ComparisonOperator') -&gt; 'Callable[[Entity], bool]'</dt><dd><tt>An&nbsp;abstract&nbsp;method&nbsp;that&nbsp;takes&nbsp;a&nbsp;query&nbsp;and&nbsp;a&nbsp;comparison&nbsp;operator&nbsp;and&nbsp;return&nbsp;a&nbsp;callable&nbsp;(function)&nbsp;that&nbsp;takes&nbsp;as&nbsp;its<br>
+sole&nbsp;input&nbsp;an&nbsp;entity&nbsp;<a href="builtins.html#object">object</a>&nbsp;and&nbsp;return&nbsp;a&nbsp;boolean&nbsp;based&nbsp;on&nbsp;the&nbsp;given&nbsp;comparison&nbsp;operator&nbsp;and&nbsp;the&nbsp;predicate&nbsp;that&nbsp;is&nbsp;applied<br>
+on&nbsp;the&nbsp;entity.<br>
+Fopr&nbsp;example,&nbsp;this&nbsp;method&nbsp;can&nbsp;passed&nbsp;as&nbsp;an&nbsp;argument&nbsp;within&nbsp;Python's&nbsp;built-in&nbsp;filter&nbsp;function.&nbsp;It&nbsp;takes&nbsp;the&nbsp;iterable&nbsp;and&nbsp;apply&nbsp;<br>
+the&nbsp;predicate&nbsp;together&nbsp;with&nbsp;the&nbsp;comparison&nbsp;operator&nbsp;to&nbsp;judge&nbsp;its&nbsp;participation&nbsp;post&nbsp;applying&nbsp;the&nbsp;filter<br>
+&nbsp;<br>
+params:<br>
+query&nbsp;(Query):&nbsp;A&nbsp;user&nbsp;query<br>
+op&nbsp;(ComparisonOperator):&nbsp;A&nbsp;comparison&nbsp;operator<br>
+&nbsp;<br>
+returns:<br>
+A&nbsp;callable&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;takes&nbsp;an&nbsp;entity&nbsp;as&nbsp;its&nbsp;input&nbsp;and&nbsp;return&nbsp;a&nbsp;boolean</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>Callable</strong> = typing.Callable<br>
+<strong>Iterable</strong> = typing.Iterable<br>
+<strong>annotations</strong> = _Feature((3, 7, 0, 'beta', 1), (3, 10, 0, 'alpha', 0), 16777216)</td></tr></table>
+</body></html>

@@ -374,26 +374,6 @@ class Entity:
             coreferred_entity = next(iter(self.coreference_entities))
             if self.code_index < coreferred_entity.code_index:
                 return "__DELETE__"
-            # code = (
-            #     self.to_code()
-            #     # if the coreference is after the code then use the coreference code
-            #     if self.code_index > coreferred_entity.code_index
-            #     else ""
-            # )
-            # return code
-
-        # if (
-        #     self.coreference_value
-        #     and self._is_coreference_mentioned(options["print_stack"])
-        #     and self._code_startswith('"')
-        # ):
-        #     options["print_stack"].append(self.uuid)
-        #     return self.get_coreference_text()
-        # elif self.coreference_value and self._is_coreference_mentioned(
-        #     options["print_stack"]
-        # ):
-        #     options["print_stack"].append(self.uuid)
-        #     return "__DELETE__"
 
         child_labels = get_labels(value=self.code, ignore_regex="\\:var$")
         for child_label in child_labels:

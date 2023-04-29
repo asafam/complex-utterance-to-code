@@ -2,7 +2,6 @@ from representations.builders.base_tree_builder import BaseTreeBuilder
 from representations.builders.lang.parsers.factory import create_parser
 from representations.tree.node import Node
 from representations.tree.tree import Tree
-from representations.builders.lang.rules.node_rule_lang import NodeRuleLang
 
 
 class TextTreeBuilder(BaseTreeBuilder):

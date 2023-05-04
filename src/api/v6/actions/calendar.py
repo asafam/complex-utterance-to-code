@@ -60,12 +60,14 @@ class Calendar:
         date_time: Optional[DateTime] = None,
         location: Optional[Location] = None,
         event_name: Optional[EventName] = None,
+        event_calendar: Optional[EventCalendar] = None,
         event_category: Optional[EventType] = None,
     ) -> EventEntity:
         event = EventEntity(
             date_time=date_time,
             location=location,
             event_name=event_name,
+            event_calendar=event_calendar,
             event_category=event_category,
         )
         data_model = DataModel()

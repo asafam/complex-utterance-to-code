@@ -39,7 +39,9 @@ class Resolvable(Generic[T]):
         if data is None:
             raise NotImplementedError()
 
-        items = [x for x in data if x.data.get("text") == text]
+        items = [
+            x for x in data if x.data.get("text") == text
+        ]  # when resolved many from text we expect the text to be a substring of the actual text
 
         if len(items) == 0:
             raise ValueError()

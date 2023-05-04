@@ -1,8 +1,7 @@
 utterance:
-  # - ${condition}
-  # - ${sequence}
-  # - ${simple}
-  - ${navigation_command_directions}
+  - ${condition}
+  - ${sequence}
+  - ${simple}
 
 simple:
   - ${command}

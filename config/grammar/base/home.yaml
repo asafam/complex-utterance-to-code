@@ -32,12 +32,16 @@ home_device_temperature_action_item:
   - set
   - change
   - adjust
+  - turn up
+  - turn down
 
 home_device_temperature_name_item:
   - the a/c ${unit|}
   - the air conditioner ${unit|}
   - the boiler
   - the central heating ${system|unit|}
+  - the thermostat
+  - the heat
 
 home_device_temperature_value_item:
   - ${faker_random_int} ${degrees|} ${c|celsius|f|fahrenheit|}

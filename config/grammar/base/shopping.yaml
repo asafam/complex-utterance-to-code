@@ -10,6 +10,12 @@ product_names:
       ${product_names:var} = ProductName.resolve_many_from_text("${product_names_items}")
     var: product_names
 
+shopping_list_name:
+  - text: ${shopping_list_item}
+    code: |
+      ${shopping_list_name:var} = ShoppingListName.resolve_from_text("${shopping_list_item}")
+    var: shopping_list_name
+
 product_attribute_prefix:
   - text: ${product_attribute_prefix_item}
     code: |
@@ -62,6 +68,11 @@ product_attribute_suffix_item:
   - on clearance
   - on discount
   - in stock
+
+shopping_list_item:
+  - my shopping list
+  - the shopping list
+  - my list
 
 grocery:
   - peanut butter

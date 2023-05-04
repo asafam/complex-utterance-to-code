@@ -49,9 +49,9 @@ class Alarm:
         cls,
         date_time: Optional[DateTime] = None,
         song: Optional[Song] = None,
-        exact_content: Optional[Content] = False,
+        content: Optional[Content] = False,
     ) -> AlarmEntity:
-        alarm = AlarmEntity(date_time=date_time, song=song, exact_content=exact_content)
+        alarm = AlarmEntity(date_time=date_time, song=song, content=content)
         data_model = DataModel()
         data_model.append(alarm)
         return alarm

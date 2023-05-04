@@ -9,12 +9,20 @@ event_locations:
     var: ${in_locations:var}
 
 event_date_time:
-  - ${at_date_time}
-  - ${for_date_time}
+  - text: ${at_date_time}
+    code: ${at_date_time}
+    var: ${at_date_time:var}
+  - text: ${for_date_time}
+    code: ${for_date_time}
+    var: ${for_date_time:var}
 
 event_date_times:
-  - ${at_date_times}
-  - ${for_date_times}
+  - text: ${at_date_times}
+    code: ${at_date_times}
+    var: ${at_date_times:var}
+  - text: ${for_date_times}
+    code: ${for_date_times}
+    var: ${for_date_times:var}
 
 event_calendar:
   - text: ${event_calendar_item}
@@ -47,11 +55,11 @@ event_names:
     type: event_name
 
 event_name_item:
-  - ${concert}
-  - ${show}
-  - ${game}
-  - ${personal_event}
-  - ${work_event}
+  - a ${concert}
+  - a ${show}
+  - a ${game}
+  - a ${personal_event}
+  - a ${work_event}
 
 event_name_items:
   - ${event_name_item.1} ${cc} ${event_name_item.2}
@@ -66,7 +74,7 @@ personal_event:
   - party
   - wedding ${ceremony|reception|}
   - graduation ${party|ceremony|dinner|}
-  - movie {night|date|}
+  - movie ${night|date|}
 
 work_event:
   - meeting

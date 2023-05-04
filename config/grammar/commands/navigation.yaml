@@ -12,13 +12,23 @@ navigation_command_sequence:
   - ${navigation_command_sequence_estimate_departure}
 
 navigation_result_command:
-  - ${navigation_command_directions}
-  - ${navigation_command_duration}
-  - ${navigation_command_estimate_arrival}
-  - ${navigation_command_estimate_departure}
+  - text: ${navigation_command_directions}
+    code: ${navigation_command_directions}
+    var: ${navigation_command_directions:var}
+  - text: ${navigation_command_duration}
+    code: ${navigation_command_duration}
+    var: ${navigation_command_duration:var}
+  - text: ${navigation_command_estimate_arrival}
+    code: ${navigation_command_estimate_arrival}
+    var: ${navigation_command_estimate_arrival:var}
+  - text: ${navigation_command_estimate_departure}
+    code: ${navigation_command_estimate_departure}
+    var: ${navigation_command_estimate_departure:var}
 
 navigation_param_result_command:
-  - ${map_result_command}
+  - text: ${map_result_command}
+    code: ${map_result_command}
+    var: ${map_result_command:var}
 
 navigation_command_directions:
   - text: ${directions_action} ${origin} ${destination}
@@ -58,7 +68,6 @@ navigation_command_directions:
       ${navigation_command_directions:var} = Navigation.find_directions(origin=${origin:var}, destination=${destination:var}, date_time=${at_date_time:var})
       Responder.respond(response=${navigation_command_directions:var})
     var: directions
-    weight: 1000
   - text: ${directions_action} ${destination} ${if I leave|} ${at_date_time}
     code: |
       ${origin}
@@ -205,7 +214,7 @@ navigation_command_duration:
       ${at_date_times}
       ${navigation_command_duration:var} = []
       for date_time in ${at_date_times:var}:
-        ${navigation_command_duration:var} += Navigation.find_duration(destination=destination, date_time=${at_date_time:var})
+        ${navigation_command_duration:var} += Navigation.find_duration(destination=destination, date_time=date_time)
       Responder.respond(response=${navigation_command_duration:var})
     var: duration
   - text: ${query_command_verb} how long will it take me to arrive ${at_date_time} ${destination}
@@ -285,7 +294,7 @@ navigation_command_sequence_duration:
       ${at_date_times}
       ${navigation_command_sequence_duration:var} = []
       for date_time in ${at_date_times:var}:
-        ${navigation_command_sequence_duration:var} += Navigation.find_duration(destination=destination, date_time=${at_date_time:var})
+        ${navigation_command_sequence_duration:var} += Navigation.find_duration(destination=destination, date_time=date_time)
       Responder.respond(response=${navigation_command_sequence_duration:var})
     var: duration
   - text: ${navigation_param_result_command} and ${query_command_verb} how long will it take me to arrive ${at_date_time} there
@@ -438,7 +447,7 @@ navigation_command_sequence_estimate_arrival:
       ${at_date_times}
       ${navigation_command_sequence_estimate_arrival:var} = []
       for date_time in ${at_date_times:var}:
-        ${navigation_command_sequence_estimate_arrival:var} += Navigation.find_estimated_arrival(origin=${origin:var}, destination=${destination:var}, date_time=date_time)
+        ${navigation_command_sequence_estimate_arrival:var} += Navigation.find_estimated_arrival(origin=origin, destination=${destination:var}, date_time=date_time)
       Responder.respond(response=${navigation_command_sequence_estimate_arrival:var})
     var: estimated_arrival
 

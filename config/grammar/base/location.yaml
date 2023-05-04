@@ -351,6 +351,7 @@ locations:
     type: location
     syn:
       label: NN
+
     coreference_value:
       - value: there
   - text: the ${numbers} ${location_modifier_prefix} ${location_landmark_item}
@@ -359,7 +360,6 @@ locations:
       ${locations:var} = utils.sort(${locations:var}, "${location_modifier_prefix}")
       ${locations:var} = utils.first(${locations:var}, ${numbers})
     var: location
-    type: location
     syn:
       label: NP
     coreference_value:
@@ -405,7 +405,6 @@ location_relative:
 
 location_landmark:
   - the ${location_landmark_item}
-  - the ${location_landmark_item} ${location_landmark_item}
 
 location_landmark_item:
   - airport

@@ -6,5 +6,5 @@ Responder.respond(response=duration)
 if [destination]:
     data = [x for x in data if x.data.get("destination") == destination]
     person_reminded = Contact.resolve_from_text("me")
-    exact_content = Content.resolve_from_text("bring a coat")
-    Reminder.create_reminder(person_reminded=person_reminded, exact_content=exact_content)
+    content = Content.resolve_from_text("bring a coat")
+    Reminder.create_reminder(person_reminded=person_reminded, content=content)

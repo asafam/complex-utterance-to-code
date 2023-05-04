@@ -163,3 +163,4 @@ condition_term:
 
 condition_negative_term:
   - unless ${that|}
+  - if not 

@@ -13,7 +13,7 @@ weather_query:
       ${weather_date_time}
       weather_forecasts = []
       for weather_condition in ${weather_conditions:var}:
-        weather_forecasts += Weather.find_weather_forecasts(date_time=${weather_date_time:var}, weather_condition=weather_condition:var)
+        weather_forecasts += Weather.find_weather_forecasts(date_time=${weather_date_time:var}, weather_condition=weather_condition)
       ${weather_query:var} = bool(weather_forecasts)
     var: test_weather_forecasts
     type: query

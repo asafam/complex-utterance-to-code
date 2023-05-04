@@ -27,38 +27,32 @@ weather_conditions:
       label: VP
 
 weather_condition_term:
-  - text: rains
-    code: rains
-    syn:
-      label: VB
-  - text: snows
-    code: snows
-    syn:
-      label: VB
-  - text: freezes
-    code: freezes
-    syn:
-      label: VB
-  - text: will be sunny
-    code: sunny
-    syn:
-      label: VB
-  - text: will be nice
-    code: nice
-    syn:
-      label: VB
-  - text: will be warm
-    code: warm
-    syn:
-      label: VB
-  - text: will be cold
-    code: cold
-    syn:
-      label: VB
-  - text: will be chilly
-    code: chilly
-    syn:
-      label: VB
+  - rains
+  - snows
+  - freezes
+  - hails
+  - sleets
+  - drizzles
+  - pours
+  - will be sunny
+  - will be nice
+  - will be warm
+  - will be cold
+  - will be chilly
+  - will be hot
+  - will be cool
+  - will be breezy
+  - will be stormy
+  - will be thundering
+  - will be lightning
+  - will be hazy
+  - will be smoggy
+  - will be dusty
+  - will be foggy
+  - will be cloudy
+  - will be humid
+  - will be dry
+  - will be windy
 
 weather_condition_terms:
   - ${weather_condition_term.1} ${cc} ${weather_condition_term.2}

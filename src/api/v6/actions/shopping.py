@@ -36,38 +36,15 @@ class Shopping:
         return data
 
     @classmethod
-    def find_shopping_lists(
+    def add_to_shopping_list(
         cls,
-        date_time: Optional[Union[DateTime, List[DateTime]]] = None,
-        location: Optional[Location] = None,
+        shopping_list_name: ShoppingListName,
         product_name: Optional[ProductName] = None,
     ) -> List[ShoppingListEntity]:
         data_model = DataModel()
         data = data_model.get_data(ShoppingListEntity)
-        if date_time:
-            if type(date_time) == list:
-                data = [x for x in data if x.data.get("date_time") in date_time]
-            else:
-                data = [x for x in data if x.data.get("date_time") == date_time]
-
-        if location:
-            data = [x for x in data if x.data.get("location") == location]
-
-        if product_name:
-            data = [x for x in data if x.data.get("product_name") == product_name]
-
-        return data
-
-    @classmethod
-    def add_product_to_shopping_list(
-        cls,
-        shopping_list: ShoppingListEntity,
-        product_name: Optional[ProductName] = None,
-    ) -> List[ShoppingListEntity]:
-        data_model = DataModel()
-        data = data_model.get_data(ShoppingListEntity)
-        if shopping_list:
-            data = [x for x in data if x.data.get("shopping_list") == shopping_list]
+        if shopping_list_name:
+            data = [x for x in data if x.data.get("shopping_list_name") == shopping_list_name]
 
         if product_name:
             data = [x for x in data if x.data.get("product") == product_name]

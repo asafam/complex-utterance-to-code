@@ -52,38 +52,38 @@ calendar_command_schedule:
       ${event_name}
       ${event_calendar}
       Calendar.schedule_event(event_name=${event_name:var}, event_calendar=${event_calendar:var})
-  - text: ${schedule_command_action} ${event_name} ${event_date_time} ${event_calendar}
+  - text: ${schedule_command_action} ${event_name} ${event_date_time} ${in|on} ${event_calendar}
     code: |
       ${event_name}
       ${event_date_time}
       ${event_calendar}
       Calendar.schedule_event(date_time=${event_date_time:var}, event_name=${event_name:var}, event_calendar=${event_calendar:var})
-  - text: ${schedule_command_action} ${event_date_time} ${event_name} ${event_calendar}
+  - text: ${schedule_command_action} ${event_date_time} ${event_name} ${in|on} ${event_calendar}
     code: |
       ${event_name}
       ${event_date_time}
       ${event_calendar}
       Calendar.schedule_event(date_time=${event_date_time:var}, event_name=${event_name:var}, event_calendar=${event_calendar:var})
-  - text: ${schedule_command_action} ${in|on} ${event_calendar} ${event_name} ${event_calendar} ${event_calendar}
+  - text: ${schedule_command_action} ${in|on} ${event_calendar} ${event_name} ${event_location}
     code: |
       ${event_calendar}
       ${event_name}
-      ${event_calendar}
-      Calendar.schedule_event(event_calendar=${event_calendar:var}, event_name=${event_name:var}, event_calendar=${event_calendar:var})
-  - text: ${schedule_command_action} ${in|on} ${event_calendar} ${event_name} ${event_date_time} ${event_calendar}
-    code: |
-      ${event_calendar}
-      ${event_name}
-      ${event_date_time}
-      ${event_calendar}
-      Calendar.schedule_event(date_time=${event_date_time:var}, event_calendar=${event_calendar:var}, event_name=${event_name:var}, event_calendar=${event_calendar:var})
-  - text: ${schedule_command_action} ${in|on} ${event_calendar} ${event_date_time} ${event_name} ${event_calendar}
+      ${event_location}
+      Calendar.schedule_event(event_calendar=${event_calendar:var}, event_name=${event_name:var}, location=${event_location:var})
+  - text: ${schedule_command_action} ${in|on} ${event_calendar} ${event_name} ${event_date_time} ${event_location}
     code: |
       ${event_calendar}
       ${event_name}
       ${event_date_time}
+      ${event_location}
+      Calendar.schedule_event(date_time=${event_date_time:var}, event_calendar=${event_calendar:var}, event_name=${event_name:var}, location=${event_location:var})
+  - text: ${schedule_command_action} ${in|on} ${event_calendar} ${event_date_time} ${event_name} ${event_location}
+    code: |
       ${event_calendar}
-      Calendar.schedule_event(date_time=${event_date_time:var}, event_calendar=${event_calendar:var}, event_name=${event_name:var}, event_calendar=${event_calendar:var})
+      ${event_name}
+      ${event_date_time}
+      ${event_location}
+      Calendar.schedule_event(date_time=${event_date_time:var}, event_calendar=${event_calendar:var}, event_name=${event_name:var}, location=${event_location:var})
 
 events_command_ticket_purchase:
   - text: ${calendar_purchase_action} ${event_ticket_amount} tickets for the ${event_name}
@@ -126,14 +126,26 @@ calendar_command_query_tickets_item:
     code: |
       ${event_name}
       events = Calendar.find_events(event_name=${event_name:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
     var: event_tickets
   - text: there are tickets for ${event_name} ${event_location}
     code: |
       ${event_name}
       ${event_location}
       events = Calendar.find_events(event_name=${event_name:var}, location=${event_location:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
+    var: event_tickets
+  - text: there are tickets for ${event_name} ${event_locations}
+    code: |
+      ${event_name}
+      ${event_locations}
+      events = []
+      for location in ${event_locations:var}:
+        events += Calendar.find_events(event_name=${event_name:var}, location=location)
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
     var: event_tickets
   - text: there are tickets for ${event_name} ${event_location} ${event_date_time}
     code: |
@@ -141,14 +153,60 @@ calendar_command_query_tickets_item:
       ${event_location}
       ${event_date_time}
       events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var}, location=${event_location:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
+    var: event_tickets
+  - text: there are tickets for ${event_name} ${event_location} ${event_date_times}
+    code: |
+      ${event_name}
+      ${event_location}
+      ${event_date_times}
+      events = []
+      for date_time in ${event_date_times:var}:
+        events = Calendar.find_events(date_time=date_time, event_name=${event_name:var}, location=${event_location:var})
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
+    var: event_tickets
+  - text: there are tickets for ${event_name} ${event_locations} ${event_date_time}
+    code: |
+      ${event_name}
+      ${event_locations}
+      ${event_date_time}
+      events = []
+      for location in ${event_locations:var}:
+        events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var}, location=location)
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
+    var: event_tickets
+  - text: there are tickets for ${event_name} ${event_locations} ${event_date_times}
+    code: |
+      ${event_name}
+      ${event_locations}
+      ${event_date_times}
+      events = []
+      for location in ${event_locations:var}:
+        for date_time in ${event_date_times:var}:
+          events = Calendar.find_events(date_time=date_time, event_name=${event_name:var}, location=location)
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
     var: event_tickets
   - text: there are tickets for ${event_name} ${event_date_time}
     code: |
       ${event_name}
       ${event_date_time}
       events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
+    var: event_tickets
+  - text: there are tickets for ${event_name} ${event_date_times}
+    code: |
+      ${event_name}
+      ${event_date_times}
+      events = []
+      for date_time in ${event_date_times:var}:
+        events += Calendar.find_events(date_time=date_time, event_name=${event_name:var})
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
     var: event_tickets
   - text: there are tickets for ${event_name} ${event_date_time} ${event_location}
     code: |
@@ -156,49 +214,14 @@ calendar_command_query_tickets_item:
       ${event_location}
       ${event_date_time}
       events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var}, location=${event_location:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
-    var: event_tickets
-  - text: there are tickets for ${event_name}
-    code: |
-      ${event_name}
-      events = Calendar.find_events(event_name=${event_name:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
-    var: event_tickets
-  - text: there are tickets for ${event_name} ${event_location}
-    code: |
-      ${event_name}
-      ${event_location}
-      events = Calendar.find_events(event_name=${event_name:var}, location=${event_location:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
-    var: event_tickets
-  - text: there are tickets for ${event_name} ${event_location} ${event_date_time}
-    code: |
-      ${event_name}
-      ${event_location}
-      ${event_date_time}
-      events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var}, location=${event_location:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
-    var: event_tickets
-  - text: there are tickets for ${event_name} ${event_date_time}
-    code: |
-      ${event_name}
-      ${event_date_time}
-      events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
-    var: event_tickets
-  - text: there are tickets for ${event_name} ${event_date_time} ${event_location}
-    code: |
-      ${event_name}
-      ${event_location}
-      ${event_date_time}
-      events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var}, location=${event_location:var})
-      ${calendar_command_query_tickets:var} = Calendar.find_events_tickets(events=events)
+      ${calendar_command_query_tickets_item:var} = Calendar.find_events_tickets(events=events)
+      Responder.respond(response=${calendar_command_query_tickets_item:var})
     var: event_tickets
 
 schedule_command_action:
-  - create ${an entry|a new entry}
-  - schedule ${an entry|a new entry}
-  - set ${an entry|a new entry}
+  - create ${an entry|a new entry|}
+  - schedule ${an entry|a new entry|}
+  - set ${an entry|a new entry|}
 
 calendar_purchase_action:
   - buy

@@ -29,8 +29,6 @@ class Sampler:
     def sample(
         self,
         key: Key = Key("utterance"),
-        grammar: Dict = None,
-        grammar_dir: str = "config/grammar",
         options: Dict = dict(),
         steps: int = 0,
         **kwargs,
@@ -38,11 +36,8 @@ class Sampler:
         default_options = {"sample_children": True}
         options = {**default_options, **options}
 
-        if not grammar:
-            grammar = self._load_grammar(grammar_dir=grammar_dir)
-
         # sample key
-        entity = self._sample_key(key=key, grammar=grammar, **kwargs)
+        entity = self._sample_key(key=key, grammar=self.grammar, **kwargs)
 
         # sample sub-keys if entity can be further sampled
 
@@ -65,7 +60,7 @@ class Sampler:
                 )
 
                 sub_entity = self.sample(
-                    key=sub_key, grammar=grammar, steps=steps + 1, **params, **kwargs
+                    key=sub_key, steps=steps + 1, **params, **kwargs
                 )
                 entity.map_key_entity(sub_key, sub_entity)
             sub_entity.text_index = (

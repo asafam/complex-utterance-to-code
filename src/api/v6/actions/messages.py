@@ -54,11 +54,13 @@ class Messages(Resolvable):
         recipient: Contact,
         content: Optional[Content] = None,
         date_time: Optional[DateTime] = None,
+        message_content_type: Optional[MessageContentType] = None,
     ) -> MessageEntity:
         message = MessageEntity(
             date_time=date_time,
             recipient=recipient,
             content=content,
+            message_content_type=message_content_type,
         )
         data_model = DataModel()
         data_model.append(message)

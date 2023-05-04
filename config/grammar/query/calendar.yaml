@@ -34,14 +34,16 @@ calendar_query_meetings:
     type: query
 
 calendar_query_events:
-  - ${calendar_query_event_names}
+  - text: ${calendar_query_event_names}
+    code: ${calendar_query_event_names}
+    var: ${calendar_query_event_names:var}
 
 calendar_query_event_names:
   - text: there ${is|are} ${event_name}
     code: |
       ${event_name}
       events = Calendar.find_events(event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there ${is|are} ${event_name} ${event_location}
@@ -49,7 +51,7 @@ calendar_query_event_names:
       ${event_name}
       ${event_location}
       events = Calendar.find_events(location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there ${is|are} ${event_name} ${event_date_time}
@@ -57,7 +59,7 @@ calendar_query_event_names:
       ${event_name}
       ${event_date_time}
       events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there ${is|are} ${event_name} ${event_date_times}
@@ -67,7 +69,7 @@ calendar_query_event_names:
       events = []
       for date_time in ${event_date_times:var}:
         events += Calendar.find_events(date_time=date_time, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there ${is|are} ${event_name} ${event_date_time} ${event_location}
@@ -76,7 +78,7 @@ calendar_query_event_names:
       ${event_date_time}
       ${event_location}
       events = Calendar.find_events(date_time=${event_date_time:var}, location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there ${is|are} ${event_name} ${event_date_times} ${event_location}
@@ -87,7 +89,7 @@ calendar_query_event_names:
       events = []
       for date_time in ${event_date_times:var}:
         events += Calendar.find_events(date_time=date_time, location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there are ${event_names} ${event_location}
@@ -97,7 +99,7 @@ calendar_query_event_names:
       events = []
       for event_name in ${event_names:var}:
         events += Calendar.find_events(location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there are ${event_names} ${event_date_time} ${event_location}
@@ -108,7 +110,7 @@ calendar_query_event_names:
       events = []
       for event_name in ${event_names:var}:
         events += Calendar.find_events(date_time=${event_date_time:var}, location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there are ${event_names} ${event_date_times} ${event_location}
@@ -120,7 +122,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           events += Calendar.find_events(date_time=date_time, location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there ${is|are} ${event_name} ${event_locations}
@@ -130,7 +132,7 @@ calendar_query_event_names:
       events = []
       for location in ${event_locations:var}:
         events += Calendar.find_events(location=location, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there ${is|are} ${event_name} ${event_date_time} ${event_locations}
@@ -141,7 +143,7 @@ calendar_query_event_names:
       events = []
       for location in ${event_locations:var}:
         events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there ${is|are} ${event_name} ${event_date_times} ${event_locations}
@@ -153,7 +155,7 @@ calendar_query_event_names:
       for date_time in ${event_date_times:var}:
         for location in ${event_locations:var}:
           events += Calendar.find_events(date_time=date_time, location=location, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there are ${event_names} ${event_locations}
@@ -164,7 +166,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for location in ${event_locations:var}:
           events += Calendar.find_events(location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there are ${event_names} ${event_date_time} ${event_locations}
@@ -176,7 +178,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for location in ${event_locations:var}:
           events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: there are ${event_names} ${event_date_times} ${event_locations}
@@ -188,8 +190,8 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           for location in ${event_locations:var}:
-            events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+            events += Calendar.find_events(date_time=date_time, location=location, event_name=event_name)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_location} there ${is|are} ${event_name}
@@ -197,7 +199,7 @@ calendar_query_event_names:
       ${event_location}
       ${event_name}
       events = Calendar.find_events(location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_time} there ${is|are} ${event_name}
@@ -205,7 +207,7 @@ calendar_query_event_names:
       ${event_date_time}
       ${event_name}
       events = Calendar.find_events(date_time=${event_date_time:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_times}there ${is|are} ${event_name}
@@ -215,7 +217,7 @@ calendar_query_event_names:
       events = []
       for date_time in ${event_date_times:var}:
         events += Calendar.find_events(date_time=date_time, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_time} there ${is|are} ${event_name} ${event_location}
@@ -224,7 +226,7 @@ calendar_query_event_names:
       ${event_name}
       ${event_location}
       events = Calendar.find_events(date_time=${event_date_time:var}, location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_time} ${event_location} there ${is|are} ${event_name}
@@ -233,7 +235,7 @@ calendar_query_event_names:
       ${event_location}
       ${event_name}
       events = Calendar.find_events(date_time=${event_date_time:var}, location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_location} ${event_date_time} there ${is|are} ${event_name}
@@ -242,7 +244,7 @@ calendar_query_event_names:
       ${event_date_time}
       ${event_name}
       events = Calendar.find_events(date_time=${event_date_time:var}, location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_location} there ${is|are} ${event_name} ${event_date_time}
@@ -251,7 +253,7 @@ calendar_query_event_names:
       ${event_name}
       ${event_date_time}
       events = Calendar.find_events(date_time=${event_date_time:var}, location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_times} there ${is|are} ${event_name} ${event_location}
@@ -262,7 +264,7 @@ calendar_query_event_names:
       events = []
       for date_time in ${event_date_times:var}:
         events += Calendar.find_events(date_time=date_time, location=${event_location:var}, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_location} there are ${event_names}
@@ -272,7 +274,7 @@ calendar_query_event_names:
       events = []
       for event_name in ${event_names:var}:
         events += Calendar.find_events(location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_time} ${event_location} there are ${event_names}
@@ -283,7 +285,7 @@ calendar_query_event_names:
       events = []
       for event_name in ${event_names:var}:
         events += Calendar.find_events(date_time=${event_date_time:var}, location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_location} ${event_date_time} there are ${event_names}
@@ -294,7 +296,7 @@ calendar_query_event_names:
       events = []
       for event_name in ${event_names:var}:
         events += Calendar.find_events(date_time=${event_date_time:var}, location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_times} ${event_location} there are ${event_names}
@@ -306,7 +308,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           events += Calendar.find_events(date_time=date_time, location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_location} ${event_date_times} there are ${event_names}
@@ -318,7 +320,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           events += Calendar.find_events(date_time=date_time, location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_location} there are ${event_names} ${event_date_times}
@@ -330,7 +332,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           events += Calendar.find_events(date_time=date_time, location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_times} there are ${event_names} ${event_location}
@@ -342,7 +344,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           events += Calendar.find_events(date_time=date_time, location=${event_location:var}, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_locations} there ${is|are} ${event_name}
@@ -352,7 +354,7 @@ calendar_query_event_names:
       events = []
       for location in ${event_locations:var}:
         events += Calendar.find_events(location=location, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_time} there ${is|are} ${event_name} ${event_locations}
@@ -363,7 +365,7 @@ calendar_query_event_names:
       events = []
       for location in ${event_locations:var}:
         events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_times} there ${is|are} ${event_name} ${event_locations}
@@ -375,7 +377,7 @@ calendar_query_event_names:
       for date_time in ${event_date_times:var}:
         for location in ${event_locations:var}:
           events += Calendar.find_events(date_time=date_time, location=location, event_name=${event_name:var})
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_locations} there are ${event_names}
@@ -386,7 +388,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for location in ${event_locations:var}:
           events += Calendar.find_events(location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_time} there are ${event_names} ${event_locations}
@@ -398,7 +400,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for location in ${event_locations:var}:
           events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_time} ${event_locations} there are ${event_names}
@@ -410,7 +412,7 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for location in ${event_locations:var}:
           events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_times} there are ${event_names} ${event_locations}
@@ -422,8 +424,8 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           for location in ${event_locations:var}:
-            events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+            events += Calendar.find_events(date_time=date_time, location=location, event_name=event_name)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_locations} there are ${event_names} ${event_date_times}
@@ -436,7 +438,7 @@ calendar_query_event_names:
         for date_time in ${event_date_times:var}:
           for location in ${event_locations:var}:
             events += Calendar.find_events(date_time=date_time, location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_date_times} ${event_locations} there are ${event_names}
@@ -448,8 +450,8 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           for location in ${event_locations:var}:
-            events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+            events += Calendar.find_events(date_time=date_time, location=location, event_name=event_name)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
   - text: ${event_locations} ${event_date_times} there are ${event_names}
@@ -461,8 +463,8 @@ calendar_query_event_names:
       for event_name in ${event_names:var}:
         for date_time in ${event_date_times:var}:
           for location in ${event_locations:var}:
-            events += Calendar.find_events(date_time=${event_date_time:var}, location=location, event_name=event_name)
-      ${calendar_query_events:var} = bool(events)
+            events += Calendar.find_events(date_time=date_time, location=location, event_name=event_name)
+      ${calendar_query_event_names:var} = bool(events)
     var: test_events
     type: query
 

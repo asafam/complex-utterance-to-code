@@ -1,0 +1,161 @@
+text,code,lang_rep,code_rep
+see if I got a video from Gucci and tell me if there are tickets for a meeting in Anguilla or Johnberg,"contact = Contact.resolve_from_text(""I"")
+content = Content.resolve_from_text(""a video"")
+sender = Contact.resolve_from_text(""Gucci"")
+messages = Message.find_messages(recipient=contact, sender=sender, content=content)
+test_messages = bool(messages)
+Responder.respond(response=test_messages)
+
+event_name = EventName.resolve_from_text(""a meeting"")
+locations = Location.resolve_many_from_text(""in Anguilla or Johnberg"")
+events = []
+for location in locations:
+  events += Calendar.find_events(event_name=event_name, location=location)
+event_tickets = Calendar.find_events_tickets(events=events)
+Responder.respond(response=event_tickets)
+Responder.respond(response=event_tickets)","[ root
+	[ S
+		[ Command
+			[ Action
+				[ hd
+					[ see ]
+				]
+				[ advcl
+					[ mark
+						[ if ]
+					]
+					[ Command
+						[ Action
+							[ Arg
+								[ nsubj
+									[ I ]
+								]
+							]
+							[ hd
+								[ got ]
+							]
+							[ Arg
+								[ obj
+									[ det
+										[ a ]
+									]
+									[ hd
+										[ video ]
+									]
+									[ nmod
+										[ case
+											[ from ]
+										]
+										[ hd
+											[ Gucci ]
+										]
+									]
+								]
+							]
+						]
+					]
+				]
+			]
+		]
+		[ cc
+			[ and ]
+		]
+		[ Command_conj
+			[ Condition
+				[ If
+					[ Body
+						[ Command
+							[ Action
+								[ hd
+									[ tell ]
+								]
+								[ Arg
+									[ obj
+										[ me ]
+									]
+								]
+							]
+						]
+					]
+					[ Test
+						[ mark
+							[ if ]
+						]
+						[ Command
+							[ Action
+								[ expl
+									[ there ]
+								]
+								[ hd
+									[ are ]
+								]
+								[ Arg
+									[ nsubj
+										[ hd
+											[ tickets ]
+										]
+										[ nmod
+											[ case
+												[ for ]
+											]
+											[ det
+												[ a ]
+											]
+											[ hd
+												[ meeting ]
+											]
+											[ nmod
+												[ case
+													[ in ]
+												]
+												[ hd
+													[ Anguilla ]
+												]
+												[ cc
+													[ or ]
+												]
+												[ conj
+													[ hd
+														[ Johnberg ]
+													]
+												]
+											]
+										]
+									]
+								]
+							]
+						]
+					]
+				]
+			]
+		]
+	]
+]
+","	[ Module
+		[ contact = Contact.resolve_from_text('I') ]
+		[ content = Content.resolve_from_text('a video') ]
+		[ sender = Contact.resolve_from_text('Gucci') ]
+		[ messages = Message.find_messages(recipient=contact, sender=sender, content=content) ]
+		[ test_messages = bool(messages) ]
+		[ Responder.respond(response=test_messages) ]
+		[ event_name = EventName.resolve_from_text('a meeting') ]
+		[ locations = Location.resolve_many_from_text('in Anguilla or Johnberg') ]
+		[ events = [] ]
+		[ For
+			[ test
+				[ iter
+					[ locations ]
+				]
+				[ Name
+					[ location ]
+				]
+			]
+			[ body
+				[ events += Calendar.find_events(event_name=event_name, location=location) ]
+			]
+		]
+		[ event_tickets = Calendar.find_events_tickets(events=events) ]
+		[ Responder.respond(response=event_tickets) ]
+		[ Responder.respond(response=event_tickets) ]
+	]
+"

@@ -154,7 +154,7 @@ class Navigation:
         destination: Optional[Location] = None,
         date_time: Optional[DateTime] = None,
         departure_date_time: Optional[DateTime] = None,
-        avoid_nav_road_condition: Optional[NavigationRoadCondition] = None,
+        nav_road_condition: Optional[NavigationRoadCondition] = None,
         nav_travel_method: Optional[NavigationTravelMethod] = None,
     ) -> List[NavigationTrafficInfoEntity]:
         data_model = DataModel()
@@ -178,11 +178,11 @@ class Navigation:
                 if x.data.get("departure_date_time") == departure_date_time
             ]
 
-        if avoid_nav_road_condition:
+        if nav_road_condition:
             data = [
                 x
                 for x in data
-                if x.data.get("avoid_nav_road_condition") == avoid_nav_road_condition
+                if x.data.get("nav_road_condition") == nav_road_condition
             ]
 
         if nav_travel_method:

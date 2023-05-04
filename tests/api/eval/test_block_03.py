@@ -8,10 +8,10 @@ from entities.navigation import *
 from entities.reminder import *
 from entities.shopping import *
 from entities.weather import *
-from actions.calendar import Calendar
-from actions.clock import Clock
-from actions.calendar import Events
-from actions.home import Home
+from actions.calendar import *
+from actions.clock import *
+from actions.calendar import *
+from actions.home import *
 from actions.messages import Messages
 from actions.music import Music
 from actions.navigation import Navigation
@@ -23,7 +23,7 @@ from providers.data_model import DataModel
 from datetime import datetime, timedelta
 from tests.test_utils import *
 import utils
-from test_utils import assert_equal, assert_not_none, assert_test
+from test_utils import assert_equal, assert_match, assert_not_none, assert_test
 
 
 def test_52():
@@ -55,14 +55,14 @@ def test_52():
     data_reminders = data_model.get_data(ReminderEntity)
     assert_equal(len(data_reminders), 1, test_results)
     data_reminder = data_reminders[0]
-    assert_equal(data_reminder.data.get("date_time"), data_date_time, test_results)
-    assert_equal(data_reminder.data.get("content"), data_content, test_results)
+    assert_match(data_reminder.data.get("date_time"), data_date_time, test_results)
+    assert_match(data_reminder.data.get("content"), data_content, test_results)
 
     data_messages = data_model.get_data(MessageEntity)
     assert_equal(len(data_messages), 1, test_results)
     data_message = data_messages[0]
-    assert_equal(data_message.data.get("recipient"), data_recipient, test_results)
-    assert_equal(data_message.data.get("content"), data_content_message, test_results)
+    assert_match(data_message.data.get("recipient"), data_recipient, test_results)
+    assert_match(data_message.data.get("content"), data_content_message, test_results)
     assert_test(test_results)
 
 
@@ -89,22 +89,22 @@ def test_54():
     data_home_devices = data_model.get_data(HomeDeviceEntity)
     assert_equal(len(data_home_devices), 1, test_results)
     data_home_device = data_home_devices[0]
-    assert_equal(
+    assert_match(
         data_home_device.data.get("device_action"),
         data_home_device_action,
         test_results,
     )
-    assert_equal(
+    assert_match(
         data_home_device.data.get("device_name"), data_home_device_name, test_results
     )
-    assert_equal(
+    assert_match(
         data_home_device.data.get("device_value"), data_home_device_value, test_results
     )
 
     data_musics = data_model.get_data(MusicEntity)
     assert_equal(len(data_musics), 1, test_results)
     data_music = data_musics[0]
-    assert_equal(data_music.data.get("playlist"), data_playlist, test_results)
+    assert_match(data_music.data.get("playlist"), data_playlist, test_results)
     assert_test(test_results)
 
 
@@ -140,10 +140,10 @@ def test_55():
     data_reminders = data_model.get_data(ReminderEntity)
     assert_equal(len(data_reminders), 1, test_results)
     data_reminder = data_reminders[0]
-    assert_equal(
+    assert_match(
         data_reminder.data.get("date_time"), data_date_time_tomorrow, test_results
     )
-    assert_equal(data_reminder.data.get("content"), data_content, test_results)
+    assert_match(data_reminder.data.get("content"), data_content, test_results)
 
     data_events = data_model.get_data(EventEntity)
     assert_equal(len(data_events), 0, test_results)
@@ -172,8 +172,8 @@ def test_58_a():
     data_orders = data_model.get_data(OrderEntity)
     assert_equal(len(data_orders), 1, test_results)
     data_order = data_orders[0]
-    assert_equal(data_order.data.get("location"), data_store, test_results)
-    assert_equal(data_order.data.get("product"), data_product, test_results)
+    assert_match(data_order.data.get("location"), data_store, test_results)
+    assert_match(data_order.data.get("product"), data_product, test_results)
     assert_test(test_results)
 
 
@@ -235,7 +235,7 @@ def test_59():
     data_navigation_directions = data_model.get_data(NavigationDirectionEntity)
     assert_equal(len(data_navigation_directions), 1, test_results)
     data_navigation_direction = data_navigation_directions[0]
-    assert_equal(
+    assert_match(
         data_navigation_direction.data.get("destination"),
         data_destination,
         test_results,
@@ -244,15 +244,15 @@ def test_59():
     data_weather_forecasts_list = data_model.get_data(WeatherForecastEntity)
     assert_equal(len(data_weather_forecasts_list), 1, test_results)
     data_weather_forecasts = data_weather_forecasts_list[0]
-    assert_equal(
+    assert_match(
         data_weather_forecasts[0].data.get("weather_attribute"),
         data_weather_attribute,
         test_results,
     )
-    assert_equal(
+    assert_match(
         data_weather_forecasts[0].data.get("location"), data_location, test_results
     )
-    assert_equal(
+    assert_match(
         data_weather_forecasts[0].data.get("date_time"), data_date_time, test_results
     )
     assert_test(test_results)
@@ -282,8 +282,8 @@ def test_60_a():
     data_messages = data_model.get_data(MessageEntity)
     assert_equal(len(data_messages), 1, test_results)
     data_message = data_messages[0]
-    assert_equal(data_message.data.get("recipient"), data_recipient, test_results)
-    assert_equal(data_message.data.get("content"), data_content, test_results)
+    assert_match(data_message.data.get("recipient"), data_recipient, test_results)
+    assert_match(data_message.data.get("content"), data_content, test_results)
     assert_test(test_results)
 
 
@@ -347,13 +347,13 @@ def test_63_a():
     data_messages = data_model.get_data(MessageEntity)
     assert_equal(len(data_messages), 1, test_results)
     data_message = data_messages[0]
-    assert_equal(
+    assert_match(
         data_message.data.get("message_content_type"),
         data_message_content_type,
         test_results,
     )
-    assert_equal(data_message.data.get("recipient"), data_recipient, test_results)
-    assert_equal(data_message.data.get("content"), data_content, test_results)
+    assert_match(data_message.data.get("recipient"), data_recipient, test_results)
+    assert_match(data_message.data.get("content"), data_content, test_results)
     assert_test(test_results)
 
 
@@ -384,6 +384,32 @@ def test_63_b():
     data_model.append(data_content)
 
     # start code block to test
+    date_time = DateTime.resolve_from_text("11:03 PM")
+weather_conditions = WeatherCondition.resolve_many_from_text("will be cloudy and will be lightning")
+location = Location.resolve_from_text("in Rodriguez Mews")
+weather_forecasts = []
+for weather_condition in weather_conditions:
+  weather_forecasts += Weather.find_weather_forecasts(date_time=date_time, location=location, weather_condition=weather_condition)
+test_weather_forecasts = bool(weather_forecasts)
+
+if test_weather_forecasts:
+  arrival_date_time =
+  
+  
+  departure_date_times = DateTime.resolve_many_from_text("after Sundays")
+  estimated_arrivals = []
+  for departure_date_time in departure_date_times:
+    estimated_arrivals += Navigation.find_estimated_arrival(destination=destination, arrival_date_time=arrival_date_time, departure_date_time=departure_date_time)
+  test_navigation_estimate_arrival = bool(estimated_arrivals)
+  
+  if not test_navigation_estimate_arrival:
+    origin = Location.resolve_from_text("from Korea")
+    destination = Location.resolve_from_text("to the closest Hermes stadium")
+    destination = utils.sort(destination, "closest")
+    destination = utils.first(destination)
+    date_time = DateTime.resolve_from_text("3:41 PM")
+    directions = Navigation.find_directions(origin=origin, destination=destination, date_time=date_time)
+    Responder.respond(response=directions)
     # end code block to test
 
     # assertions
@@ -399,37 +425,75 @@ def test_65():
     """
     # test data
     data_model = DataModel(reset=True)
+    data_message_content_type = MessageContentType(text="a message")
+    data_model.append(data_message_content_type)
     data_recipients = []
-    for friend in ["Tom", "Jerry", "Mike", "Ashley"]:
-        data_recipient = Contact(text=friend)
+    for text, value in [
+        ("my friends list", "Tom"),
+        ("my friends list", "Jerry"),
+        ("my friends list", "Mike"),
+        ("my friends list", "Ashley"),
+    ]:
+        data_recipient = Contact(text=text, value=value)
         data_model.append(data_recipient)
         data_recipients.append(data_recipient)
     data_date_time_mon = DateTime(
-        text="Monday",
+        text="on Monday",
         value=datetime.now() + timedelta(days=((7 + 0 - datetime.now().weekday()) % 7)),
     )
     data_model.append(data_date_time_mon)
     data_content = Content(text="remember to vote")
     data_model.append(data_content)
-    data_message_content_type = MessageContentType(text="message")
-    data_model.append(data_message_content_type)
+    data_person_reminded = Contact(text="me")
+    data_model.append(data_person_reminded)
 
     # start code block to test
+    message_content_type = MessageContentType.resolve_from_text("a message")
+    recipients = Contact.resolve_many_from_text("my friends list")
+    date_time = DateTime.resolve_from_text("on Monday")
+    content = Content.resolve_from_text("remember to vote")
+    for recipient in recipients:
+        Messages.send_message(
+            recipient=recipient,
+            content=content,
+            date_time=date_time,
+            message_content_type=message_content_type,
+        )
+
+    person_reminded = Contact.resolve_from_text("me")
+    Reminders.create_reminder(person_reminded=person_reminded, content=content)
     # end code block to test
 
     # assertions
     test_results = {}
     data_messages = data_model.get_data(MessageEntity)
     assert_equal(len(data_messages), 4, test_results)
-    for data_recipient in data_recipients:
-        assert filter(
-            lambda data_message: test_equal(
-                data_message.data.get("recipient"), data_recipient
-            )
-            and test_equal(data_message.data.get("content"), data_content)
-            and test_equal(data_message.data.get("date_time"), data_date_time_mon),
-            data_messages,
+    for i, data_recipient in enumerate(data_recipients):
+        assert_match(
+            len(data_messages) > i
+            and data_messages[i].data
+            and data_messages[i].data.get("recipient"),
+            data_recipient,
+            test_results,
         )
+        assert_match(data_messages[i].data.get("content"), data_content, test_results)
+        assert_match(
+            data_messages[i].data.get("date_time"), data_date_time_mon, test_results
+        )
+        assert_match(
+            data_messages[i].data.get("message_content_type"),
+            data_message_content_type,
+            test_results,
+        )
+
+    data_reminders = data_model.get_data(ReminderEntity)
+    assert_equal(len(data_reminders), 1, test_results)
+    assert_match(
+        data_reminders[0].data.get("person_reminded"),
+        data_person_reminded,
+        test_results,
+    )
+    assert_match(data_reminders[0].data.get("content"), data_content, test_results)
     assert_test(test_results)
 
 
@@ -439,40 +503,42 @@ def test_66():
     """
     # test data
     data_model = DataModel(reset=True)
-    data_event_type = EventType(text="musical")
-    data_model.append(data_event_type)
+    data_event_name = EventName(text="all of the musical events")
+    data_model.append(data_event_name)
     data_location = Location(text="within 10 miles of me")
     data_model.append(data_location)
-    for i in range(3):
-        data_event_name = EventName(text="event {}".format(i))
-        data_model.append(
-            EventEntity(
-                event_name=data_event_name,
-                event_type=data_event_type,
-                location=data_location,
-            )
+    data_expected_events = []
+    for _ in range(3):
+        data_event = EventEntity(
+            event_name=data_event_name,
+            location=data_location,
         )
+        data_model.append(data_event)
+        data_expected_events.append(data_event)
 
     # start code block to test
-    event_category = EventType.resolve_from_text(text="all of the musical events")
+    event_name = EventName.resolve_from_text(text="all of the musical events")
     location = Location.resolve_from_text(text="within 10 miles of me")
-    events = Events.find_events(event_category=event_category, location=location)
+    events = Calendar.find_events(event_name=event_name, location=location)
     Responder.respond(response=events)
     # end code block to test
 
     # assertions
     test_results = {}
-    data_events_list = data_model.get_response(EventEntity)
+    data_events_list = data_model.get_response([EventEntity])
     assert_equal(len(data_events_list), 1, test_results)
     data_events = data_events_list[0]
     assert_equal(len(data_events), 3, test_results)
-    for data_event in data_events:
-        assert filter(
-            lambda data_message: test_equal(
-                data_message.data.get("event_type"), data_event_type
-            )
-            and test_equal(data_message.data.get("location"), data_location),
-            data_events,
+    for i, data_expected_event in enumerate(data_expected_events):
+        assert_match(
+            data_events[i].data.get("event_name"),
+            data_expected_event.data.get("event_name"),
+            test_results,
+        )
+        assert_match(
+            data_events[i].data.get("location"),
+            data_expected_event.data.get("location"),
+            test_results,
         )
     assert_test(test_results)
 
@@ -498,13 +564,13 @@ def test_68():
     data_musics = data_model.get_data(MusicEntity)
     assert_equal(len(data_musics), 1, test_results)
     data_music = data_musics[0]
-    assert_equal(data_music.data.get("playlist"), data_playlist, test_results)
+    assert_match(data_music.data.get("playlist"), data_playlist, test_results)
 
     data_messages = data_model.get_data(MessageEntity)
     assert_equal(len(data_messages), 1, test_results)
     data_message = data_messages[0]
-    assert_equal(data_message.data.get("recipient"), data_recipient, test_results)
-    assert_equal(data_message.data.get("content"), data_content, test_results)
+    assert_match(data_message.data.get("recipient"), data_recipient, test_results)
+    assert_match(data_message.data.get("content"), data_content, test_results)
     assert_test(test_results)
 
 
@@ -536,17 +602,17 @@ def test_70():
     data_event_ticket = data_event_tickets[0]
     assert_not_none(data_event_ticket.data.get("events"), test_results)
     assert_equal(len(data_event_ticket.data.get("events")), 1, test_results)
-    assert_equal(
+    assert_match(
         data_event_ticket.data.get("events")[0].data.get("date_time"),
         data_date_time_tomorrow,
         test_results,
     )
-    assert_equal(
+    assert_match(
         data_event_ticket.data.get("events")[0].data.get("event_name"),
         data_event_name,
         test_results,
     )
-    assert_equal(
+    assert_match(
         data_event_ticket.data.get("events")[0].data.get("event_type"),
         data_event_type,
         test_results,
@@ -555,7 +621,7 @@ def test_70():
     data_nav_traffic_infos_list = data_model.get_data(NavigationTrafficInfoEntity)
     assert_equal(len(data_nav_traffic_infos_list), 1, test_results)
     data_nav_traffic_infos = data_nav_traffic_infos_list[0]
-    assert_equal(
+    assert_match(
         data_nav_traffic_infos.data.get("date_time"), data_date_time_5pm, test_results
     )
     assert_test(test_results)
@@ -584,15 +650,15 @@ def test_71():
     data_timers = data_model.get_data(TimerEntity)
     assert_equal(len(data_timers), 1, test_results)
     data_timer = data_timers[0]
-    assert_equal(data_timer.data.get("date_time"), data_date_time, test_results)
+    assert_match(data_timer.data.get("date_time"), data_date_time, test_results)
 
     data_reminders = data_model.get_data(ReminderEntity)
     assert_equal(len(data_reminders), 1, test_results)
     data_reminder = data_reminders[0]
-    assert_equal(
+    assert_match(
         data_reminder.data.get("person_reminded"), data_person_reminded, test_results
     )
-    assert_equal(data_reminder.data.get("content"), data_content, test_results)
+    assert_match(data_reminder.data.get("content"), data_content, test_results)
     assert_test(test_results)
 
 
@@ -682,12 +748,12 @@ def test_73():
     data_reminders = data_model.get_data(Reminders)
     assert_equal(len(data_reminders), 1, test_results)
     data_reminder = data_reminders[0]
-    assert_equal(
+    assert_match(
         len(data_reminder.data.get("person_reminded")),
         data_person_reminded,
         test_results,
     )
-    assert_equal(
+    assert_match(
         len(data_reminder.data.get("date_time")), data_date_time_sunday, test_results
     )
     assert_equal(len(data_reminder.data.get("content")), data_content, test_results)
@@ -696,7 +762,7 @@ def test_73():
     assert_equal(len(data_navigation_directions_list), 1, test_results)
     data_navigation_directions = data_navigation_directions_list[0]
     assert_equal(len(data_navigation_directions), 1, test_results)
-    assert_equal(
+    assert_match(
         data_navigation_directions[0].data.get("destination"),
         data_destination,
         test_results,
@@ -724,7 +790,7 @@ def test_75():
 
     # start code block to test
     event_name = EventName.resolve_from_text("Shakey Graves' upcoming summer tour")
-    events = Events.find_events(event_name=event_name)
+    events = Calendar.find_events(event_name=event_name)
     nav_distances = []
     for event in events:
         destination = Location.resolve_from_entity(event)
@@ -738,7 +804,7 @@ def test_75():
     navigation_distances = data_model.get_data(NavigationDistanceEntity)
     assert_equal(len(navigation_distances), 1, test_results)
     navigation_distance = navigation_distances[0]
-    assert_equal(
+    assert_match(
         navigation_distance.data.get("destination")
         and navigation_distance.data.get("destination").data.get("entity")
         and navigation_distance.data.get("destination")
@@ -783,17 +849,17 @@ def test_76_a():
     data_home_devices = data_model.get_data(HomeDeviceEntity)
     assert_equal(len(data_home_devices), 1, test_results)
     data_home_device = data_home_devices[0]
-    assert_equal(
+    assert_match(
         len(data_home_device.data.get("device_name")),
         data_home_device_name,
         test_results,
     )
-    assert_equal(
+    assert_match(
         len(data_home_device.data.get("device_action")),
         data_home_device_action,
         test_results,
     )
-    assert_equal(
+    assert_match(
         len(data_home_device.data.get("device_value")),
         data_home_device_value,
         test_results,
@@ -803,7 +869,7 @@ def test_76_a():
 
 def test_76_b():
     """
-    If is is raining at 8pm turn the heat up 5 degrees.
+    If it is raining at 8pm turn the heat up 5 degrees.
     """
     # test data
     data_model = DataModel(reset=True)

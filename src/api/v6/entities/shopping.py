@@ -18,5 +18,9 @@ class ProductEntity(Entity, Resolvable):
     pass
 
 
+class ShoppingListName(Entity, Resolvable):
+    pass
+
+
 class ShoppingListEntity(Entity, Resolvable):
     pass

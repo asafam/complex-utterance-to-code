@@ -2,7 +2,9 @@ map_commands:
   - ${map_command_find}
 
 map_result_command:
-  - ${map_command_find}
+  - text: ${map_command_find}
+    code: ${map_command_find}
+    var: ${map_command_find:var}
 
 map_command_find:
   - text: ${map_command_action} ${map_location}

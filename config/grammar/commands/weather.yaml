@@ -6,10 +6,14 @@ weather_command_sequence:
   - ${weather_command_sequence_forecasts}
 
 weather_result_command:
-  - ${weather_command_forecasts}
+  - text: ${weather_command_forecasts}
+    code: ${weather_command_forecasts}
+    var: ${weather_command_forecasts:var}
 
 navigation_param_result_command:
-  - ${map_result_command}
+  - text: ${map_result_command}
+    code: ${map_result_command}
+    var: ${map_result_command:var}
 
 weather_command_forecasts:
   - text: ${weather_command_instruction} the weather ${forecast|report|}
@@ -28,7 +32,7 @@ weather_command_forecasts:
       ${weather_date_times}
       ${weather_command_forecasts:var} = []
       for date_time in ${weather_date_times:var}:
-        ${weather_command_forecasts:var} += Weather.find_weather_forecasts(date_time=date_time_future)
+        ${weather_command_forecasts:var} += Weather.find_weather_forecasts(date_time=date_time)
       Responder.respond(response=${weather_command_forecasts:var})
     var: weather_forecasts
   - text: ${weather_command_instruction} the weather ${forecast|report|} ${weather_location}
@@ -121,4 +125,4 @@ weather_command_instruction:
   - ${tell|give|show} me
   - let me know of
   - ${forecast|report|} on
-  - what is 
+  - what is

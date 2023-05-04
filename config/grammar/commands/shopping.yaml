@@ -1,5 +1,6 @@
 products_command:
   - ${products_command_find}
+  - ${products_command_shopping_list}
 
 products_command_find:
   - text: ${products_find_action} ${products_comp_list}
@@ -25,14 +26,14 @@ products_comp_list:
     code: |
       ${product_name}
       ${product_attribute_suffix}
-      ${products_comp_list:var} = Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var})
+      ${products_comp_list:var} = Shopping.find_products(product_name=${product_name:var}, product_attribute=${product_attribute_suffix:var})
     var: products
   - text: ${product_name} that are ${product_attribute_suffix} at ${store}
     code: |
       ${product_name}
       ${product_attribute_suffix}
       ${store}
-      ${products_comp_list:var} = Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+      ${products_comp_list:var} = Shopping.find_products(product_name=${product_name:var}, product_attribute=${product_attribute_suffix:var}, location=${store:var})
     var: products
   - text: ${product_name} that are ${product_attribute_suffix} at ${stores}
     code: |
@@ -41,7 +42,7 @@ products_comp_list:
       ${stores}
       ${products_comp_list:var} = []
       for location in ${stores:var}:
-        ${products_comp_list:var} += Product.find_products(product=${product:var}, product_attribute=${product_attribute_suffix:var}, location=location)
+        ${products_comp_list:var} += Shopping.find_products(product_name=${product_name:var}, product_attribute=${product_attribute_suffix:var}, location=location)
     var: products
   - text: ${product_name.1} that are ${product_attribute_suffix} ${cc} ${product_name.2} that are ${product_attribute_suffix}
     code: |
@@ -49,8 +50,8 @@ products_comp_list:
       ${product_name.2}
       ${product_attribute_suffix}
       ${products_comp_list:var} = []
-      for product in [${product_name.1:var}, ${product_name.2:var}]:
-        ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var})
+      for product_name in [${product_name.1:var}, ${product_name.2:var}]:
+        ${products_comp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var})
     var: products
   - text: ${product_name.1} that are ${product_attribute_suffix} ${cc} ${product_name.2} that are ${product_attribute_suffix} at ${store}
     code: |
@@ -59,8 +60,8 @@ products_comp_list:
       ${product_attribute_suffix}
       ${store}
       ${products_comp_list:var} = []
-      for product in [${product_name.1:var}, ${product_name.2:var}]:
-        ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+      for product_name in [${product_name.1:var}, ${product_name.2:var}]:
+        ${products_comp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
     var: products
   - text: ${product_name.1} that are ${product_attribute_suffix} ${cc} ${product_name.2} that are ${product_attribute_suffix} at ${stores}
     code: |
@@ -69,9 +70,9 @@ products_comp_list:
       ${product_attribute_suffix}
       ${stores}
       ${products_comp_list:var} = []
-      for product in [${product_name.1:var}, ${product_name.2:var}]:
+      for product_name in [${product_name.1:var}, ${product_name.2:var}]:
         for location in ${stores:var}:
-          ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=location)
+          ${products_comp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=location)
     var: products
   - text: ${product_names} that are ${product_attribute_suffix}
     code: |
@@ -79,7 +80,7 @@ products_comp_list:
       ${product_attribute_suffix}
       ${products_comp_list:var} = []
       for product_name in ${product_names:var}:
-        ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var})
+        ${products_comp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var})
     var: products
   - text: ${product_names} that are ${product_attribute_suffix} at ${store}
     code: |
@@ -88,7 +89,7 @@ products_comp_list:
       ${store}
       ${products_comp_list:var} = []
       for product_name in ${product_names:var}:
-        ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
+        ${products_comp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=${store:var})
     var: products
   - text: ${product_names} that are ${product_attribute_suffix} at ${stores}
     code: |
@@ -98,7 +99,7 @@ products_comp_list:
       ${products_comp_list:var} = []
       for product_name in ${product_names:var}:
         for location in ${stores:var}:
-          ${products_comp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=location)
+          ${products_comp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_suffix:var}, location=location)
     var: products
 
 products_xcomp_list:
@@ -106,7 +107,7 @@ products_xcomp_list:
     code: |
       ${product_name}
       ${product_attribute_prefix}
-      ${products_xcomp_list:var} = Product.find_products(product=${product:var}, product_attribute=${product_attribute_prefix:var})
+      ${products_xcomp_list:var} = Shopping.find_products(product_name=${product_name:var}, product_attribute=${product_attribute_prefix:var})
     var: products
   - text: ${product_attribute_prefix} on ${product_names}
     code: |
@@ -114,14 +115,14 @@ products_xcomp_list:
       ${product_names}
       ${products_xcomp_list:var} = []
       for product_name in ${product_names:var}:
-        ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var})
+        ${products_xcomp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var})
     var: products
   - text: ${product_attribute_prefix} on ${product_name} at ${store}
     code: |
       ${product_name}
       ${product_attribute_prefix}
       ${store}
-      ${products_xcomp_list:var} = Product.find_products(product=${product:var}, product_attribute=${product_attribute_prefix:var}, location=${store:var})
+      ${products_xcomp_list:var} = Shopping.find_products(product_name=${product_name:var}, product_attribute=${product_attribute_prefix:var}, location=${store:var})
     var: products
   - text: ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2}
     code: |
@@ -129,8 +130,8 @@ products_xcomp_list:
       ${product_name.1}
       ${product_name.2}
       ${products_xcomp_list:var} = []
-      for product in [${product_name.1:var}, ${product_name.2:var}]:
-        ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var})
+      for product_name in [${product_name.1:var}, ${product_name.2:var}]:
+        ${products_xcomp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var})
     var: products
   - text: ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2} at ${store}
     code: |
@@ -139,8 +140,8 @@ products_xcomp_list:
       ${product_name.2}
       ${store}
       ${products_xcomp_list:var} = []
-      for product in [${product_name.1:var}, ${product_name.2:var}]:
-        ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=${store:var})
+      for product_name in [${product_name.1:var}, ${product_name.2:var}]:
+        ${products_xcomp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=${store:var})
     var: products
   - text: ${product_attribute_prefix} on ${product_name.1} ${cc} ${product_attribute_prefix} on ${product_name.2} at ${stores}
     code: |
@@ -149,9 +150,9 @@ products_xcomp_list:
       ${product_name.2}
       ${stores}
       ${products_xcomp_list:var} = []
-      for product in [${product_name.1:var}, ${product_name.2:var}]:
+      for product_name in [${product_name.1:var}, ${product_name.2:var}]:
         for location in ${stores:var}:
-          ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=location)
+          ${products_xcomp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=location)
     var: products
   - text: ${product_attribute_prefix} on ${product_names} at ${stores}
     code: |
@@ -161,8 +162,23 @@ products_xcomp_list:
       ${products_xcomp_list:var} = []
       for product_name in ${product_names:var}:
         for location in ${stores:var}:
-          ${products_xcomp_list:var} += Product.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=location)
+          ${products_xcomp_list:var} += Shopping.find_products(product_name=product_name, product_attribute=${product_attribute_prefix:var}, location=location)
     var: products
+
+products_command_shopping_list:
+  - text: add ${product_name} to ${shopping_list_name}
+    code: |
+      ${product_name}
+      ${shopping_list_name}
+      ${products_command_shopping_list:var} = Shopping.add_to_shopping_list(product_name=${product_name:var}, shopping_list_name=${shopping_list_name:var})
+    var: shopping_list
+  - text: add ${product_names} to ${shopping_list_name}
+    code: |
+      ${product_names}
+      ${shopping_list_name}
+      for product_name in ${product_names:var}:
+        ${products_command_shopping_list:var} = Shopping.add_to_shopping_list(product_name=product_name, shopping_list_name=${shopping_list_name:var})
+    var: shopping_list
 
 products_find_action:
   - check for

@@ -1,10 +1,21 @@
 reminders_query:
+  - text: ${reminders_query_simple}
+    code: ${reminders_query_simple}
+    var: ${reminders_query_simple:var}
+    type: query
+  - text: ${reminders_query_command}
+    code: ${reminders_query_command}
+    var: ${reminders_query_command:var}
+    type: query
+    weight: 0.25
+
+reminders_query_simple:
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_content}
     code: |
       ${person_reminded_i}
       ${reminder_content}
       reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, content=${reminder_content:var})
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_contents}
@@ -14,7 +25,7 @@ reminders_query:
       reminders = []
       for content in ${reminder_contents:var}:
         reminders += Reminders.find_reminders(person_reminded=${person_reminded_i:var}, content=content)
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_time}
@@ -22,7 +33,7 @@ reminders_query:
       ${person_reminded_i}
       ${reminder_date_time}
       reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var})
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_times}
@@ -32,7 +43,7 @@ reminders_query:
       reminders = []
       for date_time in ${reminder_date_times:var}:
         reminders += Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time)
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_time} ${reminder_content}
@@ -41,7 +52,7 @@ reminders_query:
       ${reminder_date_time}
       ${reminder_content}
       reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var}, content=${reminder_content:var})
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_content} ${reminder_date_time}
@@ -50,7 +61,7 @@ reminders_query:
       ${reminder_content}
       ${reminder_date_time}
       reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var}, content=${reminder_content:var})
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_times} ${reminder_content}
@@ -61,7 +72,7 @@ reminders_query:
       reminders = []
       for date_time in ${reminder_date_times:var}:
         reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, content=${reminder_content:var})
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_content} ${reminder_date_times}
@@ -72,7 +83,7 @@ reminders_query:
       reminders = []
       for date_time in ${reminder_date_times:var}:
         reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, content=${reminder_content:var})
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_time} ${reminder_contents}
@@ -83,7 +94,7 @@ reminders_query:
       reminders = []
       for content in ${reminder_contents:var}:
         reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var}, content=content)
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_contents} ${reminder_date_time}
@@ -94,7 +105,7 @@ reminders_query:
       reminders = []
       for content in ${reminder_contents:var}:
         reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=${reminder_date_time:var}, content=content)
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_date_times} ${reminder_contents}
@@ -106,7 +117,7 @@ reminders_query:
       for date_time in ${reminder_date_times:var}:
         for content in ${reminder_contents:var}:
           reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, content=content)
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_contents} ${reminder_date_times}
@@ -118,7 +129,7 @@ reminders_query:
       for content in ${reminder_contents:var}:
         for date_time in ${reminder_date_times:var}:
           reminders = Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, content=content)
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
   - text: ${person_reminded_i} ${reminders_possession_verb} ${a reminder|reminders} ${reminder_content.1} ${reminder_date_time.1} ${cc} ${reminder_content.2} ${reminder_date_time.2}
@@ -132,6 +143,20 @@ reminders_query:
       for content in [${reminder_content.1:var}, ${reminder_content.2:var}]:
         for date_time in [${reminder_date_time.1:var}, ${reminder_date_time.2:var}]:
           reminders += Reminders.find_reminders(person_reminded=${person_reminded_i:var}, date_time=date_time, content=content)
-      ${reminders_query:var} = bool(reminders)
+      ${reminders_query_simple:var} = bool(reminders)
     var: test_reminders
     type: query
+
+reminders_query_command:
+  - text: ${reminders_command_find} and if there are
+    code: |
+      ${reminders_command_find}
+      ${reminders_query_command:var} = bool(reminders)
+    var: test_reminders
+  - text: ${reminders_command_find} and if any in saying ${reminder_content}
+    code: |
+      ${reminders_command_find}
+      ${reminder_content}
+      ${reminders_command_find:var} = utils.filter(${reminders_command_find:var}, content=${reminder_content:var})
+      ${reminders_query_command:var} = bool(reminders)
+    var: test_reminders

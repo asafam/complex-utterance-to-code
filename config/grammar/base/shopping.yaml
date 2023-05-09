@@ -41,7 +41,7 @@ stores:
     var: locations
 
 store_item:
-  - ${faker_company}
+  - at ${faker_company}
 
 product_name_item:
   - ${grocery}
@@ -68,6 +68,11 @@ product_attribute_suffix_item:
   - on clearance
   - on discount
   - in stock
+
+product_amount:
+  - text: ${product_amount_item}
+    code: ${product_amount:var} = Amount.resolve_from_text("${product_amount_item}")
+    var: amount
 
 shopping_list_item:
   - my shopping list
@@ -172,3 +177,10 @@ shoes_item:
   - heels
   - flats
   - wedges
+
+product_amount_item:
+  - ${faker_digit}
+  - a dozen
+  - a few
+  - a couple of
+  - a ${lot|bunch} of

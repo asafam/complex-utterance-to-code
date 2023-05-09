@@ -23,67 +23,55 @@ class Navigation:
         data_model = DataModel()
         data = data_model.get_data(NavigationDirectionEntity)
         if destination:
-            data = [x for x in data if x.data.get("destination") == destination]
+            data = [x for x in data if x.destination == destination]
 
         if origin:
-            data = [x for x in data if x.data.get("origin") == origin]
+            data = [x for x in data if x.origin == origin]
 
         if departure_date_time:
-            data = [
-                x
-                for x in data
-                if x.data.get("departure_date_time") == departure_date_time
-            ]
+            data = [x for x in data if x.departure_date_time == departure_date_time]
 
         if avoid_nav_road_condition:
             data = [
                 x
                 for x in data
-                if x.data.get("avoid_nav_road_condition") == avoid_nav_road_condition
+                if x.avoid_nav_road_condition == avoid_nav_road_condition
             ]
 
         if nav_travel_method:
-            data = [
-                x for x in data if x.data.get("nav_travel_method") == nav_travel_method
-            ]
+            data = [x for x in data if x.nav_travel_method == nav_travel_method]
 
         return data
 
     @abstractclassmethod
     def find_distance(
         cls,
-        origin: Optional[Location],
-        destination: Optional[Location],
-        departure_date_time: Optional[DateTime],
-        avoid_nav_road_condition: Optional[NavigationRoadCondition],
-        nav_travel_method: Optional[NavigationTravelMethod],
+        origin: Optional[Location] = None,
+        destination: Optional[Location] = None,
+        departure_date_time: Optional[DateTime] = None,
+        avoid_nav_road_condition: Optional[NavigationRoadCondition] = None,
+        nav_travel_method: Optional[NavigationTravelMethod] = None,
     ) -> List[NavigationDistanceEntity]:
         data_model = DataModel()
         data = data_model.get_data(NavigationDistanceEntity)
         if origin:
-            data = [x for x in data if x.data.get("origin") == origin]
+            data = [x for x in data if x.origin == origin]
 
         if destination:
-            data = [x for x in data if x.data.get("destination") == destination]
+            data = [x for x in data if x.destination == destination]
 
         if departure_date_time:
-            data = [
-                x
-                for x in data
-                if x.data.get("departure_date_time") == departure_date_time
-            ]
+            data = [x for x in data if x.departure_date_time == departure_date_time]
 
         if avoid_nav_road_condition:
             data = [
                 x
                 for x in data
-                if x.data.get("avoid_nav_road_condition") == avoid_nav_road_condition
+                if x.avoid_nav_road_condition == avoid_nav_road_condition
             ]
 
         if nav_travel_method:
-            data = [
-                x for x in data if x.data.get("nav_travel_method") == nav_travel_method
-            ]
+            data = [x for x in data if x.nav_travel_method == nav_travel_method]
 
         return data
 
@@ -110,27 +98,23 @@ class Navigation:
         data_model = DataModel()
         data = data_model.get_data(NavigationEstimatedArrivalEntity)
         if origin:
-            data = [x for x in data if x.data.get("origin") == origin]
+            data = [x for x in data if x.origin == origin]
 
         if destination:
-            data = [x for x in data if x.data.get("destination") == destination]
+            data = [x for x in data if x.destination == destination]
 
         if arrival_date_time:
-            data = [
-                x for x in data if x.data.get("arrival_date_time") == arrival_date_time
-            ]
+            data = [x for x in data if x.arrival_date_time == arrival_date_time]
 
         if avoid_nav_road_condition:
             data = [
                 x
                 for x in data
-                if x.data.get("avoid_nav_road_condition") == avoid_nav_road_condition
+                if x.avoid_nav_road_condition == avoid_nav_road_condition
             ]
 
         if nav_travel_method:
-            data = [
-                x for x in data if x.data.get("nav_travel_method") == nav_travel_method
-            ]
+            data = [x for x in data if x.nav_travel_method == nav_travel_method]
 
         return data
 
@@ -160,34 +144,24 @@ class Navigation:
         data_model = DataModel()
         data = data_model.get_data(NavigationTrafficInfoEntity)
         if location:
-            data = [x for x in data if x.data.get("location") == location]
+            data = [x for x in data if x.location == location]
 
         if origin:
-            data = [x for x in data if x.data.get("origin") == origin]
+            data = [x for x in data if x.origin == origin]
 
         if destination:
-            data = [x for x in data if x.data.get("destination") == destination]
+            data = [x for x in data if x.destination == destination]
 
         if date_time:
-            data = [x for x in data if x.data.get("date_time") == date_time]
+            data = [x for x in data if x.date_time == date_time]
 
         if departure_date_time:
-            data = [
-                x
-                for x in data
-                if x.data.get("departure_date_time") == departure_date_time
-            ]
+            data = [x for x in data if x.departure_date_time == departure_date_time]
 
         if nav_road_condition:
-            data = [
-                x
-                for x in data
-                if x.data.get("nav_road_condition") == nav_road_condition
-            ]
+            data = [x for x in data if x.nav_road_condition == nav_road_condition]
 
         if nav_travel_method:
-            data = [
-                x for x in data if x.data.get("nav_travel_method") == nav_travel_method
-            ]
+            data = [x for x in data if x.nav_travel_method == nav_travel_method]
 
         return data

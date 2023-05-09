@@ -1,32 +1,40 @@
-weather_condition:
-  - text: it ${weather_condition_term}
+weather_attribute:
+  - text: it ${weather_attribute_term}
     code: |
-      ${weather_condition:var} = WeatherCondition.resolve_from_text("${weather_condition_term}")
-    var: weather_condition
+      ${weather_attribute:var} = WeatherAttribute.resolve_from_text("${weather_attribute_term}")
+    var: weather_attribute
     syn:
       label: VP
-  - text: it is expected to be ${weather_condition_gerund_term}
+  - text: it is expected to be ${weather_attribute_gerund_term}
     code: |
-      ${weather_condition:var} = WeatherCondition.resolve_from_text("${weather_condition_term}")
-    var: weather_condition
-    syn:
-      label: VP
-
-weather_conditions:
-  - text: it ${weather_condition_terms}
-    code: |
-      ${weather_conditions:var} = WeatherCondition.resolve_many_from_text("${weather_condition_terms}")
-    var: weather_conditions
-    syn:
-      label: VP
-  - text: it ${weather_condition_gerund_terms}
-    code: |
-      ${weather_conditions:var} = WeatherCondition.resolve_many_from_text("${weather_condition_gerund_terms}")
-    var: weather_conditions
+      ${weather_attribute:var} = WeatherAttribute.resolve_from_text("${weather_attribute_term}")
+    var: weather_attribute
     syn:
       label: VP
 
-weather_condition_term:
+weather_attributes:
+  - text: it ${weather_attribute_terms}
+    code: |
+      ${weather_attributes:var} = WeatherAttribute.resolve_many_from_text("${weather_attribute_terms}")
+    var: weather_attributes
+    syn:
+      label: VP
+  - text: it ${weather_attribute_gerund_terms}
+    code: |
+      ${weather_attributes:var} = WeatherAttribute.resolve_many_from_text("${weather_attribute_gerund_terms}")
+    var: weather_attributes
+    syn:
+      label: VP
+
+weather_temperature:
+  - text: it is ${expected to be|} ${weather_temperature_item}
+    code: |
+      ${weather_temperature:var} = WeatherTemperature.resolve_from_text("${weather_temperature_item}")
+    var: weather_temperature
+    syn:
+      label: VP
+
+weather_attribute_term:
   - rains
   - snows
   - freezes
@@ -54,10 +62,10 @@ weather_condition_term:
   - will be dry
   - will be windy
 
-weather_condition_terms:
-  - ${weather_condition_term.1} ${cc} ${weather_condition_term.2}
+weather_attribute_terms:
+  - ${weather_attribute_term.1} ${cc} ${weather_attribute_term.2}
 
-weather_condition_gerund_term:
+weather_attribute_gerund_term:
   - raining
   - snowing
   - freezing
@@ -88,8 +96,8 @@ weather_condition_gerund_term:
   - smoggy
   - dusty
 
-weather_condition_gerund_terms:
-  - ${weather_condition_gerund_term.1} ${cc} ${weather_condition_gerund_term.2}
+weather_attribute_gerund_terms:
+  - ${weather_attribute_gerund_term.1} ${cc} ${weather_attribute_gerund_term.2}
 
 weather_location:
   - text: ${at_location}
@@ -149,3 +157,13 @@ weather_date_times:
     var: date_times
     coreference_value:
       - value: at that time
+
+weather_temperature_item:
+  - ${above|below|exactly|around} ${temperature} ${degrees|degrees fahrenheit|degrees celsius|}
+  - between ${temperature.1} and ${temperature.2} ${degrees|degrees fahrenheit|degrees celsius|}
+  - ${temperature.1} or ${temperature.2}
+  - above ${temperature.1} ${but|and} below ${temperature.2} ${degrees|degrees fahrenheit|degrees celsius|}
+  - below ${temperature.1} ${but|and} above ${temperature.2} ${degrees|degrees fahrenheit|degrees celsius|}
+
+temperature:
+  - ${faker_random_digit_not_null.1}${faker_random_digit_not_null.2}

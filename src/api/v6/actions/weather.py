@@ -18,23 +18,21 @@ class Weather:
         data = data_model.get_data(WeatherForecastEntity)
         if date_time:
             if type(date_time) == list:
-                data = [x for x in data if x.data.get("date_time") in date_time]
+                data = [x for x in data if x.date_time in date_time]
             else:
-                data = [x for x in data if x.data.get("date_time") == date_time]
+                data = [x for x in data if x.date_time == date_time]
 
         if location:
-            data = [x for x in data if x.data.get("location") == location]
+            data = [x for x in data if x.location == location]
 
         if weather_attribute:
-            data = [
-                x for x in data if x.data.get("weather_attribute") == weather_attribute
-            ]
+            data = [x for x in data if x.weather_attribute == weather_attribute]
 
         if weather_temperature_unit:
             data = [
                 x
                 for x in data
-                if x.data.get("weather_temperature_unit") == weather_temperature_unit
+                if x.weather_temperature_unit == weather_temperature_unit
             ]
 
         return data

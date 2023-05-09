@@ -20,14 +20,14 @@
       "console": "integratedTerminal",
       "args": [
         "--k",
-        "30000",
+        "40000",
         "--seed",
         "42",
         // "--print_console",
         "--lang_representations",
         "--code_representations",
         "--output_file",
-        "data/train_complex_utterance_to_code_with_intermediate_30k.csv.gz"
+        "data/train_complex_utterance_to_code_with_intermediate_40k.csv.gz"
       ]
     },
 

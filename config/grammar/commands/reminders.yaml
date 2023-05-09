@@ -1,14 +1,61 @@
 reminders_command:
-  - ${reminders_command_query}
-  - ${reminders_command_create}
-  - ${reminders_command_delete}
+  - text: ${reminders_command_query}
+    code: ${reminders_command_query}
+    var: ${reminders_command_query:var}
+  - text: ${reminders_command_find}
+    code: ${reminders_command_find}
+    var: ${reminders_command_find:var}
+  - text: ${reminders_command_create}
+    code: ${reminders_command_create}
+    var: ${reminders_command_create:var}
+  - text: ${reminders_command_delete}
+    code: ${reminders_command_delete}
+    var: ${reminders_command_delete:var}
 
 reminders_command_query:
-  - text: ${query_command_verb} if ${reminders_query}
+  - text: ${query_command_verb} if ${reminders_query_simple}
     code: |
-      ${reminders_query}
-      Responder.respond(response=${reminders_query:var})
-    var: ${reminders_query:var}
+      ${reminders_query_simple}
+      Responder.respond(response=${reminders_query_simple:var})
+    var: ${reminders_query_simple:var}
+
+reminders_command_find:
+  - text: ${reminder_find_action} ${quantifier(reminders, det=the)} ${reminder_content}
+    code: |
+      ${reminder_content}
+      reminders = Reminders.find_reminders(content=${reminder_content:var})
+      ${reminders_command_find:var} = ${quantifier(reminders, det=the)}
+      Responder.respond(response=${reminders_command_find:var})
+    var: reminders
+  - text: ${reminder_find_action} ${quantifier(reminders, nmod_poss={person_reminded_my})} ${reminder_content}
+    code: |
+      ${person_reminded_my}
+      ${reminder_content}
+      ${reminders_command_find:var} = Reminders.find_reminders(person_reminded=${person_reminded_my:var}, content=${reminder_content:var})
+      ${reminders_command_find:var} = ${quantifier(reminders, nmod_poss={person_reminded_my})}
+      Responder.respond(response=${reminders_command_find:var})
+    var: reminders
+  - text: ${reminder_find_action} ${quantifier(reminders, det=the)} ${reminder_contents}
+    code: |
+      ${reminder_contents}
+      ${reminders_command_find:var} = []
+      for content in [${reminder_contents:var}]:
+        reminders = Reminders.find_reminders(content=content)
+        reminders = ${quantifier(reminders, det=the)}
+        ${reminders_command_find:var} += reminders
+      Responder.respond(response=${reminders_command_find:var})
+    var: all_reminders
+  - text: ${reminder_find_action} ${quantifier(reminders, nmod_poss={person_reminded_my})} ${reminder_contents}
+    code: |
+      ${person_reminded_my}
+      ${reminder_contents}
+      ${reminders_command_find:var} = []
+      for content in [${reminder_contents:var}]:
+        reminders = Reminders.find_reminders(person_reminded=${person_reminded_my:var}, content=content)
+        reminders = ${quantifier(reminders, nmod_poss={person_reminded_my})}
+        ${reminders_command_find:var} += reminders
+      Responder.respond(response=${reminders_command_find:var})
+    var: all_reminders
 
 reminders_command_create:
   - text: ${reminder_create_action} ${reminder_content}
@@ -122,6 +169,15 @@ reminders_command_delete:
 reminder_create_action:
   - ${create|set} a reminder
   - remind
+
+reminder_find_action:
+  - find
+  - show
+  - list
+  - display
+  - get
+  - check
+  - search
 
 reminder_delete_action:
   - remove

@@ -1,5 +1,5 @@
 sequence:
-  - text: ${command.1} and ${command.2}
+  - text: ${command.1} and ${also|} ${command.2}
     code: |
       ${command.1}
 

@@ -17,21 +17,38 @@ class Shopping:
         data_model = DataModel()
         data = data_model.get_data(ProductEntity)
         if product_name:
-            data = [x for x in data if x.data.get("product_name") == product_name]
+            data = [x for x in data if x.product_name == product_name]
 
         if product_attribute:
-            data = [
-                x for x in data if x.data.get("product_attribute") == product_attribute
-            ]
+            data = [x for x in data if x.product_attribute == product_attribute]
 
         if date_time:
             if type(date_time) == list:
-                data = [x for x in data if x.data.get("date_time") in date_time]
+                data = [x for x in data if x.date_time in date_time]
             else:
-                data = [x for x in data if x.data.get("date_time") == date_time]
+                data = [x for x in data if x.date_time == date_time]
 
         if location:
-            data = [x for x in data if x.data.get("location") == location]
+            data = [x for x in data if x.location == location]
+
+        return data
+
+    @classmethod
+    def find_shopping_lists(
+        cls,
+        date_time: Optional[Union[DateTime, List[DateTime]]] = None,
+        location: Optional[Location] = None,
+    ) -> List[ShoppingListEntity]:
+        data_model = DataModel()
+        data = data_model.get_data(ShoppingListEntity)
+        if date_time:
+            if type(date_time) == list:
+                data = [x for x in data if x.date_time in date_time]
+            else:
+                data = [x for x in data if x.date_time == date_time]
+
+        if location:
+            data = [x for x in data if x.location == location]
 
         return data
 
@@ -40,23 +57,33 @@ class Shopping:
         cls,
         shopping_list_name: ShoppingListName,
         product_name: Optional[ProductName] = None,
-    ) -> List[ShoppingListEntity]:
+        amount: Optional[Amount] = None,
+    ) -> ShoppingListEntity:
+        shopping_list = ShoppingListEntity(
+            shopping_list_name=shopping_list_name,
+            product_name=product_name,
+            amount=amount,
+        )
         data_model = DataModel()
-        data = data_model.get_data(ShoppingListEntity)
-        if shopping_list_name:
-            data = [x for x in data if x.data.get("shopping_list_name") == shopping_list_name]
-
-        if product_name:
-            data = [x for x in data if x.data.get("product") == product_name]
-
-        return data
+        data_model.append(shopping_list)
+        return shopping_list
 
     @classmethod
-    def create_order(
+    def order(
         cls,
-        products: Optional[Union[ProductEntity, List[ProductEntity]]],
+        product_name: Optional[ProductName] = None,
+        product_attribute: Optional[ProductAttribute] = None,
+        date_time: Optional[Union[DateTime, List[DateTime]]] = None,
+        location: Optional[Location] = None,
+        amount: Optional[Amount] = None,
     ) -> OrderEntity:
-        order = OrderEntity(products=products)
+        order = OrderEntity(
+            product_name=product_name,
+            product_attribute=product_attribute,
+            date_time=date_time,
+            location=location,
+            amount=amount,
+        )
         data_model = DataModel()
         data_model.append(order)
         return order

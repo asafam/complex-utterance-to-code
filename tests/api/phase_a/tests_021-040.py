@@ -52,15 +52,15 @@ def test_22():
     data_alarms = data_model.get_data(AlarmEntity)
     assert len(data_alarms) == 1
     data_alarm = data_alarms[0]
-    assert test_equal(data_alarm.data.get("date_time"), data_date_time)
+    assert test_equal(data_alarm.date_time, data_date_time)
 
     data_alarms = data_model.get_data(HomeDeviceEntity)
     assert len(data_alarms) == 1
     data_alarm = data_alarms[0]
-    assert test_equal(data_alarm.data.get("device_action"), data_home_device_action)
-    assert test_equal(data_alarm.data.get("device_name"), data_home_device_name)
-    assert test_equal(data_alarm.data.get("device_value"), data_home_device_value)
-    assert test_equal(data_alarm.data.get("start_date_time"), data_date_time2)
+    assert test_equal(data_alarm.device_action, data_home_device_action)
+    assert test_equal(data_alarm.device_name, data_home_device_name)
+    assert test_equal(data_alarm.device_value, data_home_device_value)
+    assert test_equal(data_alarm.start_date_time, data_date_time2)
 
 
 def test_25_a():
@@ -93,8 +93,8 @@ def test_25_a():
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
 
 
 def test_25_b():
@@ -152,10 +152,10 @@ def test_27():
     # assertions
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 2
-    assert data_messages[0].data.get("recipient") == data_tyler
-    assert data_messages[0].data.get("content") == data_content
-    assert data_messages[1].data.get("recipient") == data_susan
-    assert data_messages[1].data.get("content") == data_content
+    assert data_messages[0].recipient == data_tyler
+    assert data_messages[0].content == data_content
+    assert data_messages[1].recipient == data_susan
+    assert data_messages[1].content == data_content
 
 
 def test_30():
@@ -177,12 +177,12 @@ def test_30():
     data_timers = data_model.get_data(TimerEntity)
     assert len(data_timers) == 1
     data_time = data_timers[0]
-    assert data_time.data.get("duration") == data_duration
+    assert data_time.duration == data_duration
 
     data_music_lists = data_model.get_data(MusicEntity)
     assert len(data_music_lists) == 1
     data_music = data_music_lists[0]
-    assert data_music.data.get("playlist") == data_playlist
+    assert data_music.playlist == data_playlist
 
 
 def test_31():
@@ -210,19 +210,15 @@ def test_31():
     data_home_devices = data_model.get_data(HomeDeviceEntity)
     assert len(data_home_devices) == 1
     data_home_device = data_home_devices[0]
-    assert test_equal(
-        data_home_device.data.get("device_action"), data_home_device_action
-    )
-    assert test_equal(data_home_device.data.get("device_name"), data_home_device_name)
-    assert test_equal(data_home_device.data.get("device_value"), data_home_device_value)
+    assert test_equal(data_home_device.device_action, data_home_device_action)
+    assert test_equal(data_home_device.device_name, data_home_device_name)
+    assert test_equal(data_home_device.device_value, data_home_device_value)
 
     data_navigation_directions_lists = data_model.get_data(NavigationDirectionEntity)
     assert len(data_navigation_directions_lists) == 1
     data_navigation_directions = data_navigation_directions_lists[0]
     assert len(data_navigation_directions) == 1
-    assert test_equal(
-        data_navigation_directions[0].data.get("destination"), data_destination
-    )
+    assert test_equal(data_navigation_directions[0].destination, data_destination)
 
 
 def test_32():
@@ -246,13 +242,13 @@ def test_32():
     data_navigation_directions_lists = data_model.get_data(NavigationDirectionEntity)
     assert len(data_navigation_directions_lists) == 1
     data_navigation_directions = data_navigation_directions_lists[0]
-    assert data_navigation_directions[0].data.get("destination") == data_destination
+    assert data_navigation_directions[0].destination == data_destination
 
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
 
 
 def test_33():
@@ -261,7 +257,7 @@ def test_33():
     """
     # test data
     data_model = DataModel(reset=True)
-    data_product = Product(text="eggs", value="eggs")
+    data_product_name = ProductName(text="eggs", value="eggs")
     data_model.append(data_product)
     data_model.append(ShoppingListEntity(products=[data_product]))
     data_recipient = Contact(text="Steve", value="Steven Smith")
@@ -279,13 +275,13 @@ def test_33():
     data_shopping_lists = data_model.get_data(ShoppingListEntity)
     assert len(data_shopping_lists) == 1
     data_shopping_list = data_shopping_lists[0]
-    assert data_shopping_list.data.get("products").index(data_product) >= 0
+    assert data_shopping_list.products.index(data_product) >= 0
 
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
 
 
 def test_35_a():
@@ -332,7 +328,7 @@ def test_35_a():
     data_alarms = data_model.get_data(AlarmEntity)
     assert len(data_alarms) == 1
     data_alarm = data_alarms[0]
-    assert data_alarm.data.get("date_time") == data_alarm_date_time_7
+    assert data_alarm.date_time == data_alarm_date_time_7
 
 
 def test_35_b():
@@ -374,7 +370,7 @@ def test_35_b():
     data_alarms = data_model.get_data(AlarmEntity)
     assert len(data_alarms) == 1
     data_alarm = data_alarms[0]
-    assert data_alarm.data.get("date_time") == data_alarm_date_time_9
+    assert data_alarm.date_time == data_alarm_date_time_9
 
 
 def test_36():
@@ -411,14 +407,14 @@ def test_36():
     data_events = data_model.get_data(EventEntity)
     assert len(data_events) == 1
     data_event = data_events[0]
-    assert data_event.data.get("date_time") == data_date_time_sat7pm
-    assert data_event.data.get("event_name") == data_event_name
+    assert data_event.date_time == data_date_time_sat7pm
+    assert data_event.event_name == data_event_name
 
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
 
 
 def test_38():
@@ -442,16 +438,13 @@ def test_38():
     data_event_tickets = data_model.get_data(EventTicketEntity)
     assert len(data_event_tickets) == 1
     data_event_ticket = data_event_tickets[0]
-    assert data_event_ticket.data.get("event_name") == data_event_name
+    assert data_event_ticket.event_name == data_event_name
 
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert (
-        data_message.data.get("content")
-        and data_message.data.get("content").data.get("event_name") == data_event_name
-    )
+    assert data_message.recipient == data_recipient
+    assert data_message.content and data_message.content.event_name == data_event_name
 
 
 def test_39_a():
@@ -486,8 +479,8 @@ def test_39_a():
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
 
 
 def test_39_b():
@@ -561,8 +554,8 @@ def test_40_a():
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
 
 
 def test_40_b():
@@ -628,15 +621,13 @@ def test_41():
     data_home_devices = data_model.get_data(HomeDeviceEntity)
     assert len(data_home_devices) == 1
     data_home_device = data_home_devices[0]
-    assert test_equal(
-        data_home_device.data.get("device_action"), data_home_device_action
-    )
-    assert test_equal(data_home_device.data.get("device_name"), data_home_device)
-    assert test_equal(data_home_device.data.get("device_value"), data_home_device_value)
+    assert test_equal(data_home_device.device_action, data_home_device_action)
+    assert test_equal(data_home_device.device_name, data_home_device)
+    assert test_equal(data_home_device.device_value, data_home_device_value)
     data_timers = data_model.get_data(TimerEntity)
     assert len(data_timers) == 1
     data_timer = data_timers[0]
-    assert test_equal(data_timer.data.get("date_time"), data_date_time_30)
+    assert test_equal(data_timer.date_time, data_date_time_30)
 
 
 def test_44():
@@ -665,13 +656,13 @@ def test_44():
     data_event_tickets = data_model.get_data(EventTicketEntity)
     assert len(data_event_tickets) == 1
     data_event_ticket = data_event_tickets[0]
-    assert data_event_ticket.data.get("event") == data_event
+    assert data_event_ticket.event == data_event
 
     data_weather_forecasts_list = data_model.get_data(WeatherForecastEntity)
     assert len(data_weather_forecasts_list) == 1
     data_weather_forecasts = data_weather_forecasts_list[0]
     assert len(data_weather_forecasts) == 1
-    assert data_weather_forecasts[0].data.get("date_time") == data_date_time
+    assert data_weather_forecasts[0].date_time == data_date_time
 
 
 def test_45():
@@ -698,14 +689,14 @@ def test_45():
     data_timers = data_model.get_data(TimerEntity)
     assert len(data_timers) == 1
     data_timer = data_timers[0]
-    assert data_timer.data.get("date_time") == data_date_time_5m
+    assert data_timer.date_time == data_date_time_5m
 
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
-    assert data_message.data.get("date_time") == data_date_time_5m
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
+    assert data_message.date_time == data_date_time_5m
 
 
 def test_46():
@@ -732,13 +723,13 @@ def test_46():
     data_map_entities = data_model.get_data(MapEntity)
     assert len(data_map_entities) == 1
     data_map_entity = data_map_entities[0]
-    assert data_map_entity.data.get("location") == data_location2
+    assert data_map_entity.location == data_location2
 
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
 
 
 def test_47():
@@ -765,14 +756,14 @@ def test_47():
     data_timers = data_model.get_data(TimerEntity)
     assert len(data_timers) == 1
     data_timer = data_timers[0]
-    assert data_timer.data.get("date_time") == data_date_time_6am
+    assert data_timer.date_time == data_date_time_6am
 
     data_home_devices = data_model.get_data(HomeDeviceValue)
     assert len(data_home_devices) == 1
     data_home_device = data_home_devices[0]
-    assert data_home_device.data.get("device_name") == data_home_device_name
-    assert data_home_device.data.get("device_value") == data_home_device_value
-    assert data_home_device.data.get("date_time") == data_date_time_6am
+    assert data_home_device.device_name == data_home_device_name
+    assert data_home_device.device_value == data_home_device_value
+    assert data_home_device.date_time == data_date_time_6am
 
 
 def test_48():
@@ -805,11 +796,11 @@ def test_48():
     data_home_devices = data_model.get_data(HomeDeviceValue)
     assert len(data_home_devices) == 1
     data_home_device = data_home_devices[0]
-    assert data_home_device.data.get("device_name") == data_home_device_name
-    assert data_home_device.data.get("device_value") == data_home_device_value
-    assert data_home_device.data.get("date_time") == data_date_time_7pm
+    assert data_home_device.device_name == data_home_device_name
+    assert data_home_device.device_value == data_home_device_value
+    assert data_home_device.date_time == data_date_time_7pm
     data_musics = data_model.get_data(MusicEntity)
     assert len(data_musics) == 1
     data_music = data_musics[0]
-    assert data_music.data.get("playlist") == data_playlist
-    assert data_music.data.get("date_time") == data_date_time_8pm
+    assert data_music.playlist == data_playlist
+    assert data_music.date_time == data_date_time_8pm

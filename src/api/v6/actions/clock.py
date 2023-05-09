@@ -10,12 +10,12 @@ class Timer:
     @classmethod
     def create_timer(
         cls,
-        duration,
+        duration: Optional[TimeDuration] = None,
         date_time: Optional[DateTime] = None,
     ) -> TimerEntity:
         timer = TimerEntity(
-            date_time=date_time,
             duration=duration,
+            date_time=date_time,
         )
         data_model = DataModel()
         data_model.append(timer)
@@ -55,3 +55,30 @@ class Alarm:
         data_model = DataModel()
         data_model.append(alarm)
         return alarm
+
+    @classmethod
+    def update_alarm(
+        cls,
+        date_time: Optional[DateTime] = None,
+        alarm_name: Optional[AlarmName] = None,
+    ) -> AlarmEntity:
+        alarm = AlarmEntity(date_time=date_time, alarm_name=alarm_name)
+        data_model = DataModel()
+        data_model.append(alarm)
+        return alarm
+
+    @classmethod
+    def find_alarms(
+        cls,
+        date_time: Optional[DateTime],
+        alarm_name: Optional[AlarmName],
+    ) -> List[AlarmEntity]:
+        data_model = DataModel()
+        data = data_model.get_data(AlarmEntity)
+        if date_time:
+            data = [x for x in data if x.date_time == date_time]
+
+        if alarm_name:
+            data = [x for x in data if x.alarm_name == alarm_name]
+            
+        return data

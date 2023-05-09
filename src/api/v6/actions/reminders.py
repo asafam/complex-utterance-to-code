@@ -51,15 +51,15 @@ class Reminders(Resolvable):
         data = data_model.get_data(ReminderEntity)
         if date_time:
             if type(date_time) == list:
-                data = [x for x in data if x.data.get("date_time") in date_time]
+                data = [x for x in data if x.date_time in date_time]
             else:
-                data = [x for x in data if x.data.get("date_time") == date_time]
+                data = [x for x in data if x.date_time == date_time]
 
         if person_reminded:
-            data = [x for x in data if x.data.get("person_reminded") == person_reminded]
+            data = [x for x in data if x.person_reminded == person_reminded]
 
         if content:
-            data = [x for x in data if x.data.get("content") == content]
+            data = [x for x in data if x.content == content]
 
         return data
 

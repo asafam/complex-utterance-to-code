@@ -1,4 +1,9 @@
-message_verb:
+message_content_type_verb:
+  - text: ${message_content_type_verb_item}
+    code: ${message_content_type_verb:var} = ContentType.resolve_from_text("${message_content_type_verb_item}")
+    var: message_content_type
+
+message_content_type_verb_item:
   - text
   - email
   - message
@@ -100,8 +105,8 @@ message_content_item:
     code: "ask ${recipient[{'syn': {'form': 'subj'}}]:text} to meet for coffee"
   - text: asking if ${product_name_item} is cheaper on ${faker_company}
     code: asking if ${product_name_item} is cheaper on ${faker_company}
-  - text: asking if it's going to be ${weather_condition_gerund_term} on ${day_of_week}
-    code: asking if it's going to be ${weather_condition_gerund_term} on ${day_of_week}
+  - text: asking if it's going to be ${weather_attribute_gerund_term} on ${day_of_week}
+    code: asking if it's going to be ${weather_attribute_gerund_term} on ${day_of_week}
 
 message_content_attachment:
   - text: ${message_content_attachment_item}

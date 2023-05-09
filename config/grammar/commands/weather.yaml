@@ -1,6 +1,10 @@
 weather_command:
-  - ${weather_command_forecasts}
-  - ${weather_command_query}
+  - text: ${weather_command_forecasts}
+    code: ${weather_command_forecasts}
+    var: ${weather_command_forecasts:var}
+  - text: ${weather_command_query}
+    code: ${weather_command_query}
+    var: ${weather_command_query:var}
 
 weather_command_sequence:
   - ${weather_command_sequence_forecasts}
@@ -125,4 +129,4 @@ weather_command_instruction:
   - ${tell|give|show} me
   - let me know of
   - ${forecast|report|} on
-  - what is
+  - what ${is|will be}

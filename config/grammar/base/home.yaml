@@ -44,7 +44,8 @@ home_device_temperature_name_item:
   - the heat
 
 home_device_temperature_value_item:
-  - ${faker_random_int} ${degrees|} ${c|celsius|f|fahrenheit|}
+  - to ${temperature} ${degrees|} ${c|celsius|f|fahrenheit|}
+  - ${up|down} ${by|} ${faker_random_digit_not_null} ${degrees|} ${c|celsius|f|fahrenheit|}
 
 home_device_states_action:
   - text: ${home_device_states_action_item}

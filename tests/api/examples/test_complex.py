@@ -42,14 +42,14 @@ def test_get_started_complex1():
     assert len(data_weather_forecasts_list) > 0
     data_weather_forecasts = data_weather_forecasts_list[-1]
     assert len(list(data_weather_forecasts)) == 1
-    assert list(data_weather_forecasts)[0].data.get("date_time") == data_date_time
+    assert list(data_weather_forecasts)[0].date_time == data_date_time
 
     data_reminder_list = data_model.get_data(ReminderEntity)
     assert len(data_reminder_list) == 1
     data_reminder = data_reminder_list[0]
-    assert data_reminder.data.get("content") == data_content
-    assert data_reminder.data.get("person_reminded") == data_person_reminded
-    assert data_reminder.data.get("date_time") == data_date_time
+    assert data_reminder.content == data_content
+    assert data_reminder.person_reminded == data_person_reminded
+    assert data_reminder.date_time == data_date_time
 
 
 def test_get_started_complex2():
@@ -93,8 +93,8 @@ def test_get_started_complex2():
     data_messages_list = data_model.get_data(MessageEntity)
     assert len(data_messages_list) == 1
     data_message = data_messages_list[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content
 
 
 def test_get_started_complex3a():
@@ -135,8 +135,8 @@ def test_get_started_complex3a():
     data_reminders = data_model.get_data(ReminderEntity)
     assert len(list(data_reminders)) == 1
     data_reminder = data_reminders[0]
-    assert data_reminder.data.get("person_reminded") == data_person_reminded
-    assert data_reminder.data.get("content") == data_content
+    assert data_reminder.person_reminded == data_person_reminded
+    assert data_reminder.content == data_content
 
 
 def test_get_started_complex3b():

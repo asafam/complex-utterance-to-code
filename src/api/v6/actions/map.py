@@ -12,6 +12,6 @@ class Map:
         data_model = DataModel()
         data = data_model.get_data(MapEntity)
         if location:
-            data = [x for x in data if x.data.get("location") == location]
+            data = [x for x in data if x.location == location]
 
         return data

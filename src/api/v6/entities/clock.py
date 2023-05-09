@@ -8,3 +8,7 @@ class TimerEntity(Entity, Resolvable):
 
 class AlarmEntity(Entity, Resolvable):
     pass
+
+
+class AlarmName(Entity, Resolvable):
+    pass

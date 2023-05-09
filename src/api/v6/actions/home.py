@@ -17,16 +17,16 @@ class SmartHome:
         data_model = DataModel()
         data = data_model.get_data(HomeDeviceEntity)
         if date_time:
-            data = [x for x in data if x.data.get("date_time") == date_time]
+            data = [x for x in data if x.date_time == date_time]
 
         if device_name:
-            data = [x for x in data if x.data.get("device_name") == device_name]
+            data = [x for x in data if x.device_name == device_name]
 
         if device_action:
-            data = [x for x in data if x.data.get("device_action") == device_action]
+            data = [x for x in data if x.device_action == device_action]
 
         if device_value:
-            data = [x for x in data if x.data.get("device_value") == device_value]
+            data = [x for x in data if x.device_value == device_value]
 
         return data
 
@@ -37,19 +37,13 @@ class SmartHome:
         device_name: Optional[HomeDeviceName] = None,
         device_action: Optional[HomeDeviceAction] = None,
         device_value: Optional[HomeDeviceValue] = None,
-    ) -> List[HomeDeviceEntity]:
+    ) -> HomeDeviceEntity:
+        home_device = HomeDeviceEntity(
+            date_time=date_time,
+            device_name=device_name,
+            device_action=device_action,
+            device_value=device_value,
+        )
         data_model = DataModel()
-        data = data_model.get_data(HomeDeviceEntity)
-        if date_time:
-            data = [x for x in data if x.data.get("date_time") == date_time]
-
-        if device_name:
-            data = [x for x in data if x.data.get("device_name") == device_name]
-
-        if device_action:
-            data = [x for x in data if x.data.get("device_action") == device_action]
-
-        if device_value:
-            data = [x for x in data if x.data.get("device_value") == device_value]
-
-        return data
+        data_model.append(home_device)
+        return home_device

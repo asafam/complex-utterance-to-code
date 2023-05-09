@@ -1,14 +1,20 @@
-product:
-  - text: ${product_item}
+product_name:
+  - text: ${product_name_item}
     code: |
-      ${product:var} = Product.resolve_from_text("${product_item}")
-    var: product
+      ${product_name:var} = ProductName.resolve_from_text("${product_name_item}")
+    var: product_name
 
-products:
-  - text: ${product_items}
+product_names:
+  - text: ${product_names_items}
     code: |
-      ${products:var} = Product.resolve_many_from_text("${product_items}")
-    var: products
+      ${product_names:var} = ProductName.resolve_many_from_text("${product_names_items}")
+    var: product_names
+
+shopping_list_name:
+  - text: ${shopping_list_item}
+    code: |
+      ${shopping_list_name:var} = ShoppingListName.resolve_from_text("${shopping_list_item}")
+    var: shopping_list_name
 
 product_attribute_prefix:
   - text: ${product_attribute_prefix_item}
@@ -19,7 +25,7 @@ product_attribute_prefix:
 product_attribute_suffix:
   - text: ${product_attribute_suffix_item}
     code: |
-      ${product_attribute_suffix_item:var} = ProductAttribute.resolve_from_text("${product_attribute_suffix_item}")
+      ${product_attribute_suffix:var} = ProductAttribute.resolve_from_text("${product_attribute_suffix_item}")
     var: product_attribute
 
 store:
@@ -35,21 +41,21 @@ stores:
     var: locations
 
 store_item:
-  - ${faker_company}
+  - at ${faker_company}
 
-product_item:
+product_name_item:
   - ${grocery}
   - ${goods}
   - ${fashion}
   - ${shoes}
 
-product_items:
-  - all ${product_item}
-  - text: ${product_item.1} ${cc} ${product_item.2}
-    code: ${product_item.1} ${cc} ${product_item.2}
+product_names_items:
+  - all ${product_name_item}
+  - text: ${product_name_item.1} ${cc} ${product_name_item.2}
+    code: ${product_name_item.1} ${cc} ${product_name_item.2}
     weight: 0.3
-  - text: ${product_item.1}, ${product_item.2} ${cc} ${product_item.3}
-    code: ${product_item.1}, ${product_item.2} ${cc} ${product_item.3}
+  - text: ${product_name_item.1}, ${product_name_item.2} ${cc} ${product_name_item.3}
+    code: ${product_name_item.1}, ${product_name_item.2} ${cc} ${product_name_item.3}
     weight: 0.1
 
 product_attribute_prefix_item:
@@ -62,6 +68,16 @@ product_attribute_suffix_item:
   - on clearance
   - on discount
   - in stock
+
+product_amount:
+  - text: ${product_amount_item}
+    code: ${product_amount:var} = Amount.resolve_from_text("${product_amount_item}")
+    var: amount
+
+shopping_list_item:
+  - my shopping list
+  - the shopping list
+  - my list
 
 grocery:
   - peanut butter
@@ -161,3 +177,10 @@ shoes_item:
   - heels
   - flats
   - wedges
+
+product_amount_item:
+  - ${faker_digit}
+  - a dozen
+  - a few
+  - a couple of
+  - a ${lot|bunch} of

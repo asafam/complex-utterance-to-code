@@ -75,8 +75,8 @@ We can now write the test.
 data_messages = data_model.get_data(MessageEntity)
 assert len(data_messages) == 1
 data_message = data_messages[0]
-assert test_equal(data_message[0].data.get("recipient"), data_recipient)
-assert test_equal(data_message[0].data.get("content"), data_content)
+assert test_equal(data_message[0].recipient, data_recipient)
+assert test_equal(data_message[0].content, data_content)
 ```
 
 We start by getting the data from the data model. We use the `get_data` method to get the data with the `MessageEntity` type. We then assert that the data list has only one element. We expect our generated code to create only one `MessageEntity` object.
@@ -131,10 +131,10 @@ data_navigation_directions_list = data_model.get_data(NavigationDirectionEntity)
 assert len(data_navigation_directions_list) == 1
 data_navigation_directions = data_navigation_directions_list[0]
 assert len(data_navigation_directions) == 2
-assert test_equal(data_navigation_directions[0].data.get("origin"), data_origin)
-assert test_equal(data_navigation_directions[0].data.get("destination"), data_destination)
-assert test_equal(data_navigation_directions[1].data.get("origin"), data_origin)
-assert test_equal(data_navigation_directions[1].data.get("destination"), data_destination)
+assert test_equal(data_navigation_directions[0].origin, data_origin)
+assert test_equal(data_navigation_directions[0].destination, data_destination)
+assert test_equal(data_navigation_directions[1].origin, data_origin)
+assert test_equal(data_navigation_directions[1].destination, data_destination)
 ```
 
 We start by getting the data from the data model. We get the data with the `NavigationDirectionEntity` object. We then assert that the length of the data is equal to 1. This means that we have one list of `NavigationDirectionEntity` objects in the data model, and that our generated code is matching the text description and created only a single `NavigationDirectionEntity` list of objects.
@@ -202,16 +202,16 @@ data_navigation_directions_list = data_model.get_data(NavigationDirectionEntity)
 assert len(data_navigation_directions_list) == 1
 data_navigation_directions = data_navigation_directions_list[0]
 assert len(data_navigation_directions) == 2
-assert test_equal(data_navigation_directions[0].data.get("origin"), data_origin)
-assert test_equal(data_navigation_directions[0].data.get("destination"), data_destination)
-assert test_equal(data_navigation_directions[1].data.get("origin"), data_origin)
-assert test_equal(data_navigation_directions[1].data.get("destination"), data_destination)
+assert test_equal(data_navigation_directions[0].origin, data_origin)
+assert test_equal(data_navigation_directions[0].destination, data_destination)
+assert test_equal(data_navigation_directions[1].origin, data_origin)
+assert test_equal(data_navigation_directions[1].destination, data_destination)
 
 data_messages = data_model.get_data(MessageEntity)
 assert len(data_messages) == 1
 data_message = data_messages[0]
-assert test_equal(data_message.data.get("recipient"), data_recipient)
-assert test_equal(data_message.data.get("content"), data_content)
+assert test_equal(data_message.recipient, data_recipient)
+assert test_equal(data_message.content, data_content)
 ```
 
 We test the expected generated objects for the first command. We then test the expected generated objects for the second command. Nothing new here.
@@ -277,8 +277,8 @@ We can now write our conditional complex command test.
 data_messages = data_model.get_data(ReminderEntity)
 assert len(data_messages) == 1
 data_message = data_messages[0]
-assert test_equal(data_message.data.get("person_reminded"), data_person_reminded)
-assert test_equal(data_message.data.get("content"), data_content)
+assert test_equal(data_message.person_reminded, data_person_reminded)
+assert test_equal(data_message.content, data_content)
 ```
 
 With conditional complex commands, we only test the expected generated object. This is because the generated code will not generate any objects when the condition is not met. We don't test the expected generated objects for the condition.
@@ -372,9 +372,9 @@ data_reminders = data_model.get_data(ReminderEntity)
 assert len(data_reminders) == len(data_date_times)
 for data_date_time_day in data_date_times:
     assert filter(
-        lambda data_reminder: test_equal(data_reminder.data.get("person_reminded"), data_person_reminded)
-            and test_equal(data_reminder.data.get("content"), data_content)
-            and test_equal(data_reminder.data.get("date_time"), data_date_time_day),
+        lambda data_reminder: test_equal(data_reminder.person_reminded, data_person_reminded)
+            and test_equal(data_reminder.content, data_content)
+            and test_equal(data_reminder.date_time, data_date_time_day),
         data_reminders
     )
 ```

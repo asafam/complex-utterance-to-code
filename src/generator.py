@@ -9,7 +9,11 @@ from main_representations import (
     generate_text_representation,
     generate_code_representation,
 )
-from utils.utils import printProgressBar, print_sample_to_console, print_sample_to_file
+from utils.utils import (
+    printProgressBar,
+    print_sample_to_console,
+    print_sample_to_file,
+)
 
 
 def main(
@@ -91,7 +95,9 @@ def main(
                 "code_rep": code_rep,
             }
             samples.append(item)
-            printProgressBar(i + 1, k, prefix="Progress:", suffix=f"Complete ({i+1}/{k})", length=50)
+            printProgressBar(
+                i + 1, k, prefix="Progress:", suffix=f"Complete ({i+1}/{k})", length=50
+            )
 
     if print_console:
         print_sample_to_console(samples)

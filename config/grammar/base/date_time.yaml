@@ -2,20 +2,70 @@ at_date_time:
   - text: at ${exact_date_time}
     code: ${exact_date_time}
     var: date_time
+    type: date_time
     syn:
       num: sg
       label: pp
-    coreference_value: 
+    coreference_value:
       - value: at that time
 
 at_date_times:
   - text: at ${exact_date_times}
     code: ${exact_date_times}
     var: date_times
+    type: date_times
     syn:
       num: pl
       label: pp
-    coreference_value: 
+    coreference_value:
+      - value: at these times
+
+before_date_time:
+  - text: ${before_date_time_item}
+    code: |
+      ${before_date_time:var} = DateTime.resolve_from_text("${before_date_time_item}")
+    var: date_time
+    type: date_time
+    syn:
+      num: sg
+      label: pp
+    coreference_value:
+      - value: at that time
+
+before_date_times:
+  - text: ${before_date_times_item}
+    code: |
+      ${before_date_times:var} = DateTime.resolve_many_from_text("${before_date_times_item}")
+    var: date_times
+    type: date_times
+    syn:
+      num: sg
+      label: pp
+    coreference_value:
+      - value: at these times
+
+after_date_time:
+  - text: ${after_date_time_item}
+    code: |
+      ${after_date_time:var} = DateTime.resolve_from_text("${after_date_time_item}")
+    var: date_time
+    type: date_time
+    syn:
+      num: sg
+      label: pp
+    coreference_value:
+      - value: at that time
+
+after_date_times:
+  - text: ${after_date_times_item}
+    code: |
+      ${after_date_times:var} = DateTime.resolve_many_from_text("${after_date_times_item}")
+    var: date_times
+    type: date_times
+    syn:
+      num: sg
+      label: pp
+    coreference_value:
       - value: at these times
 
 every_date_time:
@@ -30,7 +80,7 @@ every_date_times:
     code: |
       ${every_date_times:var} = DateTime.resolve_many_from_text("${every_date_time}")
     var: date_times
-    type: weather
+    type: date_times
     syn:
       num: pl
       label: pp
@@ -39,13 +89,15 @@ for_date_time:
   - text: for ${relative_date_time}
     code: ${relative_date_time}
     var: date_time
+    type: date_time
     syn:
       label: pp
 
 for_date_times:
   - text: for ${relative_date_times}
     code: ${relative_date_times}
-    var: date_time
+    var: date_times
+    type: date_times
     syn:
       label: pp
 
@@ -54,12 +106,14 @@ from_date_time:
     code: |
       ${from_date_time:var} = DateTime.resolve_from_text("${from_date_time_item}")
     var: date_time
+    type: date_time
 
 from_date_times:
   - text: ${from_date_time_item.1} and ${from_date_time_item.2} from now
     code: |
       ${from_date_time:var} = DateTime.resolve_from_text("${from_date_time_item.1} and ${from_date_time_item.2} from now")
     var: date_time
+    type: date_time
 
 from_date_time_item:
   - ${hours}
@@ -69,6 +123,7 @@ on_date_time:
   - text: on ${general_date_time}
     code: ${general_date_time}
     var: date_time
+    type: date_time
     syn:
       label: pp
 
@@ -77,6 +132,7 @@ on_date_times:
     code: |
       ${on_date_times:var} = DateTime.resolve_many_from_text("on ${general_date_times_item}")
     var: date_times
+    type: date_times
     syn:
       num: pl
       label: pp
@@ -84,6 +140,7 @@ on_date_times:
     code: |
       ${on_date_times:var} = DateTime.resolve_many_from_text("on ${general_date_time_item.1} ${cc} ${general_date_time_item.2}")
     var: date_times
+    type: date_times
     syn:
       num: pl
       label: pp
@@ -91,6 +148,7 @@ on_date_times:
     code: |
       ${on_date_times:var} = DateTime.resolve_many_from_text("on ${general_date_time_item.1}, ${general_date_time_item.2} ${cc} ${general_date_time_item.3}")
     var: date_times
+    type: date_times
     syn:
       num: pl
       label: pp
@@ -99,17 +157,29 @@ date_time:
   - text: ${relative_date_time}
     code: ${relative_date_time}
     var: date_time
+    type: date_time
   - text: ${general_date_time}
     code: ${general_date_time}
     var: date_time
+    type: date_time
   - text: ${exact_date_time}
     code: ${exact_date_time}
     var: date_time
+    type: date_time
 
 date_times:
-  - ${relative_date_times}
-  - ${general_date_times}
-  - ${exact_date_times}
+  - text: ${relative_date_times}
+    code: ${relative_date_times}
+    var: date_times
+    type: date_times
+  - text: ${general_date_times}
+    code: ${general_date_times}
+    var: date_times
+    type: date_times
+  - text: ${exact_date_times}
+    code: ${exact_date_times}
+    var: date_times
+    type: date_times
 
 relative_date_time:
   - text: ${relative_date_time_item}
@@ -125,7 +195,7 @@ relative_date_times:
     code: |
       ${relative_date_times_item:var} = DateTime.resolve_many_from_text("${relative_date_times_item}")
     var: date_times
-    type: date_time
+    type: date_times
     syn:
       label: NP
 
@@ -159,7 +229,7 @@ exact_date_times:
   - text: ${exact_date_times_item}
     code: ${exact_date_times:var} = DateTime.resolve_many_from_text("${exact_date_times_item}")
     var: date_times
-    type: date_time
+    type: date_times
     syn:
       label: NP
 
@@ -183,7 +253,7 @@ past_date_times:
   - text: ${past_date_times_term}
     code: ${past_date_times:var} = DateTime.resolve_many_from_text("${past_date_times_term}")
     var: date_times
-    type: date_time
+    type: date_times
     syn:
       label: NP
 
@@ -209,6 +279,7 @@ general_date_time_item:
   - text: ${ordinal} of ${month_name}
     code: ${ordinal} of ${month_name}
     weight: 0.15
+  - ${holiday}
 
 general_date_times_item:
   - ${day_of_week}s
@@ -218,12 +289,35 @@ now_date_time_item:
   - right now
   - at this moment
 
+before_date_time_item:
+  - before ${exact_date_time_item}
+  - before ${relative_date_time_item}
+  - before ${general_date_time_item}
+
+before_date_times_item:
+  - before ${exact_date_times_item}
+  - before ${relative_date_times_item}
+  - before ${general_date_times_item}
+
+after_date_time_item:
+  - after ${exact_date_time_item}
+  - after ${relative_date_time_item}
+  - after ${general_date_time_item}
+
+after_date_times_item:
+  - after ${exact_date_times_item}
+  - after ${relative_date_times_item}
+  - after ${general_date_times_item}
+
 exact_date_time_item:
   - ${date_time_hour}
 
 exact_date_times_item:
   - ${exact_date_time_item.1} ${cc} ${exact_date_time_item.2}
-  - ${exact_date_time_item.1}, ${exact_date_time_item.2} ${cc} ${exact_date_time_item.3}
+  - text: ${exact_date_time_item.1}, ${exact_date_time_item.2} ${cc} ${exact_date_time_item.3}
+    code: ${exact_date_time_item.1}, ${exact_date_time_item.2} ${cc} ${exact_date_time_item.3}
+    weight: 0.1
+  - between ${exact_date_time_item.1} and ${exact_date_time_item.2}
 
 month_name:
   - ${faker_month_name}
@@ -231,8 +325,6 @@ month_name:
 date_time_hour:
   - ${date_time_hour_term}
   - ${date_time_hour_term} ${date_time_future}
-  # - text: ${date_time_future} at ${date_time_hour_term}
-  #   code: "${date_time_future} at ${date_time_hour_term}"
 
 date_time_future:
   - tomorrow
@@ -246,10 +338,6 @@ date_time_hour_term:
   - ${faker_time_hour_minutes}
   - mindnight
   - noon
-  # - at ${faker_time_hour} am tomorrow morning
-  # - tomorrow morning at ${faker_time_hour} am
-  # - at ${faker_time_hour} pm tonight
-  # - tonight at ${faker_time_hour} pm
 
 past_date_time_term:
   - today
@@ -267,6 +355,34 @@ times_of_day:
   - afternoon
   - evening
   - night
+
+holiday:
+  - New Year's Day
+  - Independence Day
+  - Thanksgiving Day
+  - Christmas Day
+  - Martin Luther King, Jr. Day
+  - Washington's Birthday
+  - Memorial Day
+  - Labor Day
+  - Columbus Day
+  - Veterans Day
+  - Halloween
+  - Valentine's Day
+  - St. Patrick's Day
+  - April Fool's Day
+  - Earth Day
+  - Mother's Day
+  - Father's Day
+  - Flag Day
+  - Grandparents Day
+  - Patriot Day
+  - Rosh Hashanah
+  - Yom Kippur
+  - Hanukkah
+  - Kwanzaa
+  - Christmas Eve
+  - New Year's Eve
 
 ordinal:
   - first

@@ -3,7 +3,6 @@ import re
 import uuid
 from collections import Counter
 from typing import List, Union, Tuple, Optional, Dict
-import glob
 import csv
 import os
 import json
@@ -206,9 +205,16 @@ def substitute_code(
         )
 
     if options["strip"]:
-        new_code = "\n".join([r for r in new_code.split("\n") if r != "__DELETE__"])
-        new_code = re.sub(r"^(.*)[\s]{2,}", r"\1 ", new_code, 1)
-        new_code = re.sub(r"([^\s])\s+\"", r'\1"', new_code, 1)
+        new_code = new_code.strip()
+        new_code = "\n".join(
+            [r if r != "__DELETE__" else "\n" for r in new_code.split("\n")]
+        )
+        new_code = re.sub(
+            r"^(.*)[^\S\n\r]{2,}", r"\1 ", new_code, 1
+        )  # remove double spaces in strings
+        new_code = re.sub(
+            r"(\".*)[^\S\n\r]+\"", r'\1"', new_code, 1
+        )  # remove trailing spaces in strings enclosed in double quotes
 
     return new_code
 

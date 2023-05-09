@@ -1,4 +1,7 @@
 {
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+  "python.analysis.extraPaths": ["./src/api/v6"],
+  "python.envFile": "${workspaceFolder}/.env",
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "python.testing.autoTestDiscoverOnSaveEnabled": true
 }

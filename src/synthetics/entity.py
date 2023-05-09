@@ -264,7 +264,7 @@ class Entity:
         # then set var value to the parent var value
         if (
             self.var
-            and ((child.var is None) or (self.get_type() == child.get_type()))
+            and ((child.var is None) or (self.get_type() is not None and self.get_type() == child.get_type()))
             and not self.var.startswith("$")
         ):
             var_value = self.var
@@ -361,19 +361,19 @@ class Entity:
         default_options = {"print_stack": []}
         options = {**default_options, **options}
 
-        if coreferenced_entity := self.get_coreference_entity():
-            code = (
-                coreferenced_entity.to_code()
-                # if the coreference is before the code then use the coreference code
-                if self.code_index > coreferenced_entity.code_index
-                else "__DELETE__"
-            )
-            coreferenced_entity.coreference_entities.append(self)
-            return code
-        elif self.coreference_entities:
-            coreferred_entity = next(iter(self.coreference_entities))
-            if self.code_index < coreferred_entity.code_index:
-                return "__DELETE__"
+        # if coreferenced_entity := self.get_coreference_entity():
+        #     code = (
+        #         coreferenced_entity.to_code()
+        #         # if the coreference is before the code then use the coreference code
+        #         if self.code_index > coreferenced_entity.code_index
+        #         else "__DELETE__"
+        #     )
+        #     coreferenced_entity.coreference_entities.append(self)
+        #     return code
+        # elif self.coreference_entities:
+        #     coreferred_entity = next(iter(self.coreference_entities))
+        #     if self.code_index < coreferred_entity.code_index:
+        #         return "__DELETE__"
 
         child_labels = get_labels(value=self.code, ignore_regex="\\:var$")
         for child_label in child_labels:
@@ -388,6 +388,20 @@ class Entity:
                 code_value = child.to_text(options)
             else:
                 code_value = child.to_code(options)
+                
+                if coreferenced_entity := child.get_coreference_entity():
+                    code_value = (
+                        coreferenced_entity.to_code()
+                        # if the coreference is before the code then use the coreference code
+                        if self.code_index < coreferenced_entity.code_index
+                        else "__DELETE__"
+                    )
+                    coreferenced_entity.coreference_entities.append(child)
+                    # return code
+                elif child.coreference_entities:
+                    coreferred_entity = next(iter(child.coreference_entities))
+                    if child.code_index < coreferred_entity.code_index:
+                        code_value = "__DELETE__"
 
             var_value = self.get_var_value(key=child.key, child=child)
 

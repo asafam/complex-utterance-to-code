@@ -1,7 +1,13 @@
-message_verb:
+message_content_type_verb:
+  - text: ${message_content_type_verb_item}
+    code: ${message_content_type_verb:var} = ContentType.resolve_from_text("${message_content_type_verb_item}")
+    var: message_content_type
+
+message_content_type_verb_item:
   - text
   - email
   - message
+  - shoot
 
 messages_possession_verb:
   - have
@@ -46,30 +52,40 @@ message_date_times:
     code: ${date_times}
     var: ${date_times:var}
 
-message_exact_content:
-  - text: ${message_content_item}
+message_content_type:
+  - text: ${message_content_type_item}
+    code: ${message_content_type:var} = ContentType.resolve_from_text("${message_content_type_item}")
+    var: message_content_type
+
+message_content_type_item:
+  - an email
+  - a message
+  - a text
+
+message_content:
+  - text: ${containing|saying|letting her know|} ${message_content_item}
     code: |
-      ${message_exact_content:var} = Content.resolve_from_text("${message_content_item}")
-    var: exact_content
+      ${message_content:var} = Content.resolve_from_text("${message_content_item}")
+    var: content
     coreference_value:
       - value: that message
 
-message_exact_contents:
+message_contents:
   - text: ${message_content_item.1} and ${message_content_item.2}
     code: |
-      ${message_exact_contents:var} = Content.resolve_many_from_text("${message_content_item.1} and ${message_content_item.2}")
-    var: exact_contents
+      ${message_contents:var} = Content.resolve_many_from_text("${message_content_item.1} and ${message_content_item.2}")
+    var: contents
     coreference_value:
       - value: that message
 
 message_content_item:
   - text: to meet us inside the restaurant
     code: meet us inside the restaurant
-  - text: to cancel my ${product_item} order
-    code: cancel my ${product_item} order
+  - text: to cancel my ${product_name_item} order
+    code: cancel my ${product_name_item} order
   - text: "to see if ${recipient[{'syn': {'form': 'subj'}}]} is there"
     code: "see if ${recipient[{'syn': {'form': 'subj'}}]:text} is there"
-  - text: to tell ${recipient} that I'll be out of the office for the next two hours
+  - text: to tell ${name} that I'll be out of the office for the next two hours
     code: I'll be out of the office for the next two hours
   - text: that I will be on time
     code: I will be on time
@@ -79,24 +95,24 @@ message_content_item:
     code: I will be there in 10 minutes
   - text: that I will be in in 10 minutes
     code: I will be in in 10 minutes
-  - text: and let ${recipient} know that I will be there in 10 minutes
-    code: I will be there in 10 minutes
+  - text: "and let ${recipient[{'syn': {'form': 'subj'}}]} know that I will be there in 10 minutes"
+    code: "I will be there in 10 minutes"
   - text: where I am staying ${at|}
     code: where I am staying ${at|}
   - text: when I will ${arrive|be there}
     code: when I will ${arrive|be there}
-  - text: ${and ask ${recipient} to meet for coffee
-    code: ask ${recipient} to meet for coffee
-  - text: asking if ${product_item} is cheaper on ${faker_company}
-    code: asking if ${product_item} is cheaper on ${faker_company}
-  - text: asking if it's going to be ${weather_condition_gerund_term} on ${day_of_week}
-    code: asking if it's going to be ${weather_condition_gerund_term} on ${day_of_week}
+  - text: "and ask ${recipient[{'syn': {'form': 'subj'}}]} to meet for coffee"
+    code: "ask ${recipient[{'syn': {'form': 'subj'}}]:text} to meet for coffee"
+  - text: asking if ${product_name_item} is cheaper on ${faker_company}
+    code: asking if ${product_name_item} is cheaper on ${faker_company}
+  - text: asking if it's going to be ${weather_attribute_gerund_term} on ${day_of_week}
+    code: asking if it's going to be ${weather_attribute_gerund_term} on ${day_of_week}
 
 message_content_attachment:
   - text: ${message_content_attachment_item}
     code: |
       ${message_content_attachment:var} = Content.resolve_from_text("${message_content_attachment_item}")
-    var: exact_content
+    var: content
     coreference_value:
       - value: that message
 

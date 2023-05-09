@@ -15,6 +15,7 @@ class Music:
         playlist: Optional[Playlist] = None,
         music_type: Optional[MusicType] = None,
         song: Optional[Song] = None,
+        date_time: Optional[DateTime] = None,
     ) -> List[MusicEntity]:
         music = MusicEntity(
             album=album,
@@ -23,8 +24,10 @@ class Music:
             playlist=playlist,
             music_type=music_type,
             song=song,
+            date_time=date_time,
         )
-
+        data_model = DataModel()
+        data_model.append(music)
         return music
 
     # @classmethod

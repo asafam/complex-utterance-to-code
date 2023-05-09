@@ -9,26 +9,26 @@ home_command_query:
     var: ${home_query:var}
 
 home_device_command:
-  - text: ${home_device_temperature_action} ${home_device_temperature_name} to ${home_device_temperature_value}
+  - text: ${home_device_temperature_action} ${home_device_temperature_name} ${home_device_temperature_value}
     code: |
       ${home_device_temperature_action}
       ${home_device_temperature_name}
       ${home_device_temperature_value}
       SmartHome.execute_home_device_action(device_action=${home_device_temperature_action:var}, device_name=${home_device_temperature_name:var}, device_value=${home_device_temperature_value:var})
-  - text: ${home_device_temperature_action} ${home_device_temperature_name} to ${home_device_temperature_value} ${home_device_date_time}
+  - text: ${home_device_temperature_action} ${home_device_temperature_name} ${home_device_temperature_value} ${home_device_date_time}
     code: |
       ${home_device_temperature_action}
       ${home_device_temperature_name}
       ${home_device_temperature_value}
       ${home_device_date_time}
       SmartHome.execute_home_device_action(device_action=${home_device_temperature_action:var}, device_name=${home_device_temperature_name:var}, device_value=${home_device_temperature_value:var}, date_time=${home_device_date_time:var})
-  - text: ${home_device_states_action} ${home_device_states_name} to ${home_device_states_value}
+  - text: ${home_device_states_action} ${home_device_states_name} ${home_device_states_value}
     code: |
       ${home_device_states_action}
       ${home_device_states_name}
       ${home_device_states_value}
       SmartHome.execute_home_device_action(device_action=${home_device_states_action:var}, device_name=${home_device_states_name:var}, device_value=${home_device_states_value:var})
-  - text: ${home_device_states_action} ${home_device_states_name} to ${home_device_states_value} ${home_device_date_time}
+  - text: ${home_device_states_action} ${home_device_states_name} ${home_device_states_value} ${home_device_date_time}
     code: |
       ${home_device_states_action}
       ${home_device_states_name}

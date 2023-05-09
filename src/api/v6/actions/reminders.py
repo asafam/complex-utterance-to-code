@@ -2,7 +2,7 @@ from typing import Any, List, Mapping, Union, Optional
 from entities.resolvable import Resolvable
 from entities.generic import *
 from entities.reminder import Content, ReminderEntity
-from entities.calendar import CalendarEvent
+from entities.calendar import EventCalendar
 from exceptions.exceptions import UnderspecificationException
 from providers.data_model import DataModel
 
@@ -14,7 +14,7 @@ class Reminders(Resolvable):
         content: Content,
         person_reminded: Optional[Contact] = None,
         date_time: Optional[DateTime] = None,
-        calendar_event: Optional[CalendarEvent] = None,
+        calendar_event: Optional[EventCalendar] = None,
         recovered_args: Optional[Mapping[str, Any]] = None,
     ) -> ReminderEntity:
         if not content:
@@ -51,15 +51,15 @@ class Reminders(Resolvable):
         data = data_model.get_data(ReminderEntity)
         if date_time:
             if type(date_time) == list:
-                data = [x for x in data if x.data.get("date_time") in date_time]
+                data = [x for x in data if x.date_time in date_time]
             else:
-                data = [x for x in data if x.data.get("date_time") == date_time]
+                data = [x for x in data if x.date_time == date_time]
 
         if person_reminded:
-            data = [x for x in data if x.data.get("person_reminded") == person_reminded]
+            data = [x for x in data if x.person_reminded == person_reminded]
 
         if content:
-            data = [x for x in data if x.data.get("content") == content]
+            data = [x for x in data if x.content == content]
 
         return data
 

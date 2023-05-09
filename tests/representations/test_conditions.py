@@ -1,4 +1,4 @@
-from representations.text_tree_builder import TextTreeBuilder
+from representations.builders.lang.text_tree_builder import TextTreeBuilder
 
 
 def test01():

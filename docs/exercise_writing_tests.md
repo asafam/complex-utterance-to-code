@@ -44,13 +44,13 @@ Check the weather for the 4th of July and send a text to Grandpa that he should 
     data_weather_forecasts_list = data_model.get_data(WeatherForecast)
     assert len(data_weather_forecasts_list) == 1
     data_weather_forecasts = data_weather_forecasts_list[0]
-    assert test_equal(data_weather_forecasts[0].data.get("date_time"), data_date_time)
+    assert test_equal(data_weather_forecasts[0].date_time, data_date_time)
     # test assertions for the 2nd command
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert test_equal(data_message.data.get("recipient"), data_recipient)
-    assert test_equal(data_message.data.get("content"), data_content)
+    assert test_equal(data_message.recipient, data_recipient)
+    assert test_equal(data_message.content, data_content)
     ```
 
 ## Exercise 2
@@ -99,8 +99,8 @@ If it rains tomorrow message dad that I will be running late.
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert test_equal(data_message.data.get("recipient"), data_recipient)
-    assert test_equal(data_message.data.get("content"), data_content)
+    assert test_equal(data_message.recipient, data_recipient)
+    assert test_equal(data_message.content, data_content)
     ```
 
     Additional test for the case the condition is not met:
@@ -170,10 +170,10 @@ Text Stacy and Amanda that dinner will be ready in one hour.
     # assertions
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 2
-    assert test_equal(data_messages[0].data.get("recipient"), data_contact_stacy)
-    assert test_equal(data_messages[0].data.get("content"), data_content)
-    assert test_equal(data_messages[1].data.get("recipient"), data_contact_amanda)
-    assert test_equal(data_messages[1].data.get("content"), data_content)
+    assert test_equal(data_messages[0].recipient, data_contact_stacy)
+    assert test_equal(data_messages[0].content, data_content)
+    assert test_equal(data_messages[1].recipient, data_contact_amanda)
+    assert test_equal(data_messages[1].content, data_content)
     ```
 
 ## Exercise 4
@@ -212,9 +212,9 @@ Send Tyler a text saying hi and send one to Susan too.
     data_messages = data_model.get_response(MessageEntity)
     assert len(data_messages) == 2
     data_message1 = data_messages[0]
-    assert test_equal(data_message1.data.get("recipient"), data_contact1)
-    assert test_equal(data_message1.data.get("content"), data_content)
+    assert test_equal(data_message1.recipient, data_contact1)
+    assert test_equal(data_message1.content, data_content)
     data_message2 = data_messages[1]
-    assert test_equal(data_message2.data.get("recipient"), data_contact2)
-    assert test_equal(data_message2.data.get("content"), data_content)
+    assert test_equal(data_message2.recipient, data_contact2)
+    assert test_equal(data_message2.content, data_content)
     ```

@@ -1,5 +1,5 @@
 from entities.generic import *
-from entities.events import *
+from entities.calendar import *
 from entities.message import *
 from entities.music import *
 from entities.navigation import *
@@ -8,7 +8,7 @@ from entities.shopping import *
 from entities.weather import *
 from actions.calendar import Calendar
 from actions.clock import *
-from actions.events import *
+from actions.calendar import *
 from actions.messages import Messages
 from actions.music import Music
 from actions.navigation import Navigation
@@ -47,12 +47,12 @@ def test_e0():
     data_messages_lists = data_model.get_response([MessageEntity])
     assert len(data_messages_lists) == 2
     data_message1 = data_messages_lists[0]
-    assert data_message1.data.get("recipient") == data_contact1
-    assert data_message1.data.get("content") == data_content
+    assert data_message1.recipient == data_contact1
+    assert data_message1.content == data_content
     data_message2 = data_messages_lists[1]
-    assert data_message2.data.get("recipient") == data_contact2
-    assert data_message2.data.get("content") == data_content
-    
+    assert data_message2.recipient == data_contact2
+    assert data_message2.content == data_content
+
 
 def test_e1():
     """
@@ -76,7 +76,7 @@ def test_e1():
         value="we will be meeting at 3 PM for lunch",
     )
     data_model.append(data_content_message)
-    
+
     # start code block to test
     # end code block to test
 
@@ -84,14 +84,11 @@ def test_e1():
     data_events = data_model.get_data(EventEntity)
     assert len(data_events) == 1
     data_event = data_events[0]
-    assert data_event.data.get("date_time") == data_date_time
-    assert data_event.data.get("event_name") == data_event_name
+    assert data_event.date_time == data_date_time
+    assert data_event.event_name == data_event_name
 
     data_messages = data_model.get_data(MessageEntity)
     assert len(data_messages) == 1
     data_message = data_messages[0]
-    assert data_message.data.get("recipient") == data_recipient
-    assert data_message.data.get("content") == data_content_message
-
-
-
+    assert data_message.recipient == data_recipient
+    assert data_message.content == data_content_message

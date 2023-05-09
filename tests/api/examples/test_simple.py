@@ -53,16 +53,10 @@ def test_simple1():
     assert len(data_weather_forecasts_list) > 0
     data_weather_forecasts = data_weather_forecasts_list[-1]
     assert len(list(data_weather_forecasts)) == 2
-    assert list(data_weather_forecasts)[0].data.get("date_time") == data_date_time1
-    assert (
-        list(data_weather_forecasts)[0].data.get("weather_attribute")
-        == data_weather_attribute
-    )
-    assert list(data_weather_forecasts)[1].data.get("date_time") == data_date_time2
-    assert (
-        list(data_weather_forecasts)[1].data.get("weather_attribute")
-        == data_weather_attribute
-    )
+    assert list(data_weather_forecasts)[0].date_time == data_date_time1
+    assert list(data_weather_forecasts)[0].weather_attribute == data_weather_attribute
+    assert list(data_weather_forecasts)[1].date_time == data_date_time2
+    assert list(data_weather_forecasts)[1].weather_attribute == data_weather_attribute
 
 
 def test_simple2():
@@ -91,25 +85,25 @@ def test_simple0():
     """
     # test data
     data_model = DataModel(reset=True)
-    data_product = Product(text="Pepsi", value="Pepsi")
+    data_product_name = ProductName(text="Pepsi", value="Pepsi")
     data_model.append(data_product)
     data_location1 = DateTime(text="Walmart", value="Walmart")
     data_model.append(data_location1)
     data_location2 = DateTime(text="Walgreens", value="Walgreens")
     data_model.append(data_location2)
-    data_model.append(ProductEntity(product=data_product, location=data_location1))
-    data_model.append(ProductEntity(product=data_product, location=data_location2))
+    data_model.append(ProductEntity(product_name=data_product, location=data_location1))
+    data_model.append(ProductEntity(product_name=data_product, location=data_location2))
 
     # start code block to test
     results = []
 
-    product = Product.resolve_from_text("Pepsi")
+    product_name = ProductName.resolve_from_text("Pepsi")
     location = DateTime.resolve_from_text("Walmart")
-    products = Shopping.find_products(product=product, location=location)
+    products = Shopping.find_products(product_name=product_name, location=location)
     results += products
 
     location = DateTime.resolve_from_text("Walgreens")
-    products = Shopping.find_products(product=product, location=location)
+    products = Shopping.find_products(product_name=product_name, location=location)
     results += products
 
     Responder.respond(response=results)
@@ -119,7 +113,7 @@ def test_simple0():
     data_products_list = data_model.get_data(ProductEntity)
     assert len(data_products_list) == 2
     data_products = data_products_list
-    assert data_products[0].data.get("product") == data_product
-    assert data_products[0].data.get("location") == data_location1
-    assert data_products[1].data.get("product") == data_product
-    assert data_products[1].data.get("location") == data_location2
+    assert data_products[0].product_name == data_product
+    assert data_products[0].location == data_location1
+    assert data_products[1].product_name == data_product
+    assert data_products[1].location == data_location2

@@ -6,7 +6,7 @@ class OrderEntity(Entity, Resolvable):
     pass
 
 
-class Product(Entity, Resolvable):
+class ProductName(Entity, Resolvable):
     pass
 
 
@@ -15,6 +15,10 @@ class ProductAttribute(Entity, Resolvable):
 
 
 class ProductEntity(Entity, Resolvable):
+    pass
+
+
+class ShoppingListName(Entity, Resolvable):
     pass
 
 

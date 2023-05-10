@@ -485,7 +485,7 @@ class Node:
             node = Node(label=text)
             return node
 
-        items = text.split("[", 1)
+        items = text.split("[ ", 1)
         label = items[0].strip()
         node = Node(label=label, head=(label == "hd"), root=(label == "root"))
 

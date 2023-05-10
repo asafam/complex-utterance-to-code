@@ -497,9 +497,9 @@ class Node:
         count = 0
         for token in tokens:
             child.append(token)
-            if token.startswith("["):
+            if token.startswith("[") and token != '[]':
                 count += 1
-            elif token.endswith("]"):
+            elif token.endswith("]") and token != '[]':
                 count -= 1
                 if count == 0:
                     child_text = " ".join(child)

@@ -1,10 +1,10 @@
-destination = Location.resolve_from_text("New Robert")
-date_time = DateTime.resolve_from_text("5 AM")
-duration = Navigation.find_duration(destination=destination, date_time=date_time)
-Responder.respond(response=duration)
+event_names = EventName.resolve_many_from_text("free events")
+date_times = DateTime.resolve_many_from_text("this weekend")
+events = []
+for event_name in event_names:
+    for date_time in date_times:
+        events += Calendar.find_events(event_name=event_name, date_time=date_time)
+Responder.respond(response=events)
 
-if [destination]:
-    data = [x for x in data if x.destination == destination]
-    person_reminded = Contact.resolve_from_text("me")
-    content = Content.resolve_from_text("bring a coat")
-    Reminder.create_reminder(person_reminded=person_reminded, content=content)
+weather_forecasts = Weather.find_weather_forecasts()
+Responder.respond(response=weather_forecasts)

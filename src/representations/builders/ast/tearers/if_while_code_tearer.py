@@ -35,7 +35,7 @@ class IfWhileCodeTearer(BaseTearer):
         ):
             body_node = node.children[1]
             for child in body_node.children:
-                if child.label in ["If", "While"]:
+                if child.label in ["If", "While", "For"]:
                     tearer = factory.get_tearer(child)
                     item = tearer.tear(child)
                 else:

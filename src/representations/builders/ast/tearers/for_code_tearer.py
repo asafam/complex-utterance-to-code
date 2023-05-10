@@ -10,6 +10,9 @@ class ForCodeTearer(BaseTearer):
     def is_match(self, node):
         return node.label == "For"
 
+    def get_priority(self) -> int:
+        return 1000
+
     def tear(self, node: Node) -> Any:
         factory = TearerFactory()
 

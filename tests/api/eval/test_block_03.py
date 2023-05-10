@@ -1,7 +1,7 @@
 from entities.generic import *
-from entities.clock import *
 from entities.calendar import *
 from entities.home import *
+from entities.map import *
 from entities.message import *
 from entities.music import *
 from entities.navigation import *
@@ -12,18 +12,18 @@ from actions.calendar import *
 from actions.clock import *
 from actions.calendar import *
 from actions.home import *
-from actions.messages import Messages
-from actions.music import Music
-from actions.navigation import Navigation
-from actions.reminders import Reminders
-from actions.responder import Responder
-from actions.shopping import Shopping
-from actions.weather import Weather
+from actions.map import *
+from actions.messages import *
+from actions.music import *
+from actions.navigation import *
+from actions.reminders import *
+from actions.responder import *
+from actions.shopping import *
+from actions.weather import *
 from providers.data_model import DataModel
 from datetime import datetime, timedelta
-from tests.test_utils import *
 import utils.api_utils as utils
-from test_utils import assert_equal, assert_match, assert_not_none, assert_test
+from utils.test_utils import *
 
 
 def test_52():

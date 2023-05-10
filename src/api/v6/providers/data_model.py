@@ -47,7 +47,7 @@ class DataModel:
             ]
         else:
             items = [x for x in self._output if type(x) == T]
-        return items
+        return items or [[]]
     
     def reset(self):
         self._data = []

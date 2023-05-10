@@ -1,24 +1,29 @@
 from entities.generic import *
 from entities.calendar import *
+from entities.home import *
+from entities.map import *
 from entities.message import *
 from entities.music import *
 from entities.navigation import *
 from entities.reminder import *
 from entities.shopping import *
 from entities.weather import *
+from actions.calendar import *
 from actions.clock import *
 from actions.calendar import *
-from actions.messages import Messages
-from actions.music import Music
-from actions.navigation import Navigation
-from actions.reminders import Reminders
-from actions.responder import Responder
-from actions.shopping import Shopping
-from actions.weather import Weather
+from actions.home import *
+from actions.map import *
+from actions.messages import *
+from actions.music import *
+from actions.navigation import *
+from actions.reminders import *
+from actions.responder import *
+from actions.shopping import *
+from actions.weather import *
 from providers.data_model import DataModel
 from datetime import datetime, timedelta
 import utils.api_utils as utils
-from test_utils import *
+from utils.test_utils import *
 
 
 def test_0():
@@ -75,6 +80,7 @@ def test_0():
 
     # assertions
     test_results = {}
+
     iterator = iter(data_model.get_response([ProductEntity]))
 
     expected = [data_product1, data_product6]
@@ -176,9 +182,11 @@ def test_1_b():
 
     # assertions
     test_results = {}
+
     actual = data_model.get_data(AlarmEntity)
     expected = [{"date_time": data_date_time800}]
     entity_assertions(expected, actual, test_results)
+
     assert_test(test_results)
 
 

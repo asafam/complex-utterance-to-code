@@ -23,7 +23,7 @@ from actions.weather import *
 from providers.data_model import DataModel
 from datetime import datetime, timedelta
 import utils.api_utils as utils
-from tests.test_utils import *
+from utils.test_utils import *
 
 
 def test_22():

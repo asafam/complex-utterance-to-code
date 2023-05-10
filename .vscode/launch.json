@@ -101,6 +101,22 @@
         "--input_file",
         "examples/code/example1.py"
       ]
+    },
+
+    {
+      "name": "Python: eval_extractor",
+      "type": "python",
+      "request": "launch",
+      "program": "src/eval_extractor.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--input_file_path_regexp",
+        "tests/api/eval/test_*.py",
+        "--output_file",
+        "build/eval_complex_utterance_to_code_with_intermediate_61_20230509.csv.gz",
+        "--lang_representations",
+        "--code_representations"
+      ]
     }
   ]
 }

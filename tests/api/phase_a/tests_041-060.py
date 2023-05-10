@@ -21,7 +21,7 @@ from actions.shopping import Shopping
 from actions.weather import Weather
 from providers.data_model import DataModel
 from datetime import datetime, timedelta
-from tests.test_utils import *
+from utils.test_utils import *
 import utils
 
 

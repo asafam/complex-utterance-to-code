@@ -7,9 +7,7 @@ from typing import Callable, Optional
 
 
 class MessageEntity(Entity):
-    date_time: DateTime
-    sender: Contact
-    content: Content
+    pass
 
 
 class MessageStatus(Entity, Resolvable):

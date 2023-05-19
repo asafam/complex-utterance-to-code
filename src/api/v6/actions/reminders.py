@@ -1,35 +1,47 @@
 from typing import Any, List, Mapping, Union, Optional
-from entities.resolvable import Resolvable
+from actions.action import Action
 from entities.generic import *
-from entities.reminder import Content, ReminderEntity
-from entities.calendar import EventCalendar
-from exceptions.exceptions import UnderspecificationException
+from entities.reminder import *
 from providers.data_model import DataModel
 
 
-class Reminders(Resolvable):
+class Reminders(Action):
+    """
+    The Reminders class contains all the methods of a virtual assistant agent in the reminders domain.
+    This class define a specific API for the reminders domain and inherits from the markup Action class.
+    This class defines an API to:
+
+        * Create a reminder
+        * Find reminders
+        * Delete reminders
+
+    Reminders are associated with a reminded person, a reminded content and a date time.
+    """
+
     @classmethod
     def create_reminder(
         cls,
-        content: Content,
+        content: Optional[Content] = None,
         person_reminded: Optional[Contact] = None,
         date_time: Optional[DateTime] = None,
-        calendar_event: Optional[EventCalendar] = None,
-        recovered_args: Optional[Mapping[str, Any]] = None,
     ) -> ReminderEntity:
-        if not content:
-            payload = {
-                "date_time": date_time,
-                "person_reminded": person_reminded,
-                "content": content,
-                "calendar_event": calendar_event,
-                "recovered_args": recovered_args,
-            }
-            raise UnderspecificationException(
-                payload=payload,
-                recovery_prompt="What should be reminded?",
-                message="content argument is missing",
-            )
+        """
+        This class method creates a reminder.
+
+        Parameters
+        ----------
+        content : Content, Optional
+            The content of the reminder.
+        person_reminded : Contact, optional
+            The person to be reminded.
+        date_time : DateTime, optional
+            The date and time of the reminder.
+
+        Returns
+        -------
+        ReminderEntity
+            The reminder entity object that was created
+        """
         reminder = ReminderEntity(
             date_time=date_time,
             person_reminded=person_reminded,
@@ -39,7 +51,6 @@ class Reminders(Resolvable):
         data_model.append(reminder)
         return reminder
 
-    # @exception_handler
     @classmethod
     def find_reminders(
         cls,
@@ -47,6 +58,23 @@ class Reminders(Resolvable):
         date_time: Optional[DateTime] = None,
         content: Optional[Content] = None,
     ) -> List[ReminderEntity]:
+        """
+        This class method finds existing reminders.
+
+        Parameters
+        ----------
+        content : Content
+            The content of the reminder.
+        person_reminded : Contact, optional
+            The person to be reminded.
+        date_time : DateTime, optional
+            The date and time of the reminder.
+
+        Returns
+        -------
+        List[ReminderEntity]
+            A list of reminder entity objects that were found
+        """
         data_model = DataModel()
         data = data_model.get_data(ReminderEntity)
         if date_time:
@@ -66,7 +94,20 @@ class Reminders(Resolvable):
     @classmethod
     def delete_reminders(
         cls, reminders: Union[ReminderEntity, List[ReminderEntity]]
-    ) -> bool:
+    ) -> List[ReminderEntity]:
+        """
+        This class method delete reminders.
+
+        Parameters
+        ----------
+        reminders : Union[ReminderEntity, List[ReminderEntity]]
+            The reminders to be deleted. Can be a single reminder or a list of reminders.
+
+        Returns
+        -------
+        List[ReminderEntity]
+            The list of reminders that were deleted
+        """
         data_model = DataModel()
         data = data_model.get_data(ReminderEntity)
         if reminders:

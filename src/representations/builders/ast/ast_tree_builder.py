@@ -35,9 +35,9 @@ class ASTTreeBuilder(BaseTreeBuilder):
         builder = factory.get_builder(asdl)
         root_node = builder.build(asdl)
 
-        tearer = TearerFactory().get_tearer(root_node)
-        asdl2 = tearer.tear(root_node)
-        x = ast.unparse(asdl2)
-        print(x)
+        # tearer = TearerFactory().get_tearer(root_node)
+        # asdl2 = tearer.tear(root_node)
+        # x = ast.unparse(asdl2)
+        # print(x)
         
         return root_node

@@ -196,10 +196,8 @@ def test_2():
     """
     # test data
     data_model = DataModel(reset=True)
-    data_artist = Artist(text="Taylor Swift", value="Taylor Swift")
-    data_model.append(data_artist)
-    data_music_type = MusicType(text="album", value="album")
-    data_model.append(data_music_type)
+    data_album = Album(text="the new Taylor Swift album")
+    data_model.append(data_album)
     data_date_time_today = DateTime(text="today", value=datetime.now())
     data_model.append(data_date_time_today)
     data_shopping_list1 = ShoppingListEntity(date_time=data_date_time_today)
@@ -212,9 +210,8 @@ def test_2():
     data_model.append(data_shopping_list2)
 
     # start code block to test
-    artist = Artist.resolve_from_text("Taylor Swift")
-    music_type = MusicType.resolve_from_text("album")
-    Music.play_music(artist=artist, music_type=music_type)
+    album = Album.resolve_from_text("the new Taylor Swift album")
+    Music.play_music(album=album)
 
     date_time = DateTime.resolve_from_text("today")
     shopping_lists = Shopping.find_shopping_lists(date_time=date_time)
@@ -224,7 +221,7 @@ def test_2():
     # assertions
     test_results = {}
     actual = data_model.get_data(MusicEntity)
-    expected = [{"artist": data_artist, "music_type": data_music_type}]
+    expected = [{"album": data_album}]
     entity_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([ShoppingListEntity]))
@@ -499,8 +496,9 @@ def test_7():
         {
             "date_time": data_date_time_21,
             "person_reminded": data_contact,
-            "content": Content(value=data_model.get_data(OrderEntity)[0]),
+            "content": Content(value=order),
         }
+        for order in data_model.get_data(OrderEntity)
     ]
     entity_assertions(expected, actual, test_results)
 
@@ -571,8 +569,8 @@ def test_9():
     data_model.append(data_date_time)
     data_weather_forecasts = WeatherForecastEntity(date_time=data_date_time)
     data_model.append(data_weather_forecasts)
-    data_contact = Contact(text="Grandpa", value="Grandpa")
-    data_model.append(data_contact)
+    data_recipient = Contact(text="Grandpa", value="Grandpa")
+    data_model.append(data_recipient)
     data_content1 = Content(text="invite him over", value="invite him over")
     data_model.append(data_content1)
     data_content2 = Content(text="tell him the weather", value=data_weather_forecasts)
@@ -604,11 +602,7 @@ def test_9():
     actual = data_model.get_data(MessageEntity)
     expected = [
         {
-            "recipient": data_contact,
-            "content": data_content1,
-        },
-        {
-            "recipient": data_contact,
+            "recipient": data_recipient,
             "content": Content(value=[data_weather_forecasts]),
         },
     ]

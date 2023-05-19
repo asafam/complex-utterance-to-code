@@ -558,8 +558,8 @@ def test_38():
     tickets = Calendar.purchase_tickets(event_name=event_name)
 
     message_content_type = MessageContentType.resolve_from_text("email")
-    content = Content.resolve_from_entity(tickets)
     recipient = Contact.resolve_from_text("Carlos")
+    content = Content.resolve_from_entity(tickets)
     Messages.send_message(
         recipient=recipient, content=content, message_content_type=message_content_type
     )
@@ -576,9 +576,9 @@ def test_38():
     expected = [
         {
             "recipient": data_recipient,
-            "content": Content(value=tickets),
+            "content": Content(value=ticket),
             "message_content_type": message_content_type,
-        }
+        } for ticket in data_model.get_data(EventTicketEntity)
     ]
     entity_assertions(expected, actual, test_results)
 

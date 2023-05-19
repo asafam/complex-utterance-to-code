@@ -15,9 +15,14 @@ def response_assertions(expected, actual, test_results, options={}):
     default_options = {"fail": bool(eval(os.environ.get("TEST_FAIL", "False")))}
     options = {**default_options, **options}
 
-    result = assert_equal(len(expected), len(actual), test_results) and assert_true(
-        all(any(is_equal(e, a) for a in actual) for e in expected),
-        test_results,
+    result = (
+        expected
+        and actual
+        and assert_equal(len(expected), len(actual), test_results)
+        and assert_true(
+            all(any(is_equal(e, a) for a in actual) for e in expected),
+            test_results,
+        )
     )
 
     return result
@@ -50,7 +55,9 @@ def entity_assertions(expected, actual, test_results, options={}):
             result = (
                 all(
                     assert_equal(
-                        getattr(a, attr) if hasattr(a, attr) else None, value, test_results
+                        getattr(a, attr) if hasattr(a, attr) else None,
+                        value,
+                        test_results,
                     )
                     for attr, value in e.items()
                 )

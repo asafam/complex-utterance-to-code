@@ -1,0 +1,12 @@
+"""
+entities.reminders
+"""
+
+
+class ReminderEntity(Entity):
+    """
+    The ReminderEntity class is used to represent a reminder.
+    This class inherits from the Entity class.
+    """
+
+    pass

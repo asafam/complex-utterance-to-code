@@ -19,12 +19,12 @@ from synthetics.data_generator.faker import FakerDataGenerator
 
 class Sampler:
     def __init__(
-        self, grammar_file: str = "config/grammar", seed: Optional[int] = None
+        self, grammar_dir: str = "config/grammar", seed: Optional[int] = None
     ):
         if seed:
             random.seed(seed)
 
-        self.grammar = self._load_grammar(grammar_file)
+        self.grammar = self._load_grammar(grammar_dir)
 
     def sample(
         self,

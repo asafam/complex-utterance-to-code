@@ -254,7 +254,7 @@ def test_59():
         text="in the next hour",
     )
     data_model.append(data_date_time)
-    data_location = Location(text="along the route", value=[data_direction])
+    data_location = Location(value=data_direction)
     data_model.append(data_location)
     data_weather_forecast = WeatherForecastEntity(
         location=data_location,
@@ -270,10 +270,12 @@ def test_59():
 
     weather_attribute = WeatherAttribute.resolve_from_text("snow")
     date_time = DateTime.resolve_from_text("in the next hour")
-    location = Location.resolve_from_entity(navigation_directions)
-    weather_forecasts = Weather.find_weather_forecasts(
-        weather_attribute=weather_attribute, location=location, date_time=date_time
-    )
+    weather_forecasts = []
+    for navigation_direction in navigation_directions:
+        location = Location.resolve_from_entity(navigation_direction)
+        weather_forecasts += Weather.find_weather_forecasts(
+            weather_attribute=weather_attribute, location=location, date_time=date_time
+        )
     Responder.respond(response=weather_forecasts)
     # end code block to test
 

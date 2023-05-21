@@ -83,7 +83,7 @@ def test_78_a():
     test_results = {}
 
     iterator = iter(data_model.get_response([MessageEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_message2, data_message3]
     response_assertions(expected, actual, test_results)
 
@@ -147,7 +147,7 @@ def test_78_b():
     test_results = {}
 
     iterator = iter(data_model.get_response([MessageEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = []
     response_assertions(expected, actual, test_results)
 
@@ -198,7 +198,7 @@ def test_79_a():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -254,7 +254,7 @@ def test_79_b():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -324,7 +324,7 @@ def test_80():
     entity_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([MapEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_map_entity3]
     response_assertions(expected, actual, test_results)
 
@@ -536,12 +536,12 @@ def test_86():
     test_results = {}
 
     iterator = iter(data_model.get_response([MapEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_place]
     response_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([NavigationDirectionEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_navigation_direction]
     response_assertions(expected, actual, test_results)
 
@@ -628,7 +628,7 @@ def test_88_a():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = []
     response_assertions(expected, actual, test_results)
 
@@ -692,7 +692,7 @@ def test_88_b():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -760,12 +760,12 @@ def test_92():
     test_results = {}
 
     iterator = iter(data_model.get_response([EventEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_event1, data_event2, data_event3]
     response_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast1, data_weather_forecast2]
     response_assertions(expected, actual, test_results)
 
@@ -826,7 +826,7 @@ def test_94():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast1]
     response_assertions(expected, actual, test_results)
 
@@ -960,7 +960,7 @@ def test_98():
     test_results = {}
 
     iterator = iter(data_model.get_response([EventEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_event1, data_event2]
     response_assertions(expected, actual, test_results)
 
@@ -998,7 +998,7 @@ def test_99():
     test_results = {}
 
     iterator = iter(data_model.get_response(OrderEntity))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = OrderEntity(shopping_list_name=data_shopping_list_name)
     response_assertions([expected], [actual], test_results)
 
@@ -1145,15 +1145,15 @@ def test_105():
     """
     # test data
     data_model = DataModel(reset=True)
-    data_event_name = Content(text="the art festival")
+    data_event_name = EventName(text="the art festival")
     data_model.append(data_event_name)
     data_date_time1 = DateTime(text="this weekend", value="Saturday")
     data_model.append(data_date_time1)
     data_date_time2 = DateTime(text="this weekend", value="Sunday")
     data_model.append(data_date_time2)
-    data_event1 = EventEntity(name=data_event_name, date_time=data_date_time1)
+    data_event1 = EventEntity(event_name=data_event_name, date_time=data_date_time1)
     data_model.append(data_event1)
-    data_event2 = EventEntity(name=data_event_name, date_time=data_date_time2)
+    data_event2 = EventEntity(event_name=data_event_name, date_time=data_date_time2)
     data_model.append(data_event2)
     data_destination1 = Location(value=data_event1)
     data_model.append(data_destination1)
@@ -1174,7 +1174,7 @@ def test_105():
     for date_time in date_times:
         Calendar.purchase_tickets(event_name=event_name, date_time=date_time)
 
-    events = Calendar.find_event(event_name=event_name)
+    events = Calendar.find_events(event_name=event_name)
     navigation_directions = []
     for event in events:
         destination = Location.resolve_from_entity(event)
@@ -1193,7 +1193,7 @@ def test_105():
     entity_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([NavigationDirectionEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_navigation_direction1, data_navigation_direction2]
     response_assertions(expected, actual, test_results)
 
@@ -1258,21 +1258,26 @@ def test_109_a():
     data_model = DataModel(reset=True)
     data_message_content_type = MessageContentType(text="an email")
     data_model.append(data_message_content_type)
-    data_recipient = Contact(text="manager Steve")
-    data_model.append(data_recipient)
-    data_recipient = Contact(text="I")
-    data_model.append(data_recipient)
-    data_content = Content(text="a text confirmation for the meeting from Jennie")
+    data_recipient_steve = Contact(text="manager Steve")
+    data_model.append(data_recipient_steve)
+    data_recipient_i = Contact(text="I")
+    data_model.append(data_recipient_i)
+    data_content = Content(text="a text confirmation for the meeting")
     data_model.append(data_content)
-    data_message = MessageEntity(content=data_content, recipient=data_recipient)
+    data_content_neg = Content(text="cannot attend")
+    data_model.append(data_content_neg)
+    data_sender = Contact.resolve_from_text("Jennie")
+    data_model.append(data_sender)
+    data_message = MessageEntity(content=data_content, recipient=data_recipient_i)
     data_model.append(data_message)
 
     # start code block to test
     recipient = Contact.resolve_from_text("I")
-    content = Content.resolve_from_text(
-        "a text confirmation for the meeting from Jennie"
+    content = Content.resolve_from_text("a text confirmation for the meeting")
+    sender = Contact.resolve_from_text("Jennie")
+    messages = Messages.find_messages(
+        recipient=recipient, sender=sender, content=content
     )
-    messages = Messages.find_messages(recipient=recipient, content=content)
     test_messages = bool(messages)
     if test_messages:
         message_content_type = MessageContentType.resolve_from_text("an email")
@@ -1287,7 +1292,15 @@ def test_109_a():
 
     actual = data_model.get_data(MessageEntity)
     expected = [
-        {"recipient": data_recipient, "message_content_type": data_message_content_type}
+        {
+            "recipient": data_recipient_i,
+            "content": data_content,
+            "sender": data_sender,
+        },
+        {
+            "message_content_type": data_message_content_type,
+            "message_content_type": data_message_content_type,
+        },
     ]
     entity_assertions(expected, actual, test_results)
 
@@ -1302,19 +1315,26 @@ def test_109_b():
     data_model = DataModel(reset=True)
     data_message_content_type = MessageContentType(text="an email")
     data_model.append(data_message_content_type)
-    data_recipient = Contact(text="manager Steve")
-    data_model.append(data_recipient)
-    data_recipient = Contact(text="I")
-    data_model.append(data_recipient)
-    data_content = Content(text="a text confirmation for the meeting from Jennie")
+    data_recipient_steve = Contact(text="manager Steve")
+    data_model.append(data_recipient_steve)
+    data_recipient_i = Contact(text="I")
+    data_model.append(data_recipient_i)
+    data_content = Content(text="a text confirmation for the meeting")
     data_model.append(data_content)
+    data_content_neg = Content(text="cannot attend")
+    data_model.append(data_content_neg)
+    data_sender = Contact.resolve_from_text("Jennie")
+    data_model.append(data_sender)
+    data_message = MessageEntity(content=data_content_neg, recipient=data_recipient_i)
+    data_model.append(data_message)
 
     # start code block to test
     recipient = Contact.resolve_from_text("I")
-    content = Content.resolve_from_text(
-        "a text confirmation for the meeting from Jennie"
+    content = Content.resolve_from_text("a text confirmation for the meeting")
+    sender = Contact.resolve_from_text("Jennie")
+    messages = Messages.find_messages(
+        recipient=recipient, sender=sender, content=content
     )
-    messages = Messages.find_messages(recipient=recipient, content=content)
     test_messages = bool(messages)
     if test_messages:
         message_content_type = MessageContentType.resolve_from_text("an email")
@@ -1322,6 +1342,289 @@ def test_109_b():
         Messages.send_message(
             recipient=recipient, message_content_type=message_content_type
         )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(MessageEntity)
+    expected = [
+        {
+            "recipient": data_recipient_i,
+            "content": data_content_neg,
+            "sender": data_sender,
+        },
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_112_a():
+    """
+    In the case that I receive an email from Kaiser Permanente, remind me to read it after 10 minutes.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_recipient = Contact(text="I")
+    data_model.append(data_recipient)
+    data_message_content_type = MessageContentType(text="an email")
+    data_model.append(data_message_content_type)
+    data_message_content_type_neg = MessageContentType(text="an email")
+    data_model.append(data_message_content_type_neg)
+    data_sender = Contact(text="Kaiser Permanente")
+    data_model.append(data_sender)
+    data_message = MessageEntity(
+        recipient=data_recipient,
+        sender=data_sender,
+        message_content_type=data_message_content_type,
+    )
+    data_model.append(data_message)
+    data_person_reminded = Contact(text="me")
+    data_model.append(data_person_reminded)
+    data_content = Content(text="read it")
+    data_model.append(data_content)
+    data_date_time = DateTime(text="after 10 minutes")
+    data_model.append(data_date_time)
+
+    # start code block to test
+    recipient = Contact.resolve_from_text("I")
+    message_content_type = MessageContentType.resolve_from_text("an email")
+    sender = Content.resolve_from_text("Kaiser Permanente")
+    messages = Messages.find_messages(
+        recipient=recipient, sender=sender, message_content_type=message_content_type
+    )
+    test_messages = bool(messages)
+    if test_messages:
+        person_reminded = Contact.resolve_from_text("me")
+        content = Content.resolve_from_text("read it")
+        date_time = DateTime.resolve_from_text("after 10 minutes")
+        Reminders.create_reminder(
+            person_reminded=person_reminded, content=content, date_time=date_time
+        )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(ReminderEntity)[-1:]
+    expected = [
+        {
+            "person_reminded": data_person_reminded,
+            "content": data_content,
+            "date_time": data_date_time,
+        }
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_112_b():
+    """
+    In the case that I receive an email from Kaiser Permanente, remind me to read it after 10 minutes.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_recipient = Contact(text="I")
+    data_model.append(data_recipient)
+    data_message_content_type = MessageContentType(text="an email")
+    data_model.append(data_message_content_type)
+    data_message_content_type_neg = MessageContentType(text="a text")
+    data_model.append(data_message_content_type_neg)
+    data_sender = Contact(text="Kaiser Permanente")
+    data_model.append(data_sender)
+    data_message = MessageEntity(
+        recipient=data_recipient,
+        sender=data_sender,
+        message_content_type=data_message_content_type_neg,
+    )
+    data_model.append(data_message)
+    data_person_reminded = Contact(text="me")
+    data_model.append(data_person_reminded)
+    data_content = Content(text="read it")
+    data_model.append(data_content)
+    data_date_time = DateTime(text="after 10 minutes")
+    data_model.append(data_date_time)
+
+    # start code block to test
+    recipient = Contact.resolve_from_text("I")
+    message_content_type = MessageContentType.resolve_from_text("an email")
+    sender = Content.resolve_from_text("Kaiser Permanente")
+    messages = Messages.find_messages(
+        recipient=recipient, sender=sender, message_content_type=message_content_type
+    )
+    test_messages = bool(messages)
+    if test_messages:
+        person_reminded = Contact.resolve_from_text("me")
+        content = Content.resolve_from_text("read it")
+        date_time = DateTime.resolve_from_text("after 10 minutes")
+        Reminders.create_reminder(
+            person_reminded=person_reminded, content=content, date_time=date_time
+        )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(ReminderEntity)
+    expected = []
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_113():
+    """
+    On the 2nd of November set a reminder that I will be going out with friends and to remind me every 3 days before the event.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_date_time = DateTime(text="On the 2nd of November")
+    data_model.append(data_date_time)
+    data_content = Content(text="I will be going out with friends")
+    data_model.append(data_content)
+    data_person_reminded = Contact(text="me")
+    data_model.append(data_person_reminded)
+    data_date_times1 = DateTime(text="every 3 days before the event", value="day 1")
+    data_model.append(data_date_times1)
+    data_date_times2 = DateTime(text="every 3 days before the event", value="day 2")
+    data_model.append(data_date_times2)
+
+    # start code block to test
+    date_time = DateTime.resolve_from_text("On the 2nd of November")
+    content = Content.resolve_from_text("I will be going out with friends")
+    Reminders.create_reminder(date_time=date_time, content=content)
+
+    person_reminded = Contact.resolve_from_text("me")
+    date_times = DateTime.resolve_many_from_text("every 3 days before the event")
+    for date_time in date_times:
+        Reminders.create_reminder(person_reminded=person_reminded, date_time=date_time)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(ReminderEntity)
+    expected = [
+        {
+            "date_time": data_date_time,
+            "content": data_content,
+        },
+        {
+            "person_reminded": data_person_reminded,
+            "date_time": data_date_times1,
+        },
+        {
+            "person_reminded": data_person_reminded,
+            "date_time": data_date_times2,
+        },
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_118_a():
+    """
+    In the case that the rain projection is above 90%, text my golf group and say that I am going to today's game.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_weather_attribute = WeatherAttribute(text="rain projection is above 90%")
+    data_model.append(data_weather_attribute)
+    data_weather_attribute_neg = WeatherAttribute(text="hot and sunny")
+    data_model.append(data_weather_attribute_neg)
+    data_weather_forecast = WeatherForecastEntity(
+        weather_attribute=data_weather_attribute
+    )
+    data_model.append(data_weather_forecast)
+    data_message_content_type = MessageContentType(text="text")
+    data_model.append(data_message_content_type)
+    data_recipient1 = Contact(text="my golf group", value="Joe")
+    data_model.append(data_recipient1)
+    data_recipient2 = Contact(text="my golf group", value="Brian")
+    data_model.append(data_recipient2)
+    data_content = Content(text="I am going to today's game")
+    data_model.append(data_content)
+
+    # start code block to test
+    weather_attribute = WeatherAttribute.resolve_from_text(
+        "rain projection is above 90%"
+    )
+    weather_forecasts = Weather.find_weather_forecasts(
+        weather_attribute=weather_attribute
+    )
+    test_weather_forecasts = bool(weather_forecasts)
+    if test_weather_forecasts:
+        message_content_type = MessageContentType.resolve_from_text("text")
+        recipients = Contact.resolve_many_from_text("my golf group")
+        content = Content.resolve_from_text("I am going to today's game")
+        for recipient in recipients:
+            Messages.send_message(
+                recipient=recipient,
+                content=content,
+                message_content_type=message_content_type,
+            )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(MessageEntity)
+    expected = [
+        {
+            "recipient": data_recipient,
+            "content": data_content,
+            "message_content_type": data_message_content_type,
+        } for data_recipient in [data_recipient1, data_recipient2]
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_118_b():
+    """
+    In the case that the rain projection is above 90%, text my golf group and say that I am going to today's game.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_weather_attribute = WeatherAttribute(text="rain projection is above 90%")
+    data_model.append(data_weather_attribute)
+    data_weather_attribute_neg = WeatherAttribute(text="hot and sunny")
+    data_model.append(data_weather_attribute_neg)
+    data_weather_forecast = WeatherForecastEntity(
+        weather_attribute=data_weather_attribute_neg
+    )
+    data_model.append(data_weather_forecast)
+    data_message_content_type = MessageContentType(text="text")
+    data_model.append(data_message_content_type)
+    data_recipient1 = Contact(text="my golf group", value="Joe")
+    data_model.append(data_recipient1)
+    data_recipient2 = Contact(text="my golf group", value="Brian")
+    data_model.append(data_recipient2)
+    data_content = Content(text="I am going to today's game")
+    data_model.append(data_content)
+
+    # start code block to test
+    weather_attribute = WeatherAttribute.resolve_from_text(
+        "rain projection is above 90%"
+    )
+    weather_forecasts = Weather.find_weather_forecasts(
+        weather_attribute=weather_attribute
+    )
+    test_weather_forecasts = bool(weather_forecasts)
+    if test_weather_forecasts:
+        message_content_type = MessageContentType.resolve_from_text("text")
+        recipients = Contact.resolve_many_from_text("my golf group")
+        content = Content.resolve_from_text("I am going to today's game")
+        for recipient in recipients:
+            Messages.send_message(
+                recipient=recipient,
+                content=content,
+                message_content_type=message_content_type,
+            )
     # end code block to test
 
     # assertions

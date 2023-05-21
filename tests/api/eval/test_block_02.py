@@ -292,7 +292,7 @@ def test_31():
     entity_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([NavigationDirectionEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_navigation_direction]
     response_assertions(expected, actual, test_results)
 
@@ -328,7 +328,7 @@ def test_32():
     test_results = {}
 
     iterator = iter(data_model.get_response([NavigationDirectionEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_directions]
     response_assertions(expected, actual, test_results)
 
@@ -578,7 +578,8 @@ def test_38():
             "recipient": data_recipient,
             "content": Content(value=ticket),
             "message_content_type": message_content_type,
-        } for ticket in data_model.get_data(EventTicketEntity)
+        }
+        for ticket in data_model.get_data(EventTicketEntity)
     ]
     entity_assertions(expected, actual, test_results)
 
@@ -635,9 +636,9 @@ def test_39_a():
 
     # assertions
     test_results = {}
-    
+
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -697,7 +698,7 @@ def test_39_b():
     # assertions
     test_results = {}
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -889,7 +890,7 @@ def test_44():
     entity_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -984,7 +985,7 @@ def test_46():
     test_results = {}
 
     iterator = iter(data_model.get_response([MapEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_map_entity2]
     response_assertions(expected, actual, test_results)
 
@@ -1058,9 +1059,7 @@ def test_48():
     data_model.append(data_home_device_action)
     data_home_device_value = HomeDeviceValue(text="on")
     data_model.append(data_home_device_value)
-    data_home_device_name = HomeDeviceName(
-        text="the lights in the hallway"
-    )
+    data_home_device_name = HomeDeviceName(text="the lights in the hallway")
     data_model.append(data_home_device_name)
     data_date_time_7pm = DateTime(
         text="at 7 pm", value=datetime.now().replace(hour=6, minute=0)
@@ -1079,9 +1078,12 @@ def test_48():
     device_value = HomeDeviceValue.resolve_from_text("on")
     date_time = DateTime.resolve_from_text("at 7 pm")
     SmartHome.execute_home_device_action(
-        device_name=device_name, device_action=device_action, device_value=device_value, date_time=date_time
+        device_name=device_name,
+        device_action=device_action,
+        device_value=device_value,
+        date_time=date_time,
     )
-    
+
     playlist = Playlist.resolve_from_text("my playlist")
     date_time = DateTime.resolve_from_text("at 8 pm")
     Music.play_music(playlist=playlist, date_time=date_time)
@@ -1089,13 +1091,20 @@ def test_48():
 
     # assertions
     test_results = {}
-    
+
     actual = data_model.get_data(HomeDeviceEntity)
-    expected = [{"device_name": data_home_device_name, "device_action": data_home_device_action, "device_value": data_home_device_value, "date_time": data_date_time_7pm}]
+    expected = [
+        {
+            "device_name": data_home_device_name,
+            "device_action": data_home_device_action,
+            "device_value": data_home_device_value,
+            "date_time": data_date_time_7pm,
+        }
+    ]
     entity_assertions(expected, actual, test_results)
-        
+
     actual = data_model.get_data(MusicEntity)
-    expected = [{"playlist": data_playlist, "date_time": data_date_time_8pm }]
+    expected = [{"playlist": data_playlist, "date_time": data_date_time_8pm}]
     entity_assertions(expected, actual, test_results)
-    
+
     assert_test(test_results)

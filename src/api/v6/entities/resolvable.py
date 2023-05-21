@@ -2,6 +2,7 @@ from __future__ import annotations
 from abc import abstractclassmethod, abstractmethod
 from typing import TypeVar, Generic, Optional, Union, List
 import numpy as np
+import os
 from entities.entity import Entity
 from exceptions.exceptions import exception_handler
 from providers.data_model import DataModel
@@ -22,7 +23,7 @@ class Resolvable(Generic[T]):
 
     # @exception_handler
     @classmethod
-    def resolve_from_text(T, text: str, crash_on_fail: bool = False) -> T:
+    def resolve_from_text(T, text: str) -> T:
         """
         This class method resolves a resolvable object from the user input.
         The resolved text will usually be a phrase within the user instruction.
@@ -51,11 +52,11 @@ class Resolvable(Generic[T]):
         items = [
             x
             for x in data
-            if hasattr(x, "text") and compute_bleu_score(text, x.text) > 0
+            if hasattr(x, "text") and compute_bleu_score(text, x.text) > 0.333
         ]
 
         if len(items) == 0:
-            if crash_on_fail:
+            if os.environ.get("TEST_RESOLVE_FAIL", False):
                 raise ValueError()
             else:
                 return None
@@ -65,7 +66,7 @@ class Resolvable(Generic[T]):
             return result
 
     @classmethod
-    def resolve_many_from_text(T, text: str, crash_on_fail: bool = False) -> List[T]:
+    def resolve_many_from_text(T, text: str) -> List[T]:
         """
         This class method resolves a list of resolvable object from the user input.
         The resolved text will usually be a phrase within the user instruction. Resolve from many will usually
@@ -94,13 +95,13 @@ class Resolvable(Generic[T]):
         #     x for x in data if x.text == text
         # ]  # when resolved many from text we expect the text to be a substring of the actual text
 
-        items = [x for x in data if compute_bleu_score(text, x.text) > 0]
+        items = [x for x in data if compute_bleu_score(text, x.text) > 0.333]
 
         if len(items) == 0:
-            if crash_on_fail:
+            if os.environ.get("TEST_RESOLVE_FAIL", False):
                 raise ValueError()
             else:
-                return None
+                return []
         else:
             result = items
             return result
@@ -111,7 +112,6 @@ class Resolvable(Generic[T]):
         T,
         entity: Union[Entity, List[Entity]],
         text: Optional[str] = None,
-        crash_on_fail: bool = False,
     ) -> T:
         """
         This class method resolves a resolvable object from an entity object.
@@ -142,7 +142,7 @@ class Resolvable(Generic[T]):
         items = [T(value=entity) for entity in entities]
 
         if len(items) == 0:
-            if crash_on_fail:
+            if os.environ.get("TEST_RESOLVE_FAIL", False):
                 raise ValueError()
             else:
                 return None

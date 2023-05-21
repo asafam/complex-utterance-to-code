@@ -49,7 +49,7 @@ Oftentimes, we will use the `len()` function to verify a certain condition expre
     ``` py
     sender = Contact.resolve_from_text("Louie")
     date_time = DateTime.resolve_from_text("yesterday")
-    messages = Message.find_messages(
+    messages = Messages.find_messages(
         sender=sender,
         date_time=date_time
     )
@@ -92,7 +92,7 @@ Parameters:
 
     ``` py
     sender = Contact.resolve_from_text("Henry")
-    messages = Message.get_message(sender=sender)
+    messages = Messages.get_message(sender=sender)
     messages = utils.last(messages, 2)
     Message.delete_messages(messages=messages)
     ```

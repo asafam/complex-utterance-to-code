@@ -132,26 +132,26 @@ calendar_command_ticket_purchase:
     code: |
       ${event_name}
       ${event_ticket_amount}
-      Calendar.purchase_ticket(event_name=${event_name:var}, amount=${event_ticket_amount:var})
+      Calendar.purchase_tickets(event_name=${event_name:var}, amount=${event_ticket_amount:var})
   - text: ${calendar_purchase_action} ${event_ticket_amount} tickets for the ${event_name} ${event_date_time}
     code: |
       ${event_name}
       ${event_date_time}
       ${event_ticket_amount}
-      Calendar.purchase_ticket(date_time=${event_date_time:var}, event_name=${event_name:var}, amount=${event_ticket_amount:var})
+      Calendar.purchase_tickets(date_time=${event_date_time:var}, event_name=${event_name:var}, amount=${event_ticket_amount:var})
   - text: ${calendar_purchase_action} ${event_ticket_amount} tickets for the ${event_name} ${event_location}
     code: |
       ${event_name}
       ${event_location}
       ${event_ticket_amount}
-      Calendar.purchase_ticket(event_name=${event_name:var}, location=${event_location:var}, amount=${event_ticket_amount:var})
+      Calendar.purchase_tickets(event_name=${event_name:var}, location=${event_location:var}, amount=${event_ticket_amount:var})
   - text: ${calendar_purchase_action} ${event_ticket_amount} tickets for the ${event_name} ${event_date_time} ${event_location}
     code: |
       ${event_name}
       ${event_date_time}
       ${event_location}
       ${event_ticket_amount}
-      Calendar.purchase_ticket(date_time=${event_date_time:var}, event_name=${event_name:var}, location=${event_location:var}, amount=${event_ticket_amount:var})
+      Calendar.purchase_tickets(date_time=${event_date_time:var}, event_name=${event_name:var}, location=${event_location:var}, amount=${event_ticket_amount:var})
 
 calendar_command_query_tickets:
   - text: ${query_command_verb} if ${calendar_command_query_tickets_item}

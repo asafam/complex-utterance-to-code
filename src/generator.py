@@ -72,7 +72,6 @@ def main(
                 i + 1, data.shape[0], prefix="Progress:", suffix="Updated", length=50
             )
     else:
-        printProgressBar(0, k, prefix = 'Progress:', suffix = f'Complete ({i+1}/{k})', length = 50)
         sampler = Sampler(grammar_dir=grammar_dir, seed=seed)
         for i in range(k):
             s = sampler.sample(seed=seed)
@@ -148,7 +147,7 @@ if __name__ == "__main__":
     parser.add_argument("--print_console", default=False, action="store_true")
     parser.add_argument("--input_file", type=str, help="input file name")
     parser.add_argument("--output_file", type=str, help="output file name")
-    parser.add_argument("--grmmar_dir", type=str, default="config/grammar", help="output file name")
+    parser.add_argument("--grammar_dir", type=str, default="config/grammar", help="output file name")
 
     args = parser.parse_args()
 

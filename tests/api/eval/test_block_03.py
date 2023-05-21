@@ -283,12 +283,12 @@ def test_59():
     test_results = {}
 
     iterator = iter(data_model.get_response([NavigationDirectionEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_direction]
     response_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -333,7 +333,7 @@ def test_60_a():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -382,7 +382,7 @@ def test_60_b():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -607,7 +607,7 @@ def test_66():
     test_results = {}
 
     iterator = iter(data_model.get_response([EventEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = data_expected_events
     response_assertions(expected, actual, test_results)
 
@@ -689,12 +689,12 @@ def test_70():
     test_results = {}
 
     iterator = iter(data_model.get_response([EventTicketEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_event_ticket]
     response_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([NavigationTrafficInfoEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_nav_traffic_info]
     response_assertions(expected, actual, test_results)
 
@@ -774,7 +774,7 @@ def test_72_a():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -822,7 +822,7 @@ def test_72_b():
     test_results = {}
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
@@ -880,7 +880,7 @@ def test_73():
     entity_assertions(expected, actual, test_results)
 
     iterator = iter(data_model.get_response([NavigationDirectionEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_navigation_direction]
     response_assertions(expected, actual, test_results)
 
@@ -922,12 +922,12 @@ def test_75():
     test_results = {}
 
     iterator = iter(data_model.get_response(EventEntity))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_event3]
     response_assertions(expected, [actual], test_results)
 
     iterator = iter(data_model.get_response([NavigationDistanceEntity]))
-    actual = next(iterator)
+    actual = next(iterator, None)
     expected = [data_navigation_distance]
     response_assertions(expected, actual, test_results)
 

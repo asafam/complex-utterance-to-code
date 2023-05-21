@@ -14,7 +14,7 @@ messages_query_simple:
     code: |
       ${contact_i}
       ${sender}
-      messages = Message.find_messages(recipient=${contact_i:var}, sender=${sender:var})
+      messages = Messages.find_messages(recipient=${contact_i:var}, sender=${sender:var})
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query
@@ -23,7 +23,7 @@ messages_query_simple:
       ${contact_i}
       ${sender}
       ${past_date_time}
-      messages = Message.find_messages(recipient=${contact_i:var}, sender=${sender:var}, date_time=${past_date_time:var})
+      messages = Messages.find_messages(recipient=${contact_i:var}, sender=${sender:var}, date_time=${past_date_time:var})
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: quer
@@ -33,7 +33,7 @@ messages_query_simple:
       ${senders}
       messages = []
       for sender in ${senders:var}:
-        messages += Message.find_messages(recipient=${contact_i:var}, sender=sender)
+        messages += Messages.find_messages(recipient=${contact_i:var}, sender=sender)
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query
@@ -44,7 +44,7 @@ messages_query_simple:
       ${past_date_time}
       messages = []
       for sender in ${senders:var}:
-        messages += Message.find_messages(date_time=${past_date_time:var}, recipient=${contact_i:var}, sender=sender)
+        messages += Messages.find_messages(date_time=${past_date_time:var}, recipient=${contact_i:var}, sender=sender)
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query
@@ -55,7 +55,7 @@ messages_query_simple:
       ${past_date_times}
       messages = []
       for date_time in ${past_date_times:var}:
-        messages += Message.find_messages(date_time=date_time, recipient=${contact_i:var}, sender=${sender:var})
+        messages += Messages.find_messages(date_time=date_time, recipient=${contact_i:var}, sender=${sender:var})
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query
@@ -67,7 +67,7 @@ messages_query_simple:
       messages = []
       for sender in ${senders:var}:
         for date_time in ${past_date_times:var}:
-          messages += Message.find_messages(date_time=date_time, recipient=${contact_i:var}, sender=sender)
+          messages += Messages.find_messages(date_time=date_time, recipient=${contact_i:var}, sender=sender)
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query
@@ -76,7 +76,7 @@ messages_query_simple:
       ${contact_i}
       ${sender}
       ${message_content_attachment}
-      messages = Message.find_messages(recipient=${contact_i:var}, sender=${sender:var}, content=${message_content_attachment:var})
+      messages = Messages.find_messages(recipient=${contact_i:var}, sender=${sender:var}, content=${message_content_attachment:var})
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query
@@ -84,7 +84,7 @@ messages_query_simple:
     code: |
       ${contact_i}
       ${message_content_attachment}
-      messages = Message.find_messages(recipient=${contact_i:var}, content=${message_content_attachment:var})
+      messages = Messages.find_messages(recipient=${contact_i:var}, content=${message_content_attachment:var})
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query
@@ -93,7 +93,7 @@ messages_query_simple:
       ${contact_i}
       ${message_content_attachment}
       ${sender}
-      messages = Message.find_messages(recipient=${contact_i:var}, sender=${sender:var}, content=${message_content_attachment:var})
+      messages = Messages.find_messages(recipient=${contact_i:var}, sender=${sender:var}, content=${message_content_attachment:var})
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query
@@ -101,7 +101,7 @@ messages_query_simple:
     code: |
       ${contact_i}
       ${message_content_attachment}
-      messages = Message.find_messages(recipient=${contact_i:var}, content=${message_content_attachment:var})
+      messages = Messages.find_messages(recipient=${contact_i:var}, content=${message_content_attachment:var})
       ${messages_query_simple:var} = bool(messages)
     var: test_messages
     type: query

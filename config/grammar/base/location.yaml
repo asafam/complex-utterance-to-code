@@ -10,9 +10,9 @@ to_location:
       - value: there
   - text: to the ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${to_location:var} = Location.resolve_from_text("to the ${location_modifier_prefix} ${location_landmark_item}")
-      ${to_location:var} = utils.sort(${to_location:var}, "${location_modifier_prefix}")
-      ${to_location:var} = utils.first(${to_location:var})
+      locations = Location.resolve_many_from_text("to the ${location_modifier_prefix} ${location_landmark_item}")
+      locations = utils.sort(locations, "${location_modifier_prefix}")
+      ${to_location:var} = utils.first(locations)
     var: location
     syn:
       label: NP
@@ -22,9 +22,9 @@ to_location:
     weight: 0.25
   - text: to the ${location_landmark_item} ${location_modifier_suffix}
     code: |
-      ${to_location:var} = Location.resolve_from_text("to the ${location_landmark_item} ${location_modifier_suffix}")
-      ${to_location:var} = utils.sort(${to_location:var}, "${location_modifier_suffix}")
-      ${to_location:var} = utils.first(${to_location:var})
+      locations = Location.resolve_many_from_text("to the ${location_landmark_item} ${location_modifier_suffix}")
+      locations = utils.sort(locations, "${location_modifier_suffix}")
+      ${to_location:var} = utils.first(locations)
     var: location
     syn:
       label: NP
@@ -45,7 +45,7 @@ to_locations:
       - value: there
   - text: to the ${numbers} ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${to_locations:var} = Location.resolve_from_text("to the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
+      ${to_locations:var} = Location.resolve_many_from_text("to the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
       ${to_locations:var} = utils.sort(${to_locations:var}, "${location_modifier_prefix}")
       ${to_locations:var} = utils.first(${to_locations:var}, ${numbers})
     var: locations
@@ -68,9 +68,9 @@ from_location:
       - value: there
   - text: from the ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${from_location:var} = Location.resolve_from_text("from the ${location_modifier_prefix} ${location_landmark_item}")
-      ${from_location:var} = utils.sort(${from_location:var}, "${location_modifier_prefix}")
-      ${from_location:var} = utils.first(${from_location:var})
+      locations = Location.resolve_many_from_text("from the ${location_modifier_prefix} ${location_landmark_item}")
+      locations = utils.sort(locations, "${location_modifier_prefix}")
+      ${from_location:var} = utils.first(locations)
     var: location
     syn:
       label: NP
@@ -80,9 +80,9 @@ from_location:
     weight: 0.25
   - text: from the ${location_landmark_item} ${location_modifier_suffix}
     code: |
-      ${from_location:var} = Location.resolve_from_text("from the ${location_landmark_item} ${location_modifier_suffix}")
-      ${from_location:var} = utils.sort(${from_location:var}, "${location_modifier_suffix}")
-      ${from_location:var} = utils.first(${from_location:var})
+      locations = Location.resolve_many_from_text("from the ${location_landmark_item} ${location_modifier_suffix}")
+      locations = utils.sort(locations, "${location_modifier_suffix}")
+      ${from_location:var} = utils.first(locations)
     var: location
     syn:
       label: NP
@@ -103,7 +103,7 @@ from_locations:
       - value: there
   - text: from the ${numbers} ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${from_locations:var} = Location.resolve_from_text("from the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
+      ${from_locations:var} = Location.resolve_many_from_text("from the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
       ${from_locations:var} = utils.sort(${from_locations:var}, "${location_modifier_prefix}")
       ${from_locations:var} = utils.first(${from_locations:var}, ${numbers})
     var: locations
@@ -125,9 +125,9 @@ at_location:
       - value: there
   - text: at the ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${at_location:var} = Location.resolve_from_text("at the ${location_modifier_prefix} ${location_landmark_item}")
-      ${at_location:var} = utils.sort(${at_location:var}, "${location_modifier_prefix}")
-      ${at_location:var} = utils.first(${at_location:var})
+      locations = Location.resolve_many_from_text("at the ${location_modifier_prefix} ${location_landmark_item}")
+      locations = utils.sort(locations, "${location_modifier_prefix}")
+      ${at_location:var} = utils.first(locations)
     var: location
     syn:
       label: NP
@@ -137,9 +137,9 @@ at_location:
     weight: 0.25
   - text: at the ${location_landmark_item} ${location_modifier_suffix}
     code: |
-      ${at_location:var} = Location.resolve_from_text("at the ${location_landmark_item} ${location_modifier_suffix}")
-      ${at_location:var} = utils.sort(${at_location:var}, "${location_modifier_suffix}")
-      ${at_location:var} = utils.first(${at_location:var})
+      locations = Location.resolve_many_from_text("at the ${location_landmark_item} ${location_modifier_suffix}")
+      locations = utils.sort(locations, "${location_modifier_suffix}")
+      ${at_location:var} = utils.first(locations)
     var: location
     syn:
       label: NP
@@ -159,7 +159,7 @@ at_locations:
       - value: there
   - text: at the ${numbers} ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${at_locations:var} = Location.resolve_from_text("at the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
+      ${at_locations:var} = Location.resolve_many_from_text("at the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
       ${at_locations:var} = utils.sort(${at_locations:var}, "${location_modifier_prefix}")
       ${at_locations:var} = utils.first(${at_locations:var}, ${numbers})
     var: locations
@@ -181,9 +181,9 @@ in_location:
       - value: there
   - text: in the ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${in_location:var} = Location.resolve_from_text("in the ${location_modifier_prefix} ${location_landmark_item}")
-      ${in_location:var} = utils.sort(${in_location:var}, "${location_modifier_prefix}")
-      ${in_location:var} = utils.first(${in_location:var})
+      locations = Location.resolve_many_from_text("in the ${location_modifier_prefix} ${location_landmark_item}")
+      locations = utils.sort(locations, "${location_modifier_prefix}")
+      ${in_location:var} = utils.first(locations)
     var: location
     type: location
     syn:
@@ -193,9 +193,9 @@ in_location:
     weight: 0.25
   - text: in the ${location_landmark_item} ${location_modifier_suffix}
     code: |
-      ${in_location:var} = Location.resolve_from_text("in the ${location_landmark_item} ${location_modifier_suffix}")
-      ${in_location:var} = utils.sort(${in_location:var}, "${location_modifier_suffix}")
-      ${in_location:var} = utils.first(${in_location:var})
+      locations = Location.resolve_many_from_text("in the ${location_landmark_item} ${location_modifier_suffix}")
+      locations = utils.sort(locations, "${location_modifier_suffix}")
+      ${in_location:var} = utils.first(locations)
     var: location
     type: location
     syn:
@@ -216,7 +216,7 @@ in_locations:
       - value: there
   - text: in the ${numbers} ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${in_locations:var} = Location.resolve_from_text("in the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
+      ${in_locations:var} = Location.resolve_many_from_text("in the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
       ${in_locations:var} = utils.sort(${in_locations:var}, "${location_modifier_prefix}")
       ${in_locations:var} = utils.first(${in_locations:var}, ${numbers})
     var: locations
@@ -236,9 +236,9 @@ near_location:
       label: PP
   - text: near the ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${near_location:var} = Location.resolve_from_text("near the ${location_modifier_prefix} ${location_landmark_item}")
-      ${near_location:var} = utils.sort(${near_location:var}, "${location_modifier_prefix}")
-      ${near_location:var} = utils.first(${near_location:var})
+      locations = Location.resolve_many_from_text("near the ${location_modifier_prefix} ${location_landmark_item}")
+      locations = utils.sort(locations, "${location_modifier_prefix}")
+      ${near_location:var} = utils.first(locations)
     var: location
     type: location
     syn:
@@ -248,9 +248,9 @@ near_location:
     weight: 0.25
   - text: near the ${location_landmark_item} ${location_modifier_suffix}
     code: |
-      ${near_location:var} = Location.resolve_from_text("near the ${location_landmark_item} ${location_modifier_suffix}")
-      ${near_location:var} = utils.sort(${near_location:var}, "${location_modifier_suffix}")
-      ${near_location:var} = utils.first(${near_location:var})
+      locations = Location.resolve_many_from_text("near the ${location_landmark_item} ${location_modifier_suffix}")
+      locations = utils.sort(locations, "${location_modifier_suffix}")
+      ${near_location:var} = utils.first(locations)
     var: location
     type: location
     syn:
@@ -320,9 +320,9 @@ location:
       - value: there
   - text: the ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${location:var} = Location.resolve_from_text("the ${location_modifier_prefix} ${location_landmark_item}")
-      ${location:var} = utils.sort(${location:var}, "${location_modifier_prefix}")
-      ${location:var} = utils.first(${location:var})
+      locations = Location.resolve_many_from_text("the ${location_modifier_prefix} ${location_landmark_item}")
+      locations = utils.sort(locations, "${location_modifier_prefix}")
+      ${location:var} = utils.first(locations)
     var: location
     type: location
     syn:
@@ -332,9 +332,9 @@ location:
     weight: 0.25
   - text: the ${location_landmark_item} ${location_modifier_suffix}
     code: |
-      ${location:var} = Location.resolve_from_text("the ${location_landmark_item} ${location_modifier_suffix}")
-      ${location:var} = utils.sort(${location:var}, "${location_modifier_suffix}")
-      ${location:var} = utils.first(${location:var})
+      locations = Location.resolve_many_from_text("the ${location_landmark_item} ${location_modifier_suffix}")
+      locations = utils.sort(locations, "${location_modifier_suffix}")
+      ${location:var} = utils.first(locations)
     var: location
     type: location
     syn:
@@ -356,9 +356,9 @@ locations:
       - value: there
   - text: the ${numbers} ${location_modifier_prefix} ${location_landmark_item}
     code: |
-      ${locations:var} = Location.resolve_from_text("the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
-      ${locations:var} = utils.sort(${locations:var}, "${location_modifier_prefix}")
-      ${locations:var} = utils.first(${locations:var}, ${numbers})
+      locations = Location.resolve_many_from_text("the ${numbers} ${location_modifier_prefix} ${location_landmark_item}")
+      locations = utils.sort(locations, "${location_modifier_prefix}")
+      ${locations:var} = utils.first(locations, ${numbers})
     var: location
     syn:
       label: NP

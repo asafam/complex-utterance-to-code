@@ -27,7 +27,7 @@
         "--lang_representations",
         "--code_representations",
         "--output_file",
-        "build/train_complex_utterance_to_code_with_intermediate_40k.csv.gz"
+        "build/train_simple_utterance_to_code_with_intermediate_40k.csv.gz"
       ]
     },
 

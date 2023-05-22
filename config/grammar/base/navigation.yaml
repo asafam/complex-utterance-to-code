@@ -18,6 +18,13 @@ destination:
     coreference_value:
       - value: to there
 
+destinations:
+  - text: ${to_locations}
+    code: ${to_locations}
+    var: destinations
+    coreference_value:
+      - value: to there
+
 origin:
   - text: ${from_location}
     code: ${from_location}

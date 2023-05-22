@@ -1577,7 +1577,8 @@ def test_118_a():
             "recipient": data_recipient,
             "content": data_content,
             "message_content_type": data_message_content_type,
-        } for data_recipient in [data_recipient1, data_recipient2]
+        }
+        for data_recipient in [data_recipient1, data_recipient2]
     ]
     entity_assertions(expected, actual, test_results)
 
@@ -1632,6 +1633,432 @@ def test_118_b():
 
     actual = data_model.get_data(MessageEntity)
     expected = []
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_121():
+    """
+    Remind me to buy apples, dates, and cheese at the grocery store, and also remind me to text Nathan about Grandma's birthday party.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_person_reminded = Contact(text="me")
+    data_model.append(data_person_reminded)
+    data_content1 = Content(text="buy apples, dates, and cheese at the grocery store")
+    data_model.append(data_content1)
+    data_content2 = Content(text="text Nathan about Grandma's birthday party")
+    data_model.append(data_content2)
+
+    # start code block to test
+    person_reminded = Contact.resolve_from_text("me")
+    content = Content.resolve_from_text(
+        "buy apples, dates, and cheese at the grocery store"
+    )
+    Reminders.create_reminder(person_reminded=person_reminded, content=content)
+
+    person_reminded = Contact.resolve_from_text("me")
+    content = Content.resolve_from_text("text Nathan about Grandma's birthday party")
+    Reminders.create_reminder(person_reminded=person_reminded, content=content)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(ReminderEntity)
+    expected = [
+        {"person_reminded": data_person_reminded, "content": data_content1},
+        {"person_reminded": data_person_reminded, "content": data_content2},
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_124_a():
+    """
+    Check for potential snowfall this weekend in Denver, and should the forecast say we're getting at least 6 inches, email Jason to invite him to go snowboarding.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_weather_attribute = WeatherAttribute(text="snowfall")
+    data_model.append(data_weather_attribute)
+    data_weather_attribute_neg = WeatherAttribute(text="sunny")
+    data_model.append(data_weather_attribute_neg)
+    data_date_time = DateTime(text="this weekend")
+    data_model.append(data_date_time)
+    data_location = Location(text="in Denver")
+    data_model.append(data_location)
+    data_weather = WeatherForecastEntity(
+        date_time=data_date_time,
+        location=data_location,
+        weather_attribute=data_weather_attribute,
+    )
+    data_model.append(data_weather)
+    data_message_content_type = MessageContentType(text="email")
+    data_model.append(data_message_content_type)
+    data_recipient = Contact(text="Jason")
+    data_model.append(data_recipient)
+    data_content = Content(text="invite him to go snowboarding")
+    data_model.append(data_content)
+
+    # start code block to test
+    weather_attribute = WeatherAttribute.resolve_from_text("snowfall")
+    date_time = DateTime.resolve_from_text("this weekend")
+    location = Location.resolve_from_text("in Denver")
+    weather_forecasts = Weather.find_weather_forecasts(
+        weather_attribute=weather_attribute, date_time=date_time, location=location
+    )
+    test_weather_forecasts = bool(weather_forecasts)
+    if test_weather_forecasts:
+        message_content_type = MessageContentType.resolve_from_text("email")
+        recipient = Contact.resolve_from_text("Jason")
+        content = Content.resolve_from_text("invite him to go snowboarding")
+        Messages.send_message(
+            recipient=recipient,
+            content=content,
+            message_content_type=message_content_type,
+        )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(MessageEntity)
+    expected = [
+        {
+            "recipient": data_recipient,
+            "content": data_content,
+            "message_content_type": data_message_content_type,
+        },
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_124_b():
+    """
+    Check for potential snowfall this weekend in Denver, and should the forecast say we're getting at least 6 inches, email Jason to invite him to go snowboarding.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_weather_attribute = WeatherAttribute(text="snowfall")
+    data_model.append(data_weather_attribute)
+    data_weather_attribute_neg = WeatherAttribute(text="sunny")
+    data_model.append(data_weather_attribute_neg)
+    data_date_time = DateTime(text="this weekend")
+    data_model.append(data_date_time)
+    data_location = Location(text="in Denver")
+    data_model.append(data_location)
+    data_weather = WeatherForecastEntity(
+        date_time=data_date_time,
+        location=data_location,
+        weather_attribute=data_weather_attribute_neg,
+    )
+    data_model.append(data_weather)
+    data_message_content_type = MessageContentType(text="email")
+    data_model.append(data_message_content_type)
+    data_recipient = Contact(text="Jason")
+    data_model.append(data_recipient)
+    data_content = Content(text="invite him to go snowboarding")
+    data_model.append(data_content)
+
+    # start code block to test
+    weather_attribute = WeatherAttribute.resolve_from_text("snowfall")
+    date_time = DateTime.resolve_from_text("this weekend")
+    location = Location.resolve_from_text("in Denver")
+    weather_forecasts = Weather.find_weather_forecasts(
+        weather_attribute=weather_attribute, date_time=date_time, location=location
+    )
+    test_weather_forecasts = bool(weather_forecasts)
+    if test_weather_forecasts:
+        message_content_type = MessageContentType.resolve_from_text("email")
+        recipient = Contact.resolve_from_text("Jason")
+        content = Content.resolve_from_text("invite him to go snowboarding")
+        Messages.send_message(
+            recipient=recipient,
+            content=content,
+            message_content_type=message_content_type,
+        )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(MessageEntity)
+    expected = []
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_126():
+    """
+    Add a bikram yoga class to my calendar Saturday at 9am and set an alarm for 7am for that same morning.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_event_name = EventName(text="a bikram yoga class")
+    data_model.append(data_event_name)
+    data_event_calendar = EventCalendar(text="my calendar")
+    data_model.append(data_event_calendar)
+    data_date_time = DateTime(text="Saturday at 9am")
+    data_model.append(data_date_time)
+    data_date_time_alarm = DateTime(text="7am for that same morning")
+    data_model.append(data_date_time_alarm)
+
+    # start code block to test
+    event_name = EventName.resolve_from_text("a bikram yoga class")
+    event_calendar = EventCalendar.resolve_from_text("my calendar")
+    date_time = DateTime.resolve_from_text("Saturday at 9am")
+    Calendar.schedule_event(
+        event_name=event_name, event_calendar=event_calendar, date_time=date_time
+    )
+
+    date_time = DateTime.resolve_from_text("7am for that same morning")
+    Alarm.create_alarm(date_time=date_time)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(EventEntity)
+    expected = [
+        {
+            "event_name": data_event_name,
+            "event_calendar": data_event_calendar,
+            "date_time": data_date_time,
+        }
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    actual = data_model.get_data(AlarmEntity)
+    expected = [{"date_time": data_date_time_alarm}]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_129():
+    """
+    Get directions to the party's address I have in my calendar and message Samantha to see what I should bring.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_destination = Location(text="the party's address I have in my calendar")
+    data_model.append(data_destination)
+    data_navigation_direction = NavigationDirectionEntity(destination=data_destination)
+    data_model.append(data_navigation_direction)
+    data_recipient = Contact(text="Samantha")
+    data_model.append(data_recipient)
+    data_content = Content(text="see what I should bring")
+    data_model.append(data_content)
+
+    # start code block to test
+    destination = Location.resolve_from_text(
+        "the party's address I have in my calendar"
+    )
+    navigation_directions = Navigation.find_directions(destination=destination)
+    Responder.respond(navigation_directions)
+
+    recipient = Contact.resolve_from_text("Samantha")
+    content = Content.resolve_from_text("see what I should bring")
+    Messages.send_message(recipient=recipient, content=content)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    iterator = iter(data_model.get_response([NavigationDirectionEntity]))
+    actual = next(iterator, None)
+    expected = [data_navigation_direction]
+
+    actual = data_model.get_data(MessageEntity)
+    expected = [{"recipient": data_recipient, "content": data_content}]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_131():
+    """
+    Set an alarm for 6:30am this Tuesday, and make sure it repeats on Thursday and Saturday too.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_date_time = DateTime(text="6:30am this Tuesday")
+    data_model.append(data_date_time)
+    data_date_time_repeat1 = DateTime(text="Thursday and Saturday", value="Thursday")
+    data_model.append(data_date_time_repeat1)
+    data_date_time_repeat2 = DateTime(text="Thursday and Saturday", value="Saturday")
+    data_model.append(data_date_time_repeat2)
+
+    # start code block to test
+    date_time = DateTime.resolve_from_text("6:30am this Tuesday")
+    Alarm.create_alarm(date_time=date_time)
+
+    date_times = DateTime.resolve_many_from_text("Thursday and Saturday")
+    for date_time in date_times:
+        Alarm.create_alarm(date_time=date_time)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(AlarmEntity)
+    expected = [
+        {"date_time": date_time}
+        for date_time in [
+            data_date_time,
+            data_date_time_repeat1,
+            data_date_time_repeat2,
+        ]
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_132():
+    """
+    Play my Intense Workout spotify playlist in the afternoon on Tuesday, Thursday, and Saturday.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_playlist = Playlist(text="my Intense Workout spotify playlist")
+    data_model.append(data_playlist)
+    data_date_time1 = DateTime(
+        text="afternoon on Tuesday, Thursday, and Saturday", value="Tuesday"
+    )
+    data_model.append(data_date_time1)
+    data_date_time2 = DateTime(
+        text="afternoon on Tuesday, Thursday, and Saturday", value="Thursday"
+    )
+    data_model.append(data_date_time2)
+    data_date_time3 = DateTime(
+        text="afternoon on Tuesday, Thursday, and Saturday", value="Saturday"
+    )
+    data_model.append(data_date_time3)
+
+    # start code block to test
+    playlist = Playlist.resolve_from_text("my Intense Workout spotify playlist")
+    date_times = DateTime.resolve_many_from_text(
+        "afternoon on Tuesday, Thursday, and Saturday"
+    )
+    for date_time in date_times:
+        Music.play_music(playlist=playlist, date_time=date_time)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(MusicEntity)
+    expected = [
+        {"playlist": data_playlist, "date_time": date_time}
+        for date_time in [
+            data_date_time1,
+            data_date_time2,
+            data_date_time3,
+        ]
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_134():
+    """
+    Text everyone in my close friends group a photo of me at the ball game.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_message_content_type = MessageContentType(text="text")
+    data_model.append(data_message_content_type)
+    data_recipient1 = Contact(text="everyone in my close friends group", value="John")
+    data_model.append(data_recipient1)
+    data_recipient2 = Contact(text="everyone in my close friends group", value="Henry")
+    data_model.append(data_recipient2)
+    data_content = Content(text="a photo of me at the ball game")
+    data_model.append(data_content)
+
+    # start code block to test
+    message_content_type = MessageContentType.resolve_from_text("text")
+    recipients = Contact.resolve_many_from_text("everyone in my close friends group")
+    content = Content.resolve_from_text("a photo of me at the ball game")
+    for recipient in recipients:
+        Messages.send_message(
+            recipient=recipient,
+            content=content,
+            message_content_type=message_content_type,
+        )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(MessageEntity)
+    expected = [
+        {
+            "recipient": data_recipient,
+            "content": data_content,
+            "message_content_type": data_message_content_type,
+        }
+        for data_recipient in [
+            data_recipient1,
+            data_recipient2,
+        ]
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_138():
+    """
+    Text everyone in my basketball group list that the referee fees increased by $3.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_message_content_type = MessageContentType(text="text")
+    data_model.append(data_message_content_type)
+    data_recipient1 = Contact(text="everyone in my basketball group list", value="John")
+    data_model.append(data_recipient1)
+    data_recipient2 = Contact(
+        text="everyone in my basketball group list", value="Henry"
+    )
+    data_model.append(data_recipient2)
+    data_content = Content(text="the referee fees increased by $3")
+    data_model.append(data_content)
+
+    # start code block to test
+    message_content_type = MessageContentType.resolve_from_text("text")
+    recipients = Contact.resolve_many_from_text("everyone in my close friends group")
+    content = Content.resolve_from_text("the referee fees increased by $3")
+    for recipient in recipients:
+        Messages.send_message(
+            recipient=recipient,
+            content=content,
+            message_content_type=message_content_type,
+        )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(MessageEntity)
+    expected = [
+        {
+            "recipient": data_recipient,
+            "content": data_content,
+            "message_content_type": data_message_content_type,
+        }
+        for data_recipient in [
+            data_recipient1,
+            data_recipient2,
+        ]
+    ]
     entity_assertions(expected, actual, test_results)
 
     assert_test(test_results)

@@ -15,10 +15,9 @@ def response_assertions(expected, actual, test_results, options={}):
     default_options = {"fail": bool(eval(os.environ.get("TEST_FAIL", "False")))}
     options = {**default_options, **options}
 
+    expected = expected or []
     result = (
-        expected
-        and actual
-        and assert_equal(len(expected), len(actual), test_results)
+        assert_equal(len(expected), len(actual), test_results)
         and assert_true(
             all(any(is_equal(e, a) for a in actual) for e in expected),
             test_results,

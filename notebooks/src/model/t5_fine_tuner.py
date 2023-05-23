@@ -9,7 +9,7 @@ import pytorch_lightning as pl
 
 class T5FineTuner(pl.LightningModule):
     def __init__(
-        self, pretrained_model_name_or_path, train_dataloader, val_dataloader, **hparams
+        self, pretrained_model_name_or_path, train_dataloader, val_dataloader, hparams
     ):
         super().__init__()
         self.model = T5ForConditionalGeneration.from_pretrained(

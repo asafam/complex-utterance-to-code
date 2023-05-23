@@ -67,7 +67,8 @@ def entity_assertions(expected, actual, test_results, options={}):
 
 
 def is_equal(actual, expected):
-    return actual == expected
+    result = actual == expected
+    return result
 
 
 def is_match(actual, expected):

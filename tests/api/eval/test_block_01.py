@@ -567,13 +567,13 @@ def test_9():
     data_model = DataModel(reset=True)
     data_date_time = DateTime(text="the 4th of July", value=datetime(2022, 7, 4))
     data_model.append(data_date_time)
-    data_weather_forecasts = WeatherForecastEntity(date_time=data_date_time)
-    data_model.append(data_weather_forecasts)
+    data_weather_forecast = WeatherForecastEntity(date_time=data_date_time)
+    data_model.append(data_weather_forecast)
     data_recipient = Contact(text="Grandpa", value="Grandpa")
     data_model.append(data_recipient)
     data_content1 = Content(text="invite him over", value="invite him over")
     data_model.append(data_content1)
-    data_content2 = Content(text="tell him the weather", value=data_weather_forecasts)
+    data_content2 = Content(value=[data_weather_forecast])
     data_model.append(data_content2)
 
     # start code block to test
@@ -596,15 +596,20 @@ def test_9():
 
     iterator = iter(data_model.get_response([WeatherForecastEntity]))
     actual = next(iterator, None)
-    expected = [data_weather_forecasts]
+    expected = [data_weather_forecast]
     response_assertions(expected, actual, test_results)
 
     actual = data_model.get_data(MessageEntity)
     expected = [
         {
             "recipient": data_recipient,
-            "content": Content(value=[data_weather_forecasts]),
-        },
+            "content": content,
+        }
+        for content in [
+            data_content1,
+            data_content2,
+        ]
+        # 
     ]
     entity_assertions(expected, actual, test_results)
 
@@ -978,7 +983,6 @@ def test_17():
     data_model.append(data_recipient)
     data_content = Content(
         text="I'm just now getting in the shower and it will be 15 or 20 minutes until I'm out",
-        value="I'm just now getting in the shower and it will be 15 or 20 minutes until I'm out",
     )
     data_model.append(data_content)
 

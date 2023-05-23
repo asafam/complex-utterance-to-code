@@ -1,6 +1,6 @@
 utterance:
-  # - ${condition}
-  # - ${sequence}
+  - ${condition}
+  - ${sequence}
   - ${simple}
 
 simple:

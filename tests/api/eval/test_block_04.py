@@ -1266,9 +1266,11 @@ def test_109_a():
     data_model.append(data_content)
     data_content_neg = Content(text="cannot attend")
     data_model.append(data_content_neg)
-    data_sender = Contact.resolve_from_text("Jennie")
+    data_sender = Contact(text="Jennie")
     data_model.append(data_sender)
-    data_message = MessageEntity(content=data_content, recipient=data_recipient_i)
+    data_message = MessageEntity(
+        sender=data_sender, content=data_content, recipient=data_recipient_i
+    )
     data_model.append(data_message)
 
     # start code block to test
@@ -1323,9 +1325,11 @@ def test_109_b():
     data_model.append(data_content)
     data_content_neg = Content(text="cannot attend")
     data_model.append(data_content_neg)
-    data_sender = Contact.resolve_from_text("Jennie")
+    data_sender = Contact(text="Jennie")
     data_model.append(data_sender)
-    data_message = MessageEntity(content=data_content_neg, recipient=data_recipient_i)
+    data_message = MessageEntity(
+        sender=data_sender, content=data_content_neg, recipient=data_recipient_i
+    )
     data_model.append(data_message)
 
     # start code block to test
@@ -1390,7 +1394,7 @@ def test_112_a():
     # start code block to test
     recipient = Contact.resolve_from_text("I")
     message_content_type = MessageContentType.resolve_from_text("an email")
-    sender = Content.resolve_from_text("Kaiser Permanente")
+    sender = Contact.resolve_from_text("Kaiser Permanente")
     messages = Messages.find_messages(
         recipient=recipient, sender=sender, message_content_type=message_content_type
     )
@@ -1450,7 +1454,7 @@ def test_112_b():
     # start code block to test
     recipient = Contact.resolve_from_text("I")
     message_content_type = MessageContentType.resolve_from_text("an email")
-    sender = Content.resolve_from_text("Kaiser Permanente")
+    sender = Contact.resolve_from_text("Kaiser Permanente")
     messages = Messages.find_messages(
         recipient=recipient, sender=sender, message_content_type=message_content_type
     )
@@ -1874,6 +1878,7 @@ def test_129():
     iterator = iter(data_model.get_response([NavigationDirectionEntity]))
     actual = next(iterator, None)
     expected = [data_navigation_direction]
+    response_assertions(expected, actual, test_results)
 
     actual = data_model.get_data(MessageEntity)
     expected = [{"recipient": data_recipient, "content": data_content}]
@@ -2061,4 +2066,265 @@ def test_138():
     ]
     entity_assertions(expected, actual, test_results)
 
+    assert_test(test_results)
+
+
+def test_139():
+    """
+    Add a visit to the lake to my calendar for January 2nd at 3:00 and remind me every day leading up to the day.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_event_name = EventName(text="a visit to the lake")
+    data_model.append(data_event_name)
+    data_date_time = DateTime(text="January 2nd at 3:00")
+    data_model.append(data_date_time)
+    data_person_reminded = Contact(text="me")
+    data_model.append(data_person_reminded)
+    data_date_time_reminder1 = DateTime(
+        text="every day leading up to the day", value="1"
+    )
+    data_model.append(data_date_time_reminder1)
+    data_date_time_reminder2 = DateTime(
+        text="every day leading up to the day", value="2"
+    )
+    data_model.append(data_date_time_reminder2)
+    data_date_time_reminder3 = DateTime(
+        text="every day leading up to the day", value="3"
+    )
+    data_model.append(data_date_time_reminder3)
+
+    # start code block to test
+    event_name = EventName.resolve_from_text("a visit to the lake")
+    date_time = DateTime.resolve_from_text("January 2nd at 3:00")
+    Calendar.schedule_event(date_time=date_time, event_name=event_name)
+
+    person_reminded = Contact.resolve_from_text("me")
+    date_time_reminders = DateTime.resolve_many_from_text(
+        "every day leading up to the day"
+    )
+    for date_time_reminder in date_time_reminders:
+        Reminders.create_reminder(
+            person_reminded=person_reminded, date_time=date_time_reminder
+        )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(EventEntity)
+    expected = [
+        {
+            "date_time": data_date_time,
+            "event_name": data_event_name,
+        }
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    actual = data_model.get_data(ReminderEntity)
+    expected = [
+        {
+            "person_reminded": data_person_reminded,
+            "date_time": date_time,
+        }
+        for date_time in [
+            data_date_time_reminder1,
+            data_date_time_reminder2,
+            data_date_time_reminder3,
+        ]
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_140_a():
+    """
+    Is there a Laker game on Monday, Wednesday, and Thursday?
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_event_name = EventName(text="a Laker game")
+    data_model.append(data_event_name)
+    data_date_time1 = DateTime(
+        text="on Monday, Wednesday, and Thursday", value="Monday"
+    )
+    data_model.append(data_date_time1)
+    data_date_time2 = DateTime(
+        text="on Monday, Wednesday, and Thursday", value="Wednesday"
+    )
+    data_model.append(data_date_time2)
+    data_date_time3 = DateTime(
+        text="on Monday, Wednesday, and Thursday", value="Thursday"
+    )
+    data_model.append(data_date_time3)
+    data_event1 = EventEntity(event_name=data_event_name, date_time=data_date_time1)
+    data_model.append(data_event1)
+    data_event2 = EventEntity(event_name=data_event_name, date_time=data_date_time3)
+    data_model.append(data_event2)
+
+    # start code block to test
+    event_name = EventName.resolve_from_text("a Laker game")
+    date_times = DateTime.resolve_many_from_text("on Monday, Wednesday, and Thursday")
+    events = []
+    for date_time in date_times:
+        events += Calendar.find_events(date_time=date_time, event_name=event_name)
+    Responder.respond(response=events)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    iterator = iter(data_model.get_response([EventEntity]))
+    actual = next(iterator, None)
+    expected = [data_event1, data_event2]
+    response_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_140_b():
+    """
+    Is there a Laker game on Monday, Wednesday, and Thursday?
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_event_name = EventName(text="a Laker game")
+    data_model.append(data_event_name)
+    data_date_time1 = DateTime(
+        text="on Monday, Wednesday, and Thursday", value="Monday"
+    )
+    data_model.append(data_date_time1)
+    data_date_time2 = DateTime(
+        text="on Monday, Wednesday, and Thursday", value="Wednesday"
+    )
+    data_model.append(data_date_time2)
+    data_date_time3 = DateTime(
+        text="on Monday, Wednesday, and Thursday", value="Thursday"
+    )
+    data_model.append(data_date_time3)
+    data_date_time_neg = DateTime(text="Friday", value="Friday")
+    data_model.append(data_date_time_neg)
+    data_event1 = EventEntity(event_name=data_event_name, date_time=data_date_time_neg)
+    data_model.append(data_event1)
+
+    # start code block to test
+    event_name = EventName.resolve_from_text("a Laker game")
+    date_times = DateTime.resolve_many_from_text("on Monday, Wednesday, and Thursday")
+    events = []
+    for date_time in date_times:
+        events += Calendar.find_events(date_time=date_time, event_name=event_name)
+    Responder.respond(response=events)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    iterator = iter(data_model.get_response([EventEntity]))
+    actual = next(iterator, None)
+    expected = []
+    response_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_142():
+    """
+    Find directions to three closest Costco stores.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_location1 = Location(text="Costco stores", closest="100")
+    data_model.append(data_location1)
+    data_location2 = Location(text="Costco stores", closest="120")
+    data_model.append(data_location2)
+    data_location3 = Location(text="Costco stores", closest="35")
+    data_model.append(data_location3)
+    data_location4 = Location(text="Costco stores", closest="2000")
+    data_model.append(data_location4)
+    data_location5 = Location(text="Costco stores", closest="80")
+    data_model.append(data_location5)
+    data_navigation_directions1 = NavigationDirectionEntity(destination=data_location1)
+    data_model.append(data_navigation_directions1)
+    data_navigation_directions2 = NavigationDirectionEntity(destination=data_location2)
+    data_model.append(data_navigation_directions2)
+    data_navigation_directions3 = NavigationDirectionEntity(destination=data_location3)
+    data_model.append(data_navigation_directions3)
+    data_navigation_directions4 = NavigationDirectionEntity(destination=data_location4)
+    data_model.append(data_navigation_directions4)
+    data_navigation_directions5 = NavigationDirectionEntity(destination=data_location5)
+    data_model.append(data_navigation_directions5)
+
+    # start code block to test
+    destinations = Location.resolve_many_from_text("Costco stores")
+    destinations = utils.sort(destinations, "closest")
+    destinations = utils.first(destinations, 3)
+    navigation_directions = []
+    for destination in destinations:
+        navigation_directions += Navigation.find_directions(destination=destination)
+    Responder.respond(response=navigation_directions)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    iterator = iter(data_model.get_response([NavigationDirectionEntity]))
+    actual = next(iterator, None)
+    expected = [
+        data_navigation_directions1,
+        data_navigation_directions2,
+        data_navigation_directions4,
+    ]
+    response_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_145():
+    """
+    Buy cauliflower and broccoli online at the grocery store and have them shipped every 15th of the month.
+    """
+    # test data
+    data_model = DataModel(reset=True)
+    data_product_name1 = ProductName(
+        text="cauliflower and broccoli", value="cauliflower"
+    )
+    data_model.append(data_product_name1)
+    data_product_name2 = ProductName(text="cauliflower and broccoli", value="broccoli")
+    data_model.append(data_product_name2)
+    data_location = Location(text="the grocery store")
+    data_model.append(data_location)
+    data_date_time1 = DateTime(text="every 15th of the month", value="1/15")
+    data_model.append(data_date_time1)
+    data_date_time2 = DateTime(text="every 15th of the month", value="2/15")
+    data_model.append(data_date_time2)
+    data_date_time3 = DateTime(text="every 15th of the month", value="3/15")
+    data_model.append(data_date_time3)
+
+    # start code block to test
+    product_names = ProductName.resolve_many_from_text("cauliflower and broccoli")
+    location = Location.resolve_from_text("the grocery store")
+    date_times = DateTime.resolve_many_from_text("every 15th of the month")
+    for product_name in product_names:
+        for date_time in date_times:
+            Shopping.order(
+                product_name=product_name, location=location, date_time=date_time
+            )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(OrderEntity)
+    expected = []
+    for data_product_name in [data_product_name1, data_product_name2]:
+        for data_date_time in [data_date_time1, data_date_time2, data_date_time3]:
+            expected.append(
+                {
+                    "product_name": data_product_name,
+                    "location": data_location,
+                    "date_time": data_date_time,
+                }
+            )
+    entity_assertions(expected, actual, test_results)
     assert_test(test_results)

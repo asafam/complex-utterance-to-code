@@ -134,12 +134,21 @@ class Resolvable(Generic[T]):
             The resolable template object that is calling this method
         """
         data_model = DataModel()
-        data = data_model.get_data(entity.__class__)
+        clazz = entity[0].__class__ if isinstance(entity, list) else entity.__class__
+        data = data_model.get_data(clazz)
         if data is None:
             raise NotImplementedError()
 
-        entities = [x for x in data if x == entity]
-        items = [T(value=entity) for entity in entities]
+        entities = [
+            x
+            for x in data
+            if ((isinstance(entity, list) and x in entity) or (x == entity))
+        ]
+        items = (
+            [T(value=entity) for entity in entities]
+            if not isinstance(entity, list)
+            else [T(value=[entity]) for entity in entity]
+        )
 
         if len(items) == 0:
             if os.environ.get("TEST_RESOLVE_FAIL", False):

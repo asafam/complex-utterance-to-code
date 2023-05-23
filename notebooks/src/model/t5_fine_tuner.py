@@ -9,20 +9,22 @@ import pytorch_lightning as pl
 
 class T5FineTuner(pl.LightningModule):
     def __init__(
-        self, 
-        pretrained_model_name_or_path, 
-        train_dataloader, 
+        self,
+        pretrained_model_name_or_path,
+        train_dataloader,
         val_dataloader,
-        hparams
+        learning_rate=5e-5,
+        num_train_epochs=15,
+        warmup_steps=1000,
     ):
-        super().__init__()
+        super(T5FineTuner, self).__init__()
         self.model = T5ForConditionalGeneration.from_pretrained(
             pretrained_model_name_or_path
         )
         self.save_hyperparameters()
         self.train_dataloader = train_dataloader
         self.val_dataloader = val_dataloader
-        self.hparams = hparams
+        self.save_hyperparameters()
 
     def forward(self, input_ids, attention_mask, labels=None, **kwargs):
         outputs = self.model(
@@ -60,7 +62,6 @@ class T5FineTuner(pl.LightningModule):
         optimizer = torch.optim.AdamW(
             self.parameters,
             lr=self.hparams.learning_rate,
-            eps=self.hparams.adam_epsilon,
         )
         # create learning rate scheduler
         num_train_optimization_steps = self.hparams.num_train_epochs * len(

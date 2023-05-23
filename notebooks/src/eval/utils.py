@@ -281,6 +281,7 @@ def eval_bleu(code, generated_code):
 def eval_generated_code(
     df,
     model,
+    tokenizer,
     dataloader,
     target_label,
     id_labels,
@@ -292,6 +293,7 @@ def eval_generated_code(
 ):
     eval_df = generate_code(
         model,
+        tokenizer,
         dataloader=dataloader,
         gold_column=target_label,
         id_labels=id_labels,

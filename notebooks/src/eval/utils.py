@@ -315,3 +315,5 @@ def eval_generated_code(
     )
     print(f"humaneval = {results['humaneval']['score']}")
     print(f"bleu = {results['bleu']['score']}")
+    
+    return results

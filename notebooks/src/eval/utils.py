@@ -283,13 +283,20 @@ def eval_generated_code(
     model,
     dataloader,
     target_label,
+    id_labels,
     max_len,
     output_column="output",
     gold_column="code",
     parse_code=False,
     file_path=None,
 ):
-    eval_df = generate_code(model, dataloader=dataloader, gold_column=target_label, max_len=max_len)
+    eval_df = generate_code(
+        model,
+        dataloader=dataloader,
+        gold_column=target_label,
+        id_labels=id_labels,
+        max_len=max_len,
+    )
 
     if file_path:
         df2 = df.join(eval_df.set_index(df.index))

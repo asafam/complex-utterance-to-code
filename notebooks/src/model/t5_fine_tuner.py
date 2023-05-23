@@ -11,8 +11,6 @@ class T5FineTuner(pl.LightningModule):
     def __init__(
         self,
         pretrained_model_name_or_path,
-        train_dataloader,
-        val_dataloader,
         learning_rate=5e-5,
         num_train_epochs=15,
         warmup_steps=1000,
@@ -21,9 +19,6 @@ class T5FineTuner(pl.LightningModule):
         self.model = T5ForConditionalGeneration.from_pretrained(
             pretrained_model_name_or_path
         )
-        self.save_hyperparameters()
-        self.train_dataloader = train_dataloader
-        self.val_dataloader = val_dataloader
         self.save_hyperparameters()
 
     def forward(self, input_ids, attention_mask, labels=None, **kwargs):
@@ -80,8 +75,3 @@ class T5FineTuner(pl.LightningModule):
 
         return {"optimizer": optimizer, "lr_scheduler": lr_scheduler}
 
-    def train_dataloader(self):
-        return self.train_dataloader
-
-    def val_dataloader(self):
-        return self.val_dataloader

@@ -2327,4 +2327,187 @@ def test_145():
                 }
             )
     entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_146():
+    """
+    Set an alarm for every 3 hours starting at 2 am and stopping at 10 pm.
+    """
+    data_model = DataModel(reset=True)
+    data_date_time1 = DateTime(text="every 3 hours starting at 2 am", value="2am")
+    data_model.append(data_date_time1)
+    data_date_time2 = DateTime(text="every 3 hours starting at 2 am", value="5am")
+    data_model.append(data_date_time2)
+    data_date_time3 = DateTime(text="every 3 hours starting at 2 am", value="8am")
+    data_model.append(data_date_time3)
+    data_date_time4 = DateTime(text="every 3 hours starting at 2 am", value="11am")
+    data_model.append(data_date_time4)
+
+    # start code block to test
+    date_times = DateTime.resolve_many_from_text("every 3 hours starting at 2 am")
+    for date_time in date_times:
+        Alarm.create_alarm(date_time=date_time)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(AlarmEntity)
+    expected = []
+    for data_date_time in [
+        data_date_time1,
+        data_date_time2,
+        data_date_time3,
+        data_date_time4,
+    ]:
+        expected.append(
+            {
+                "date_time": data_date_time,
+            }
+        )
+    entity_assertions(expected, actual, test_results)
+    assert_test(test_results)
+
+
+def test_147():
+    """
+    Set a date reminder 30 days from now and remind me daily of the upcoming date.
+    """
+    data_model = DataModel(reset=True)
+    data_date_time30 = DateTime(text="30 days from now")
+    data_model.append(data_date_time30)
+    data_person_reminded = Contact(text="me")
+    data_model.append(data_person_reminded)
+    data_date_time1 = DateTime(text="daily", value="1")
+    data_model.append(data_date_time1)
+    data_date_time2 = DateTime(text="daily", value="2")
+    data_model.append(data_date_time2)
+    data_date_time3 = DateTime(text="daily", value="3")
+    data_model.append(data_date_time3)
+
+    # start code block to test
+    date_time = DateTime.resolve_from_text("30 days from now")
+    reminder = Reminders.create_reminder(date_time=date_time)
+
+    person_reminded = Contact.resolve_from_text("me")
+    date_times = DateTime.resolve_many_from_text("daily")
+    content = Content.resolve_from_entity(entity=reminder)
+    date_times = DateTime.resolve_many_from_text("every 3 hours starting at 2 am")
+    for date_time in date_times:
+        Reminders.create_reminder(
+            person_reminded=person_reminded, date_time=date_time, content=content
+        )
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    actual = data_model.get_data(ReminderEntity)
+    expected = [
+        {
+            "date_time": data_date_time30,
+        }
+    ]
+
+    entity_assertions(expected, actual, test_results)
+
+    actual = data_model.get_data(ReminderEntity)
+    expected = [
+        {
+            "person_reminded": data_person_reminded,
+            "date_time": data_date_time,
+            "content": Content(value=reminder),
+        }
+        for data_date_time in [
+            data_date_time1,
+            data_date_time2,
+            data_date_time3,
+        ]
+    ]
+    entity_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_148():
+    """
+    Is there a Radiohead concert in August, October, or November?
+    """
+    data_model = DataModel(reset=True)
+    data_event_name = EventName(text="a Radiohead concert")
+    data_model.append(data_event_name)
+    data_date_time1 = DateTime(text="August, October, or November", value="August")
+    data_model.append(data_date_time1)
+    data_date_time2 = DateTime(text="August, October, or November", value="October")
+    data_model.append(data_date_time2)
+    data_date_time3 = DateTime(text="August, October, or November", value="November")
+    data_model.append(data_date_time3)
+    data_date_time4 = DateTime(text="December", value="December")
+    data_model.append(data_date_time4)
+    data_event1 = EventEntity(event_name=data_event_name, date_time=data_date_time2)
+    data_model.append(data_event1)
+    data_event2 = EventEntity(event_name=data_event_name, date_time=data_date_time3)
+    data_model.append(data_event2)
+    data_event_neg = EventEntity(event_name=data_event_name, date_time=data_date_time4)
+    data_model.append(data_event_neg)
+
+    # start code block to test
+    event_name = EventName.resolve_from_text("a Radiohead concert")
+    date_times = DateTime.resolve_many_from_text("August, October, or November")
+    events = []
+    for date_time in date_times:
+        events += Calendar.find_events(event_name=event_name, date_time=date_time)
+    Responder.respond(response=events)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    iterator = iter(data_model.get_response([EventEntity]))
+    actual = next(iterator, None)
+    expected = [data_event1, data_event2]
+    response_assertions(expected, actual, test_results)
+
+    assert_test(test_results)
+
+
+def test_150():
+    """
+    Check the email to see that I received an email from Bob and reply to him.
+    """
+    data_model = DataModel(reset=True)
+    data_recipient = Contact(text="I")
+    data_message_content_type = MessageContentType(text="an email")
+    data_sender = Contact(text="Bob")
+    data_sender_neg = Contact(text="Joe")
+    data_message1 = MessageEntity(
+        recipient=data_recipient,
+        message_content_type=data_message_content_type,
+        sender=data_sender,
+    )
+    data_message2 = MessageEntity(
+        recipient=data_recipient,
+        message_content_type=data_message_content_type,
+        sender=data_sender_neg,
+    )
+
+    # start code block to test
+    event_name = EventName.resolve_from_text("a Radiohead concert")
+    date_times = DateTime.resolve_many_from_text("August, October, or November")
+    events = []
+    for date_time in date_times:
+        events += Calendar.find_events(event_name=event_name, date_time=date_time)
+    Responder.respond(response=events)
+    # end code block to test
+
+    # assertions
+    test_results = {}
+
+    iterator = iter(data_model.get_response([EventEntity]))
+    actual = next(iterator, None)
+    expected = [data_event1, data_event2]
+    response_assertions(expected, actual, test_results)
+
     assert_test(test_results)

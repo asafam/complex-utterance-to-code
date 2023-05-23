@@ -284,7 +284,7 @@ def eval_generated_code(
     dataloader,
     target_label,
     id_labels,
-    max_len,
+    max_length,
     output_column="output",
     gold_column="code",
     parse_code=False,
@@ -295,7 +295,7 @@ def eval_generated_code(
         dataloader=dataloader,
         gold_column=target_label,
         id_labels=id_labels,
-        max_len=max_len,
+        max_length=max_length,
     )
 
     if file_path:

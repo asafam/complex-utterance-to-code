@@ -103,7 +103,7 @@ def eval_bleu(code, generated_code):
 
 
 def generate_code(
-    model, tokenizer, test_dataloader, gold_column, id_labels, max_length
+    model, tokenizer, dataloader, gold_column, id_labels, max_length
 ):
     model.eval()
     outputs = []
@@ -112,7 +112,7 @@ def generate_code(
     for id_label in id_labels:
         ids[id_label] = []
 
-    for batch in tqdm(test_dataloader):
+    for batch in tqdm(dataloader):
         outs = model.generate(
             input_ids=batch["input_ids"],
             attention_mask=batch["attention_mask"],

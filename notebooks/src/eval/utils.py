@@ -102,7 +102,7 @@ def eval_bleu(code, generated_code):
     return score
 
 
-def generate_code(
+def generate_predictions(
     model, tokenizer, dataloader, gold_column, id_labels, max_length
 ):
     model.eval()
@@ -193,15 +193,15 @@ def bleu_accuracy_score(
 
 
 def model_eval(
-    results_file_path,
+    results_df,
     output_column="output",
     gold_column="code",
     parse_to_code=False,
     compute_humanval=True,
     compute_bleu=True,
 ):
-    results_df = pd.read_csv(results_file_path, compression="gzip")
-
+    # results_df = pd.read_csv(results_file_path, compression="gzip")
+    results_df = results_df.copy()
     results_df["sample_id"] = results_df["sample_id"].astype(int)
     results_df.set_index(["sample_id", "sample_minor_id"], inplace=True)
     results_df.sort_index(inplace=True)
@@ -291,7 +291,7 @@ def eval_generated_code(
     parse_code=False,
     file_path=None,
 ):
-    eval_df = generate_code(
+    preds_df = generate_predictions(
         model,
         tokenizer,
         dataloader=dataloader,
@@ -301,7 +301,7 @@ def eval_generated_code(
     )
 
     if file_path:
-        df2 = df.join(eval_df.set_index(df.index))
+        df2 = df.join(preds_df.set_index(df.index))
         df2.to_csv(file_path)
         print(f"Results were saved to {file_path}")
 

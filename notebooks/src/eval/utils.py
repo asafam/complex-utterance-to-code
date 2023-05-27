@@ -309,6 +309,7 @@ def eval_generated_code(
     else:
         df = pd.read_csv(file_path)
 
+    results = None
     if should_model_eval:
         results = model_eval(
             results_file_path=df,

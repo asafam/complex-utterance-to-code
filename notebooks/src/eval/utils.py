@@ -200,7 +200,6 @@ def model_eval(
     compute_humanval=True,
     compute_bleu=True,
 ):
-    # results_df = pd.read_csv(results_file_path, compression="gzip")
     results_df = results_df.copy()
     results_df["sample_id"] = results_df["sample_id"].astype(int)
     results_df.set_index(["sample_id", "sample_minor_id"], inplace=True)
@@ -290,6 +289,7 @@ def eval_generated_code(
     gold_column="code",
     parse_code=False,
     file_path=None,
+    should_eval=True,
 ):
     preds_df = generate_predictions(
         model,
@@ -301,19 +301,20 @@ def eval_generated_code(
     )
 
     if file_path:
-        df2 = df.join(preds_df.set_index(df.index))
-        df2.to_csv(file_path)
+        df = df.join(preds_df.set_index(df.index))
+        df.to_csv(file_path)
         print(f"Results were saved to {file_path}")
 
-    results = model_eval(
-        results_file_path=file_path,
-        parse_to_code=parse_code,
-        compute_humanval=True,
-        compute_bleu=True,
-        output_column=output_column,
-        gold_column=gold_column,
-    )
-    print(f"humaneval = {results['humaneval']['score']}")
-    print(f"bleu = {results['bleu']['score']}")
-    
+    if should_eval:
+        results = model_eval(
+            results_file_path=df,
+            parse_to_code=parse_code,
+            compute_humanval=True,
+            compute_bleu=True,
+            output_column=output_column,
+            gold_column=gold_column,
+        )
+        print(f"humaneval = {results['humaneval']['score']}")
+        print(f"bleu = {results['bleu']['score']}")
+
     return results

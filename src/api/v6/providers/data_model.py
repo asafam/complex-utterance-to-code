@@ -23,8 +23,8 @@ class DataModel:
     def append_output_data(self, result, context = None) -> None:
         self._output.append(result)
     
-    def delete(self, T) -> None:
-        self._data = [x for x in self._data if x != T]
+    def delete(self, t) -> None:
+        self._data = [x for x in self._data if x != t]
         return
     
     def initialize(self) -> None:

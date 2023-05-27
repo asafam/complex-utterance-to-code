@@ -95,7 +95,11 @@ class Resolvable(Generic[T]):
         #     x for x in data if x.text == text
         # ]  # when resolved many from text we expect the text to be a substring of the actual text
 
-        items = [x for x in data if compute_bleu_score(text, x.text) > 0.333]
+        items = [
+            x
+            for x in data
+            if hasattr(x, "text") and compute_bleu_score(text, x.text) > 0.333
+        ]
 
         if len(items) == 0:
             if os.environ.get("TEST_RESOLVE_FAIL", False):
@@ -149,6 +153,13 @@ class Resolvable(Generic[T]):
             if not isinstance(entity, list)
             else [T(value=[entity]) for entity in entity]
         )
+
+        if text:
+            items = [
+                x
+                for x in data
+                if hasattr(x, "text") and compute_bleu_score(text, x.text) > 0.333
+            ]
 
         if len(items) == 0:
             if os.environ.get("TEST_RESOLVE_FAIL", False):

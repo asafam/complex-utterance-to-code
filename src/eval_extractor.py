@@ -173,6 +173,7 @@ def write_data(data: List, output_file: str):
     df.to_csv(
         output_file, index=False, header=True, compression=compression
     )  # Write data to file
+    print(f'Generated {len(data)} test cases in "{output_file}"')
 
 
 def main(

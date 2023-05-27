@@ -129,11 +129,11 @@ class Navigation(Action):
     @classmethod
     def find_duration(
         cls,
-        origin: Optional[Location],
-        destination: Optional[Location],
-        departure_date_time: Optional[DateTime],
-        avoid_nav_road_condition: Optional[NavigationRoadCondition],
-        nav_travel_method: Optional[NavigationTravelMethod],
+        origin: Optional[Location] = None,
+        destination: Optional[Location] = None,
+        departure_date_time: Optional[DateTime] = None,
+        avoid_nav_road_condition: Optional[NavigationRoadCondition] = None,
+        nav_travel_method: Optional[NavigationTravelMethod] = None,
     ) -> List[NavigationDurationEntity]:
         """
         This class method find the the duration of a travel between two locations.
@@ -242,7 +242,7 @@ class Navigation(Action):
         nav_travel_method: Optional[NavigationTravelMethod],
     ) -> List[NavigationEstimatedDepartureEntity]:
         """
-        This class method gets an estimated departure information between two locations upon 
+        This class method gets an estimated departure information between two locations upon
         a target arrival time.
 
         Parameters

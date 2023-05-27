@@ -109,11 +109,12 @@ class Reminders(Action):
             The list of reminders that were deleted
         """
         data_model = DataModel()
-        data = data_model.get_data(ReminderEntity)
         if reminders:
             if type(reminders) == list:
-                data = [x for x in data if x not in reminders]
+                for reminder in reminders:
+                    data_model.delete(reminder)
             else:
-                data = [x for x in data if x != reminders]
-
+                data_model.delete(reminder)
+        
+        data = data_model.get_data(ReminderEntity)
         return data

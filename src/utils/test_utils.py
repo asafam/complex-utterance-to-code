@@ -15,13 +15,14 @@ def response_assertions(expected, actual, test_results, options={}):
     default_options = {"fail": bool(eval(os.environ.get("TEST_FAIL", "False")))}
     options = {**default_options, **options}
 
+    # this method works with lists
+    actual = actual if isinstance(actual, list) else [actual]
+    expected = expected if isinstance(expected, list) else [expected]
+
     expected = expected or []
-    result = (
-        assert_equal(len(expected), len(actual), test_results)
-        and assert_true(
-            all(any(is_equal(e, a) for a in actual) for e in expected),
-            test_results,
-        )
+    result = assert_equal(len(expected), len(actual), test_results) and assert_true(
+        all(any(is_equal(e, a) for a in actual) for e in expected),
+        test_results,
     )
 
     return result

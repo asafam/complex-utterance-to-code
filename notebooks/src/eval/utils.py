@@ -289,23 +289,27 @@ def eval_generated_code(
     gold_column="code",
     parse_code=False,
     file_path=None,
-    compute_results=True,
+    should_generate_predictions=True,
+    should_model_eval=True,
 ):
-    preds_df = generate_predictions(
-        model,
-        tokenizer,
-        dataloader=dataloader,
-        gold_column=target_label,
-        id_labels=id_labels,
-        max_length=max_length,
-    )
+    if should_generate_predictions:
+        preds_df = generate_predictions(
+            model,
+            tokenizer,
+            dataloader=dataloader,
+            gold_column=target_label,
+            id_labels=id_labels,
+            max_length=max_length,
+        )
 
-    if file_path:
-        df = df.join(preds_df.set_index(df.index))
-        df.to_csv(file_path)
-        print(f"Results were saved to {file_path}")
+        if file_path:
+            df = df.join(preds_df.set_index(df.index))
+            df.to_csv(file_path)
+            print(f"Results were saved to {file_path}")
+    else:
+        df = pd.read_csv(file_path)
 
-    if compute_results:
+    if should_model_eval:
         results = model_eval(
             results_file_path=df,
             parse_to_code=parse_code,

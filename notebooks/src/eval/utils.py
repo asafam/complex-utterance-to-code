@@ -312,7 +312,7 @@ def eval_generated_code(
     results = None
     if should_model_eval:
         results = model_eval(
-            results_file_path=df,
+            results_df=df,
             parse_to_code=parse_code,
             compute_humanval=True,
             compute_bleu=True,

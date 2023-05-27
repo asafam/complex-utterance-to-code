@@ -289,7 +289,7 @@ def eval_generated_code(
     gold_column="code",
     parse_code=False,
     file_path=None,
-    should_eval=True,
+    compute_results=True,
 ):
     preds_df = generate_predictions(
         model,
@@ -305,7 +305,7 @@ def eval_generated_code(
         df.to_csv(file_path)
         print(f"Results were saved to {file_path}")
 
-    if should_eval:
+    if compute_results:
         results = model_eval(
             results_file_path=df,
             parse_to_code=parse_code,

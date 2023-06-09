@@ -23,7 +23,15 @@ from actions.weather import *
 from providers.data_model import DataModel
 from datetime import datetime, timedelta
 import utils.api_utils as utils
-from utils.test_utils import *
+from utils.test_utils import (
+    assert_equal,
+    assert_not_equal,
+    assert_true,
+    assert_false,
+    response_assertions,
+    assert_test,
+    entity_assertions,
+)
 
 
 def test_0():
@@ -174,10 +182,10 @@ def test_1_b():
     expr = len(list(weather_forecasts)) > 0
     if expr:
         date_time = DateTime.resolve_from_text("7:30")
-        alarm = Alarm.create_alarm(date_time=date_time)
+        Alarm.create_alarm(date_time=date_time)
     else:
         date_time = DateTime.resolve_from_text("8")
-        alarm = Alarm.create_alarm(date_time=date_time)
+        Alarm.create_alarm(date_time=date_time)
     # end code block to test
 
     # assertions
@@ -609,7 +617,7 @@ def test_9():
             data_content1,
             data_content2,
         ]
-        # 
+        #
     ]
     entity_assertions(expected, actual, test_results)
 

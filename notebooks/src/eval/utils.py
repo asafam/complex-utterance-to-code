@@ -8,6 +8,7 @@ from representations.tree.tree import Tree
 from representations.builders.ast.tearers.tearer_factory import TearerFactory
 import tokenize
 from nltk.translate import bleu_score
+from nltk.translate.bleu_score import SmoothingFunction
 from sklearn import metrics
 from tqdm.auto import tqdm
 
@@ -73,12 +74,16 @@ def eval_code(code: str):
         context = {}
         exec(code, context)
         test_results = context.get("test_results", {})
+        test_results["execution_success"] = test_results.get("execution_success", 0) + 1
     except AssertionError as e:
-        test_results["test_failuers"] = test_results.get("test_failuers", 0) + 1
+        test_results["assertion_failure"] = test_results.get("assertion_failure", 0) + 1
     except Exception as e:
-        test_results["code_failure"] = test_results.get("code_failure", 0) + 1
+        test_results["execution_failure"] = test_results.get("execution_failure", 0) + 1
 
     code_failure = test_results.get("code_failure", 0)
+    assertion_failure = test_results.get("assertion_failure", 0)
+    execution_failure = test_results.get("execution_failure", 0)
+    execution_success = test_results.get("execution_success", 0)
     correct = test_results.get("correct", 0)
     incorrect = test_results.get("incorrect", 0)
     total = (correct + incorrect) or math.inf
@@ -86,20 +91,15 @@ def eval_code(code: str):
 
     results = dict(
         code_failure=code_failure,
+        execution_success=execution_success,
+        execution_failure=execution_failure,
+        assertion_failure=assertion_failure,
         correct=correct,
         incorrect=incorrect,
         accuracy=accuracy,
     )
 
     return results
-
-
-def eval_bleu(code, generated_code):
-    hypothesis = tokenize_source(code)
-    reference = tokenize_source(generated_code)
-    weights = (0.25, 0.25, 0.25, 0.25)
-    score = bleu_score.sentence_bleu([reference], hypothesis, weights=weights)
-    return score
 
 
 def generate_predictions(
@@ -193,14 +193,17 @@ def bleu_accuracy_score(
 
 
 def model_eval(
-    results_df,
+    results_df=None,
+    results_file_path=None,
     output_column="output",
     gold_column="code",
     parse_to_code=False,
     compute_humanval=True,
     compute_bleu=True,
 ):
-    results_df = results_df.copy()
+    results_df = (
+        pd.read_csv(results_file_path) if results_file_path else results_df.copy()
+    )
     results_df["sample_id"] = results_df["sample_id"].astype(int)
     results_df.set_index(["sample_id", "sample_minor_id"], inplace=True)
     results_df.sort_index(inplace=True)
@@ -268,12 +271,23 @@ def eval_model_humaneval(
 
 
 def eval_bleu(code, generated_code):
+    if not code or not generated_code:
+        return 0
+
     hypothesis = tokenize_source(code)
-    reference = tokenize_source(generated_code)
+
+    try:
+        reference = tokenize_source(generated_code)
+    except:
+        return 0
+
     n = max(min(len(hypothesis), 4), 1)
     weight = 1 / n
     weights = (weight,) * n
-    score = bleu_score.sentence_bleu([reference], hypothesis, weights=weights)
+    smoothing_function = SmoothingFunction().method4
+    score = bleu_score.sentence_bleu(
+        [reference], hypothesis, weights=weights, smoothing_function=smoothing_function
+    )
     return score
 
 

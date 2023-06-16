@@ -6,7 +6,7 @@ class MapEntity(Entity):
     It should not be confused with the Location class, which is used to represent the physical attributes of a location.
     Location in face is an attribute of the MapEntity class.
     The MapEntity is returned by the find_on_map method in the Map action class.
-    It inherits from the Entity class.
+    
     """
 
     pass

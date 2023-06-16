@@ -1,10 +1,6 @@
 class Music(Action):
     """
     The Music class contains all the methods of a virtual assistant agent in the music domain.
-    This class define a specific API for the music domain and inherits from the markup Action class.
-    This class defines an API to:
-
-        * Play music (song, playlist, album, artist, genre, music type)
     """
 
     @classmethod

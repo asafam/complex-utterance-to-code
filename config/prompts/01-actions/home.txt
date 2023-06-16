@@ -1,11 +1,6 @@
 class SmartHome(Action):
     """
     The SmartHome class contains all the methods of a virtual assistant agent in the smart home domain.
-    This class define a specific API for controlling smart home devices and inherits from the markup Action class.
-    The class defines an API to:
-    
-        * Find smart home devices
-        * Execute actions on smart home devices
     """
     
     @classmethod

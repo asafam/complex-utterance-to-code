@@ -1,17 +1,6 @@
 class Messages(Action):
     """
     The Messages class contains all the methods of a virtual assistant agent in the messages domain.
-    This class define a specific API for the messages domain and inherits from the markup Action class.
-    This class defines an API to:
-
-        * Find messages
-        * Send messages
-        * Delete messages
-
-    Messages are sent to a recipient, from a sender, at a specific date and time. The messages can be sent
-    from a specific application (like email, the messages app in the smart phone, or Whatsapp). Messages
-    include a content, an attachment and a content type (text, image, video, etc.). Messages can have a
-    status (sent, open).
     """
 
     @classmethod
@@ -23,7 +12,6 @@ class Messages(Action):
         content: Optional[Content] = None,
         message_status: Optional[MessageStatus] = None,
         message_content_type: Optional[MessageContentType] = None,
-        app: Optional[App] = None,
     ) -> List[MessageEntity]:
         """
         This class method find messages based on the given parameters.
@@ -42,8 +30,6 @@ class Messages(Action):
             The status of the message (e.g., open, send, read, unread)
         message_content_type : MessageContentType, optional
             The content type of the message
-        app : App, optional
-            The application used to send the message
 
         Returns
         -------

@@ -1,6 +1,7 @@
 from typing import List, Union, Optional, TypeVar, Generic
 import os
 import pandas as pd
+import numpy as np
 import ast
 import math
 import glob
@@ -103,11 +104,12 @@ def eval_code(code: str):
 
 
 def generate_predictions(
-    model, tokenizer, dataloader, gold_column, id_labels, max_length
+    model, tokenizer, dataloader, gold_column, id_labels, max_length, k
 ):
     model.eval()
     outputs = []
     targets = []
+    ks = []
     ids = {}
     for id_label in id_labels:
         ids[id_label] = []
@@ -117,22 +119,27 @@ def generate_predictions(
             input_ids=batch["input_ids"],
             attention_mask=batch["attention_mask"],
             max_length=max_length,
+            do_sample=k > 1,
+            num_return_sequences=k,
         )
 
         output = [tokenizer.decode(out, skip_special_tokens=True) for out in outs]
-        target = [t.strip() for t in batch[gold_column]]
+        target = [t.strip() for t in list(np.repeat(batch[gold_column], k))]
 
         outputs.extend(output)
         targets.extend(target)
+        ks.extend(list(np.arange(k)) * (batch["input_ids"].shape[0]))
         for id_label in id_labels:
-            ids[id_label].extend(batch[id_label])
+            ids[id_label].extend(list(np.repeat(batch[id_label], k)))
 
-    data = pd.DataFrame(
-        {
+    data = pd.DataFrame({
+        **{
             "output": outputs,
             "target": targets,
-        }
-    )
+            "k": ks,
+        },
+        **ids,
+    })
 
     return data
 
@@ -150,7 +157,8 @@ def eval_model(data: pd.DataFrame):
 def humaneval_accuracy_score(
     data: pd.DataFrame,
     code_column_name: str = "pred_code",
-    score_id_labels: Union[str, List[str]] = "sample_id",
+    score_id_labels1: Union[str, List[str]] = ["sample_id", "k"],
+    score_id_labels2: Union[str, List[str]] = "sample_id",
     score_column_name: str = "accuracy",
 ):
     test_codes = data.apply(
@@ -163,10 +171,15 @@ def humaneval_accuracy_score(
     test_results_df = pd.DataFrame.from_records(
         test_results.values, index=test_results.index
     )
-    score = (
+    test_scores = (
         test_results_df.reset_index(drop=False)
-        .groupby(score_id_labels)[score_column_name]
+        .groupby(score_id_labels1)[score_column_name]
         .mean()
+    )
+    score = (
+        test_scores.reset_index(drop=False)
+        .groupby(score_id_labels2)[score_column_name]
+        .max()
         .mean()
     )
     return dict(score=score, results=test_results_df)
@@ -176,17 +189,23 @@ def bleu_accuracy_score(
     data: pd.DataFrame,
     generated_column="output",
     gold_column="code",
-    score_id_labels: Union[str, List[str]] = "sample_id",
+    score_id_labels1: Union[str, List[str]] = ["sample_id", "k"],
+    score_id_labels2: Union[str, List[str]] = "sample_id",
     score_column_name: str = "bleu_score",
 ):
     eval_results = data.apply(
         lambda x: eval_bleu(x[gold_column], x[generated_column]), axis=1
     )
     eval_results_df = eval_results.to_frame("bleu_score")
-    score = (
+    test_scores = (
         eval_results_df.reset_index(drop=False)
-        .groupby(score_id_labels)[score_column_name]
+        .groupby(score_id_labels1)[score_column_name]
         .mean()
+    )
+    score = (
+        test_scores.reset_index(drop=False)
+        .groupby(score_id_labels2)[score_column_name]
+        .max()
         .mean()
     )
     return dict(score=score, results=eval_results_df)
@@ -205,7 +224,7 @@ def model_eval(
         pd.read_csv(results_file_path) if results_file_path else results_df.copy()
     )
     results_df["sample_id"] = results_df["sample_id"].astype(int)
-    results_df.set_index(["sample_id", "sample_minor_id"], inplace=True)
+    results_df.set_index(["sample_id", "sample_minor_id", "k"], inplace=True)
     results_df.sort_index(inplace=True)
 
     code_column = "generated_code"
@@ -301,12 +320,16 @@ def eval_generated_code(
     max_length,
     output_column="output",
     gold_column="code",
+    k=1,
     parse_code=False,
     file_path=None,
     should_generate_predictions=True,
     should_model_eval=True,
 ):
-    if should_generate_predictions:
+    # check if file exists
+    file_exists = file_path and os.path.exists(file_path)
+
+    if should_generate_predictions and file_exists:
         preds_df = generate_predictions(
             model,
             tokenizer,
@@ -314,10 +337,11 @@ def eval_generated_code(
             gold_column=target_label,
             id_labels=id_labels,
             max_length=max_length,
+            k=k,
         )
 
         if file_path:
-            df = df.join(preds_df.set_index(df.index))
+            df = df.join(preds_df.set_index(df.index.names))
             df.to_csv(file_path)
             print(f"Results were saved to {file_path}")
     else:

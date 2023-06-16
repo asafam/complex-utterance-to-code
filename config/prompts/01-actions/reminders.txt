@@ -1,14 +1,6 @@
 class Reminders(Action):
     """
     The Reminders class contains all the methods of a virtual assistant agent in the reminders domain.
-    This class define a specific API for the reminders domain and inherits from the markup Action class.
-    This class defines an API to:
-
-        * Create a reminder
-        * Find reminders
-        * Delete reminders
-
-    Reminders are associated with a reminded person, a reminded content and a date time.
     """
 
     @classmethod

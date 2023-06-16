@@ -34,7 +34,7 @@ class HomeDeviceEntity(Entity):
     """
     The HomeDeviceEntity class is used to represent a home device.
     It is returned by the find_home_devices method in the Home action class.
-    It inherits from the Entity class.
+    
     """
 
     pass

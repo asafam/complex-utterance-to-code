@@ -1,13 +1,6 @@
 class Timer(Action):
     """
     The Timer class contains all the methods of a virtual assistant agent for using a timer in the clock domain.
-    This class define a specific API for using the timer and inherits from the markup Action class.
-    This class defines an API to:
-
-        * Create a timer
-        * Pause a timer
-        * Restart a timer
-        * Stop a timer
     """
 
     @classmethod
@@ -99,13 +92,6 @@ class Timer(Action):
 class Alarm:
     """
     The Alarm class contains all the methods of a virtual assistant agent for using a timer in the clock domain.
-    This class define a specific API for using the timer and inherits from the markup Action class.
-    This class defines an API to:
-
-        * Create a timer
-        * Pause a timer
-        * Restart a timer
-        * Stop a timer
     """
 
     @classmethod

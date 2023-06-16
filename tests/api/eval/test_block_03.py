@@ -23,7 +23,15 @@ from actions.weather import *
 from providers.data_model import DataModel
 from datetime import datetime, timedelta
 import utils.api_utils as utils
-from utils.test_utils import *
+from utils.test_utils import (
+    assert_equal,
+    assert_not_equal,
+    assert_true,
+    assert_false,
+    response_assertions,
+    assert_test,
+    entity_assertions,
+)
 
 
 def test_52():

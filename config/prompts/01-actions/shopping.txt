@@ -1,13 +1,6 @@
 class Shopping(Action):
     """
     The Shopping class contains all the methods of a virtual assistant agent in the shopping domain.
-    This class define a specific API for the shopping domain and inherits from the markup Action class.
-    This class defines an API to:
-
-        * Find products
-        * Find shopping lists
-        * Add products to shopping lists
-        * Order products
     """
 
     @classmethod

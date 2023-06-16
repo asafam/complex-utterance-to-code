@@ -1,10 +1,6 @@
 class Map(Action):
     """
     The Map class contains all the methods of a virtual assistant agent in the map domain.
-    This class define a specific API for finding places on a map and getting information on these places.
-    The class defines an API to:
-
-        * Find places on a map
     """
 
     @classmethod

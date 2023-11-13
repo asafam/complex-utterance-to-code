@@ -132,14 +132,16 @@ def generate_predictions(
         for id_label in id_labels:
             ids[id_label].extend(list(np.repeat(batch[id_label], k)))
 
-    data = pd.DataFrame({
-        **{
-            "output": outputs,
-            "target": targets,
-            "k": ks,
-        },
-        **ids,
-    })
+    data = pd.DataFrame(
+        {
+            **{
+                "output": outputs,
+                "target": targets,
+                "k": ks,
+            },
+            **ids,
+        }
+    )
 
     return data
 
@@ -314,13 +316,13 @@ def eval_generated_code(
     df,
     model,
     tokenizer,
+    k,
     dataloader,
     target_label,
     id_labels,
     max_length,
     output_column="output",
     gold_column="code",
-    k=1,
     parse_code=False,
     file_path=None,
     should_generate_predictions=True,
@@ -329,7 +331,7 @@ def eval_generated_code(
     # check if file exists
     file_exists = file_path and os.path.exists(file_path)
 
-    if should_generate_predictions and file_exists:
+    if should_generate_predictions and not file_exists:
         preds_df = generate_predictions(
             model,
             tokenizer,
@@ -341,16 +343,16 @@ def eval_generated_code(
         )
 
         if file_path:
-            df = df.join(preds_df.set_index(df.index.names))
-            df.to_csv(file_path)
+            results_df = df.join(preds_df.set_index(df.index.names))
+            results_df.to_csv(file_path)
             print(f"Results were saved to {file_path}")
     else:
-        df = pd.read_csv(file_path)
+        results_df = pd.read_csv(file_path)
 
     results = None
     if should_model_eval:
         results = model_eval(
-            results_df=df,
+            results_df=results_df,
             parse_to_code=parse_code,
             compute_humanval=True,
             compute_bleu=True,

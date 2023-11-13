@@ -12,7 +12,7 @@ class ExprCodeTearer(BaseTearer):
         return re.match(r".+\((.*)\)", node.label)
 
     def get_priority(self) -> int:
-        return super().get_priority() + 1
+        return super().get_priority() + (1 if self.rules_enabled else -1)
 
     def tear(self, node: Node) -> Any:
         ast_item = ast.parse(node.label)

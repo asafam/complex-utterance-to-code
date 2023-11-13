@@ -7,8 +7,8 @@ from representations.builders import ast
 
 
 class TearerFactory:
-    def get_tearer(self, item):
-        all_tearers = [Tearer() for Tearer in self._load_all_tearers()]
+    def get_tearer(self, item, rules_enabled=False):
+        all_tearers = [Tearer(rules_enabled=rules_enabled) for Tearer in self._load_all_tearers()]
         tearers = [b for b in all_tearers if b.is_match(item) and b.is_enabled()]
         tearers = sorted(tearers, key=lambda b: b.get_priority(), reverse=True)
         tearer = next(iter(tearers), None)

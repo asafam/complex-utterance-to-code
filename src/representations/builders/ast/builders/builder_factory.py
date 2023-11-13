@@ -6,8 +6,8 @@ from representations.builders import ast
 
 
 class BuilderFactory:
-    def get_builder(self, item):
-        all_builders = [Builder() for Builder in self._load_all_builders()]
+    def get_builder(self, item, rules_enabled: bool = False):
+        all_builders = [Builder(rules_enabled=rules_enabled) for Builder in self._load_all_builders()]
         builders = [b for b in all_builders if b.is_match(item) and b.is_enabled()]
         builders = sorted(builders, key=lambda b: b.get_priority(), reverse=True)
         builder = next(iter(builders), None)

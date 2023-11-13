@@ -38,7 +38,7 @@ class ForBuilder(BaseBuilder):
         return node
 
     def get_priority(self):
-        return 1000
+        return (super().get_priority() + (1 if self.rules_enabled else -1))
 
     def is_match(self, item):
         name = type(item).__name__

@@ -46,7 +46,7 @@ class BaseTreeBuilder:
     def build(self, input, rules_enabled=True) -> Tree:
         raise NotImplementedError()
 
-    def tear(self, tree: Tree) -> str:
+    def tear(self, tree: Tree, rules_enabled=True) -> str:
         raise NotImplementedError()
 
     def _apply_rules_on_node(

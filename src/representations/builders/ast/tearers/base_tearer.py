@@ -6,6 +6,10 @@ from representations.builders.ast import tearers
 
 
 class BaseTearer:
+    def __init__(self, rules_enabled: bool = False) -> None:
+        super().__init__()
+        self.rules_enabled = rules_enabled
+        
     def is_enabled(self):
         return True
 

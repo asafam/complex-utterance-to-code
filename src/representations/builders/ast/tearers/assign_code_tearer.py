@@ -12,7 +12,7 @@ class AssignTearer(BaseTearer):
         return re.match(r".+ [\+-\/\*]*= .+", node.label)
 
     def get_priority(self) -> int:
-        return super().get_priority() + 2
+        return super().get_priority() + (2 if self.rules_enabled else -2)
 
     def tear(self, node: Node) -> Any:
         ast_item = ast.parse(node.label)

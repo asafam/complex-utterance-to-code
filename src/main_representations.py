@@ -5,16 +5,22 @@ from representations.builders.lang.text_tree_builder import TextTreeBuilder
 from representations.builders.ast.ast_tree_builder import ASTTreeBuilder
 from representations.rules.node_rule import NodeRule
 from representations.utils.file_utils import load_input_file, load_rules_from_file
+from representations.builders.ast.tearers.tearer_factory import TearerFactory
+import ast
 
 
 def generate_code_representation(code: str, rules_enabled: bool = False):
     builder = ASTTreeBuilder()
-    tree = builder.build(input=code)
+    tree = builder.build(input=code, rules_enabled=False)
+    tearer = TearerFactory().get_tearer(tree.root_node, rules_enabled=False)
+    asdl = tearer.tear(tree.root_node)
+    code = ast.unparse(asdl)
+    tree0 = builder.build(input=code, rules_enabled=True)
 
     postprocessed_tree = None
     if rules_enabled:
         postprocessed_tree = builder.apply_rules(
-            tree=tree,
+            tree=tree0,
         )
 
     return tree, postprocessed_tree

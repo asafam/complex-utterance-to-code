@@ -25,9 +25,6 @@ from datetime import datetime, timedelta
 import utils.api_utils as utils
 from utils.test_utils import (
     assert_equal,
-    assert_not_equal,
-    assert_true,
-    assert_false,
     response_assertions,
     assert_test,
     entity_assertions,

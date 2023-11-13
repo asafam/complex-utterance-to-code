@@ -27,7 +27,7 @@
         "--lang_representations",
         "--code_representations",
         "--output_file",
-        "build/train_complex_utterance_to_code_with_intermediate_40k.csv.gz"
+        "build/train_complex_utterance_to_code_with_intermediate_40k_2.csv.gz"
       ]
     },
 
@@ -60,7 +60,8 @@
         "--show_preprocessed",
         "--show_postprocessed",
         "--input",
-        "check if there is near my home a traffic jam"
+        "If it snows tomorrow, then set my alarm to 7 am"
+        // "check if there is near my home a traffic jam"
         // "before you tell me the weather in my neighborhood, tell me how long will it take me to arrive to my neighborhood, tell me when will I arrive at to Davidshire if I leave from Morocco at noon and show me if there is traffic jam near my work place at that time"
         // "show me whether there is traffic jam near my parents neighborhood, provided there is an heavy metal show in Robles Freeway"
         // "show me whether there is traffic jam near my parents neighborhood provided there is an heavy metal show in Robles Freeway"
@@ -113,7 +114,7 @@
         "--input_file_path_regexp",
         "tests/api/eval/test_*.py",
         "--output_file",
-        "build/eval_complex_utterance_to_code_with_intermediate_152_20230525.csv.gz",
+        "build/eval_complex_utterance_to_code_with_intermediate_152_2023111_2.csv.gz",
         "--lang_representations",
         "--code_representations"
       ]

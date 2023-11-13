@@ -3,6 +3,10 @@ from representations.tree.node import Node
 
 
 class BaseBuilder:
+    def __init__(self, rules_enabled: bool = False) -> None:
+        super().__init__()
+        self.rules_enabled = rules_enabled
+
     def build(self, root_item):
         name = type(root_item).__name__
         node = Node(name)
@@ -21,7 +25,7 @@ class BaseBuilder:
 
         if hasattr(root_item, "value"):
             self.build_value(root_item, node)
-            
+
         if hasattr(root_item, "arg"):
             self.build_arg(root_item, node)
 
@@ -29,16 +33,16 @@ class BaseBuilder:
 
     def get_node(self, item):
         factory = builders.builder_factory.BuilderFactory()
-        builder = factory.get_builder(item)
+        builder = factory.get_builder(item, rules_enabled=self.rules_enabled)
         node = builder.build(item)
         return node
-    
+
     def get_priority(self):
         return 100
-    
+
     def is_enabled(self):
         return True
-    
+
     def build_arg(self, root_item, node) -> None:
         child_node = Node(root_item.arg)
         node.add_child(child_node, "arg")

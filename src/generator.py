@@ -44,28 +44,37 @@ def main(
 
             if text:
                 if lang_representations:
-                    _, lr = generate_text_representation(text, rules_enabled=True)
-                    lang_rep = str(lr if lr is not None else "")
+                    lang_rep_raw_tree, lang_rep_tree = generate_text_representation(text, rules_enabled=True)
+                    lang_rep = str(lang_rep_tree if lang_rep_tree is not None else "")
+                    lang_rep_raw = str(lang_rep_raw_tree if lang_rep_raw_tree is not None else "")
                 else:
                     lang_rep = row["lang_rep"]
-                row["lang_rep"] = re.sub(
-                    rf"\s+", " ", lang_rep
-                ).strip()  # replace multiple spaces, \n and \t with a space
+                    lang_rep_raw = row["lang_rep_raw"]
+                
+                for (key, value) in [("lang_rep", lang_rep), ("lang_rep_raw", lang_rep_raw)]:
+                    row[key] = re.sub(
+                        rf"\s+", " ", value
+                    ).strip()  # replace multiple spaces, \n and \t with a space
             else:
                 row["lang_rep"] = None
+                row["lang_rep_raw"] = None
 
             if code:
                 if code_representations:
-                    _, cr = generate_code_representation(code, rules_enabled=True)
-                    code_rep = str(cr if cr is not None else "")
-
+                    code_rep_raw_tree, code_rep_tree = generate_code_representation(code, rules_enabled=True)
+                    code_rep = str(code_rep_tree if code_rep_tree is not None else "")
+                    code_rep_raw = str(code_rep_raw_tree if code_rep_raw_tree is not None else "")
                 else:
                     code_rep = row["code_rep"] if "code_rep" in row else ""
-                row["code_rep"] = re.sub(
-                    rf"\s+", " ", code_rep
-                ).strip()  # replace multiple spaces, \n and \t with a space
+                    code_rep_raw = row["code_rep_raw"] if "code_rep_raw" in row else ""
+                
+                for (key, value) in [("code_rep", code_rep), ("code_rep_raw", code_rep_raw)]:
+                    row[key] = re.sub(
+                        rf"\s+", " ", value
+                    ).strip()  # replace multiple spaces, \n and \t with a space
             else:
                 row["code_rep"] = None
+                row["code_rep_raw"] = None
 
             samples.append(row.to_dict())
             printProgressBar(
@@ -78,13 +87,15 @@ def main(
             text = s.to_text()
             code = s.to_code()
 
-            lang_rep = (
-                str(generate_text_representation(text, rules_enabled=True)[1])
+            lan_rep_raw_tree, lang_rep_tree = generate_text_representation(text, rules_enabled=True)
+            lang_rep, lang_rep_raw = (
+                (str(lang_rep_tree), str(lan_rep_raw_tree))
                 if lang_representations
                 else (None, None)
             )
-            code_rep = (
-                str(generate_code_representation(code, rules_enabled=True)[1])
+            code_rep_raw_tree, code_rep_tree = generate_code_representation(code, rules_enabled=True)
+            code_rep, code_rep_raw = (
+                (str(code_rep_tree), str(code_rep_raw_tree))
                 if code_representations
                 else (None, None)
             )
@@ -92,7 +103,9 @@ def main(
                 "text": text,
                 "code": code,
                 "lang_rep": lang_rep,
+                "lang_rep_raw": lang_rep_raw,
                 "code_rep": code_rep,
+                "code_rep_raw": code_rep_raw,
             }
             samples.append(item)
             printProgressBar(

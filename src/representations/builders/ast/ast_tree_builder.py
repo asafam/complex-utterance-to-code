@@ -12,7 +12,7 @@ class ASTTreeBuilder(BaseTreeBuilder):
 
     def build(self, input, rules_enabled=False) -> Tree:
         tree = Tree(input=input)
-        tree.root_node = self._build_tree(input)
+        tree.root_node = self._build_tree(input, rules_enabled=rules_enabled)
 
         # if rules_enabled:
         #     tree = self.apply_rules(
@@ -21,18 +21,18 @@ class ASTTreeBuilder(BaseTreeBuilder):
 
         return tree
 
-    def tear(self, tree: Tree) -> str:
+    def tear(self, tree_node: Tree, rules_enabled=False) -> str:
         factory = TearerFactory()
-        tearer = factory.get_tearer()
+        tearer = factory.get_tearer(tree_node, rules_enabled=rules_enabled)
         module = ast.Module(
-            body=[tearer.tear(child) for child in tree.root_node.children]
+            body=[tearer.tear(child) for child in tree_node.children]
         )
         return module
 
-    def _build_tree(self, input: str) -> Node:
+    def _build_tree(self, input: str, rules_enabled: bool = False) -> Node:
         asdl = ast.parse(input)
         factory = BuilderFactory()
-        builder = factory.get_builder(asdl)
+        builder = factory.get_builder(asdl, rules_enabled=rules_enabled)
         root_node = builder.build(asdl)
 
         # tearer = TearerFactory().get_tearer(root_node)

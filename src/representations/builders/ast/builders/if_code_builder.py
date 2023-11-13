@@ -5,7 +5,7 @@ from representations.tree.node import Node
 from representations.builders.ast.tearers.tearer_factory import TearerFactory
 
 
-class IfBuilder(BaseBuilder):
+class IfCodeBuilder(BaseBuilder):
     def build(self, root_item):
         name = type(root_item).__name__
         node = Node(name)
@@ -43,7 +43,7 @@ class IfBuilder(BaseBuilder):
         return node
 
     def get_priority(self):
-        return 1000
+        return (super().get_priority() + (1 if self.rules_enabled else -1))
 
     def is_match(self, item):
         name = type(item).__name__

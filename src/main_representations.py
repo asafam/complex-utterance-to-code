@@ -12,9 +12,9 @@ import ast
 def generate_code_representation(code: str, rules_enabled: bool = False):
     builder = ASTTreeBuilder()
     tree = builder.build(input=code, rules_enabled=False)
-    tearer = TearerFactory().get_tearer(tree.root_node, rules_enabled=False)
-    asdl = tearer.tear(tree.root_node)
-    code = ast.unparse(asdl)
+    # tearer = TearerFactory().get_tearer(tree.root_node, rules_enabled=False)
+    # asdl = tearer.tear(tree.root_node)
+    # code = ast.unparse(asdl)
     tree0 = builder.build(input=code, rules_enabled=True)
 
     postprocessed_tree = None

@@ -20,9 +20,9 @@ def load_data(file_path):
 
 
 def load_test_data(
-    test_file_path="data/eval_complex_utterance_to_code_with_intermediate_82_20230519.csv.gz",
+    test_file_path,
     id_labels=["test_id", "sample_id", "sample_minor_id"],
-    sorted=True,
+    sorted=False,
     sample_frac=1,
     random_state=42,
 ):

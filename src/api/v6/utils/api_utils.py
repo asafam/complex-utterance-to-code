@@ -20,8 +20,12 @@ def first(a: Iterable[T], n: Optional[int] = 1) -> Union[T, List[T]]:
     T|List[T]
         The first entity or a list of the first N entities
     """
-    first = list(a)[0] if n == 1 else list(a)[:n]
-    return first
+    if not a:
+        return a
+    elif n == 1:
+        return list(a)[0]
+    else:
+        return list(a)[:n]
 
 
 def last(a: Iterable[T], n: Optional[int] = 1) -> Union[T, List[T]]:

@@ -60,7 +60,8 @@
         "--show_preprocessed",
         "--show_postprocessed",
         "--input",
-        "If it snows tomorrow, then set my alarm to 7 am"
+        "If it rains tomorrow then text Alice"
+        // "If it snows tomorrow, then set my alarm to 7 am"
         // "check if there is near my home a traffic jam"
         // "before you tell me the weather in my neighborhood, tell me how long will it take me to arrive to my neighborhood, tell me when will I arrive at to Davidshire if I leave from Morocco at noon and show me if there is traffic jam near my work place at that time"
         // "show me whether there is traffic jam near my parents neighborhood, provided there is an heavy metal show in Robles Freeway"
@@ -99,8 +100,9 @@
         "--tree_type",
         "code",
         "--show_preprocessed",
+        "--show_postprocessed",
         "--input_file",
-        "examples/code/example1.py"
+        "examples/code/work.py"
       ]
     },
 

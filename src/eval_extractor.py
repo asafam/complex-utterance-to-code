@@ -147,7 +147,7 @@ def read_test_file(
                 else:
                     code = add_line_to_var(code, line, leading_spaces=leading_spaces)
 
-            if line.strip().startswith("import") or line.strip().startswith("from"):
+            if state == States.IMPORTS or line.strip().startswith("import") or line.strip().startswith("from"):
                 state = States.IMPORTS
                 imports = add_line_to_var(imports, line, leading_spaces=leading_spaces)
 

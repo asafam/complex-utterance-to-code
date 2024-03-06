@@ -32,9 +32,10 @@ def build_examples_prompt(
     input_data: object = None, 
     headless: bool=False, 
     limit: int=10,
-    seed: int=42
+    seed: int=42,
+    config_path: str = './config'
 ):    
-    strategies = load_strategies()
+    strategies = load_strategies(filepath=os.path.join(config_path, "prompt_strategies.yml")
     if strategy not in strategies:
         raise ValueError(f"Strategy {strategy} not found in {strategies.keys()}")
     
@@ -81,20 +82,22 @@ def build_examples_prompt(
 
 def build_spec_prompt(
     strategy: str, 
-    path: str = './config/prompts/content/**/*.txt', 
+    files_path: str = 'prompts/content/**/*.txt', 
+    config_path: str = './config',
     input_data: object = None, 
     examples_df: pd.DataFrame = None, 
     examples_limit: int = 0,
     headless: bool=False,
-    seed: int=42
+    seed: int=42,
 ):
-    strategies = load_strategies()
+    strategies = load_strategies(filepath=os.path.join(config_path, "prompt_strategies.yml")
     if strategy not in strategies:
         raise ValueError(f"Strategy {strategy} not found in {strategies.keys()}")
     
     properties = strategies[strategy]
     
     prompt_dict = {}
+    path = os.join(config_path, files_path)
     for prompt_file in glob.glob(path):
         key = os.path.basename(prompt_file).split('.')[0].lower()
         with open(prompt_file, "r") as f:
@@ -150,12 +153,13 @@ def build_prompt(
     examples_df: pd.DataFrame = None, 
     examples_limit: int = 30,
     seed: int = 42,
-    chat_format: bool = True
+    chat_format: bool = True,
+    config_path: str = './config'
 ):
     if prompt_type == 'examples':
-        prompt = build_examples_prompt(strategy=strategy, examples_df=examples_df, input_data=input_data, limit=examples_limit, headless=False, seed=seed)
+        prompt = build_examples_prompt(strategy=strategy, examples_df=examples_df, input_data=input_data, limit=examples_limit, headless=False, seed=seed, config_path=config_path)
     elif prompt_type == 'apispec':
-        prompt = build_spec_prompt(strategy=strategy, input_data=input_data, examples_df=examples_df, examples_limit=examples_limit, seed=seed)
+        prompt = build_spec_prompt(strategy=strategy, input_data=input_data, examples_df=examples_df, examples_limit=examples_limit, seed=seed, config_path=config_path)
     
     if not chat_format:
         raise NotImplementedError("Not implemented yet")

@@ -1,6 +1,9 @@
+import os
 import yaml
 import pandas as pd
 import re
+import glob
+from transformers import GPT2TokenizerFast
 
 
 def build_example_prompt(input_label, input_value, output_label=None, output_value=None, base_prompt=None):
@@ -28,7 +31,8 @@ def build_examples_prompt(
     examples_df: pd.DataFrame, 
     input_data: object = None, 
     headless: bool=False, 
-    limit: int=10
+    limit: int=10,
+    seed: int=42
 ):    
     strategies = load_strategies()
     if strategy not in strategies:
@@ -38,15 +42,16 @@ def build_examples_prompt(
     
     example_prompts = []
     if (examples_df is not None) and (not examples_df.empty):
-      for index, row in examples_df[:limit].iterrows():
-          example_prompt = build_example_prompt(
-              input_value=row[properties["input_column"]], 
-              input_label=properties["input_label"],
-              output_value=row[properties["output_column"]],
-              output_label=properties["output_label"],
-              base_prompt=properties["user_prompt_examples"] if index == 0 else "",
-          )
-          example_prompts += example_prompt
+        data = examples_df.sample(n=limit, random_state=seed) if len(examples_df) > limit else df
+        for index, row in data.iterrows():
+            example_prompt = build_example_prompt(
+                input_value=row[properties["input_column"]], 
+                input_label=properties["input_label"],
+                output_value=row[properties["output_column"]],
+                output_label=properties["output_label"],
+                base_prompt=properties["user_prompt_examples"] if index == 0 else "",
+            )
+            example_prompts += example_prompt
 
     if headless:
         prompt = example_prompts
@@ -62,8 +67,8 @@ def build_examples_prompt(
             input_prompt = build_example_prompt(
                 input_value=input_data[properties["input_column"]], 
                 input_label=properties["input_label"],
-                output_value=input_data[properties["output_column"]] if properties["output_column"] in input_data else None,
-                output_label=properties["output_label"]
+                # output_value=input_data[properties["output_column"]] if properties["output_column"] in input_data else None,
+                # output_label=properties["output_label"]
             )
             previous_examples_context = "Based on the previous examples, " if example_prompts else ""
             prediction_instruction = previous_examples_context + properties["prediction_prompt"]
@@ -81,6 +86,7 @@ def build_spec_prompt(
     examples_df: pd.DataFrame = None, 
     examples_limit: int = 0,
     headless: bool=False,
+    seed: int=42
 ):
     strategies = load_strategies()
     if strategy not in strategies:
@@ -110,7 +116,7 @@ def build_spec_prompt(
     
     if examples_limit > 0 and examples_df is not None:
         spec_prompt
-        spec_prompt += build_examples_prompt(strategy=strategy, examples_df=examples_df, limit=examples_limit, headless=True)
+        spec_prompt += build_examples_prompt(strategy=strategy, examples_df=examples_df, limit=examples_limit, headless=True, seed=seed)
             
     if headless:
         prompt = spec_prompt
@@ -143,15 +149,19 @@ def build_prompt(
     input_data: object = None, 
     examples_df: pd.DataFrame = None, 
     examples_limit: int = 30,
+    seed: int = 42,
     chat_format: bool = True
 ):
     if prompt_type == 'examples':
-        prompt = build_examples_prompt(strategy=strategy, examples_df=examples_df, input_data=input_data, limit=examples_limit)
+        prompt = build_examples_prompt(strategy=strategy, examples_df=examples_df, input_data=input_data, limit=examples_limit, headless=False, seed=seed)
     elif prompt_type == 'apispec':
-        prompt = build_spec_prompt(strategy=strategy, input_data=input_data, examples_df=examples_df, examples_limit=examples_limit)
+        prompt = build_spec_prompt(strategy=strategy, input_data=input_data, examples_df=examples_df, examples_limit=examples_limit, seed=seed)
     
     if not chat_format:
         raise NotImplementedError("Not implemented yet")
+
+    # prompt_length = measure_prompt_length(prompt)
+    # print(f"Base prompt tokens length: {prompt_length}")
     
     return prompt
 
@@ -160,3 +170,10 @@ def load_strategies(filepath='./config/prompts/prompt_strategies.yml'):
     with open(filepath, 'r') as file:
         data = yaml.safe_load(file)
     return data
+
+
+def measure_prompt_length(messages: list) -> int:
+    tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
+    prompt_str = "\n".join([p['content'] for p in messages if p['role'] == 'user'])
+    base_prompt_tokens_len = len(tokenizer(prompt_str, max_length=51200, truncation=True)["input_ids"])
+    return base_prompt_tokens_len

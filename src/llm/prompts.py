@@ -33,7 +33,7 @@ def build_examples_prompt(
     headless: bool=False, 
     limit: int=10,
     seed: int=42,
-    config_path: str = './config'
+    config_path: str = './config/prompts'
 ):    
     strategies = load_strategies(filepath=os.path.join(config_path, "prompt_strategies.yml"))
     if strategy not in strategies:

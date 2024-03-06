@@ -97,7 +97,7 @@ def build_spec_prompt(
     properties = strategies[strategy]
     
     prompt_dict = {}
-    path = os.join(config_path, files_path)
+    path = os.path.join(config_path, files_path)
     for prompt_file in glob.glob(path):
         key = os.path.basename(prompt_file).split('.')[0].lower()
         with open(prompt_file, "r") as f:

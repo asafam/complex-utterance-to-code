@@ -119,7 +119,7 @@ def build_spec_prompt(
     
     if examples_limit > 0 and examples_df is not None:
         spec_prompt
-        spec_prompt += build_examples_prompt(strategy=strategy, examples_df=examples_df, limit=examples_limit, headless=True, seed=seed)
+        spec_prompt += build_examples_prompt(strategy=strategy, examples_df=examples_df, limit=examples_limit, headless=True, seed=seed, config_path=config_path)
             
     if headless:
         prompt = spec_prompt

@@ -82,8 +82,8 @@ def build_examples_prompt(
 
 def build_spec_prompt(
     strategy: str, 
-    files_path: str = 'prompts/content/**/*.txt', 
-    config_path: str = './config',
+    files_path: str = 'content/**/*.txt', 
+    config_path: str = './config/prompts',
     input_data: object = None, 
     examples_df: pd.DataFrame = None, 
     examples_limit: int = 0,
@@ -154,7 +154,7 @@ def build_prompt(
     examples_limit: int = 30,
     seed: int = 42,
     chat_format: bool = True,
-    config_path: str = './config'
+    config_path: str = './config/prompts'
 ):
     if prompt_type == 'examples':
         prompt = build_examples_prompt(strategy=strategy, examples_df=examples_df, input_data=input_data, limit=examples_limit, headless=False, seed=seed, config_path=config_path)

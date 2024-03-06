@@ -90,7 +90,7 @@ def build_spec_prompt(
     headless: bool=False,
     seed: int=42,
 ):
-    strategies = load_strategies(filepath=os.path.join(config_path, "prompt_strategies.yml")
+    strategies = load_strategies(filepath=os.path.join(config_path, "prompt_strategies.yml"))
     if strategy not in strategies:
         raise ValueError(f"Strategy {strategy} not found in {strategies.keys()}")
     

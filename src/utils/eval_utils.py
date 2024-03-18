@@ -15,6 +15,7 @@ import signal
 from contextlib import contextmanager
 from tqdm.auto import tqdm
 import re
+import threading
 tqdm.pandas()
 
 
@@ -112,8 +113,27 @@ def suppressed_input(*args, **kwargs):
 def suppressed_sleep(*args, **kwargs):
     time.sleep(2)
 
+
 def suppressed_scheduler_run(*args, **kwargs):
     pass
+
+
+def run_with_timeout(code, local_scope, time_limit):
+    def target(exception_data):
+        try:
+            exec(code, local_scope)
+        except Exception as e:
+            exception_data['exception'] = e
+
+    exception_data = {}
+    thread = threading.Thread(target=target, args=(exception_data,))
+    thread.start()
+    thread.join(time_limit)
+    if thread.is_alive():
+        raise TimeoutException('Timed out!')
+        thread.join()
+    if 'exception' in exception_data:
+        raise exception_data['exception']
 
 
 def eval_code(code: str):
@@ -131,20 +151,26 @@ def eval_code(code: str):
                 'time.sleep': suppressed_sleep,
                 'scheduler.run': suppressed_scheduler_run
             }
-            signal.signal(signal.SIGALRM, signal_handler)
-            time_limit = 1
-            signal.alarm(time_limit)
-            exec(code, local_scope)
-            signal.alarm(0)
-
+            # timed_code_execution_prefix = "import signal\n"
+            # timed_code_execution_prefix += "class TimeoutException(Exception):\n"
+            # timed_code_execution_prefix += "    pass\n"
+            # timed_code_execution_prefix += "def signal_handler(signum, frame):\n"
+            # timed_code_execution_prefix += "    raise TimeoutException('Timed out!')\n"
+            # timed_code_execution_prefix += "signal.signal(signal.SIGALRM, signal_handler)\n"
+            # timed_code_execution_prefix += "time_limit = 1\n"
+            # timed_code_execution_prefix += "signal.alarm(time_limit)\n"
+            # timed_code_execution_suffix = "signal.alarm(0)\n"
+            # code = f"{timed_code_execution_prefix}\n{code}\n{timed_code_execution_suffix}"
+            # exec(code, local_scope)
+            run_with_timeout(code, local_scope, time_limit=1)
             test_results = local_scope.get("test_results", {})
             test_results["execution_success"] = test_results.get("execution_success", 0) + 1
         except AssertionError as e:
             test_results["assertion_failure"] = test_results.get("assertion_failure", 0) + 1
         except TimeoutException as e:
             test_results["execution_failure"] = test_results.get("execution_failure", 0) + 1
-            print(code[code.index("# start code block to test"):code.index("# end code block to test")])
-            print(e)
+            # print(code[code.index("# start code block to test"):code.index("# end code block to test")])
+            # print(e)
         except Exception as e:
             test_results["execution_failure"] = test_results.get("execution_failure", 0) + 1
 
@@ -280,43 +306,58 @@ def generate_predictions(
 
 
 def humaneval_accuracy_score(
-    n,
-    ks,
-    data: pd.DataFrame,
+    df: pd.DataFrame,
+    n: int = 100,
+    ks: List[int] = [1, 10],
     code_column_name: str = "pred_code",
-    score_id_labels: Union[str, List[str]] = ["sample_id", "sample_minor_id"],
+    score_id_labels1: Union[str, List[str]] = ["sample_id"],
+    score_id_labels2: Union[str, List[str]] = ["sample_id", "n"],
     score_column_name: str = "accuracy",
-    soft=True
+    soft: bool = False
 ):
-    test_codes = data.apply(
+    print("In humaneval_accuracy_score...")
+    string_to_replace = "from utils.test_utils import ("
+    new_string = "from utils.test_utils import *"
+    df['imports'] = df['imports'].str.replace(string_to_replace, new_string, regex=False)
+    test_codes = df.apply(
         lambda x: build_test_code(
             code=x[code_column_name], imports=x["imports"], test=x["test"]
         ),
         axis=1,
     )
-    print("In humaneval_accuracy_score...")
-    test_results = test_codes.progress_apply(lambda test_code: eval_code(test_code))
-    test_results_df = pd.DataFrame.from_records(
-        test_results.values, index=test_results.index
-    )
-    results = []
-    for soft in [False, True]:
-      for k in [1, 10]:
-        test_scores_df = test_results_df.copy().reset_index()
-        projected_score_column_name = score_column_name + '_projected'
-        test_scores_df[projected_score_column_name] = test_scores_df[score_column_name].apply(lambda x: x if (soft or(x == 1.0)) else 0)
-        scores = (
-            test_scores_df
-            .groupby(score_id_labels)
+
+    print("Evaluating test codes...")
+    eval_results = test_codes.progress_apply(eval_code)
+
+    index_columns = df.index.names
+    df = df.reset_index().join(pd.json_normalize(eval_results)).set_index(index_columns)
+
+    projected_score_column_name = score_column_name + "_projected"
+    # group without the sample_minor_id over sample_id and n
+    df2 = df.groupby(score_id_labels2).agg({
+        score_column_name: 'mean'
+    }).reset_index().set_index(score_id_labels1)
+    df2[projected_score_column_name] = df2[score_column_name].apply(lambda x: x if (soft or(x == 1.0)) else 0)
+
+    scores_df = None
+    # keys = []
+    for k in ks:
+        scores_at_k = (
+            df2
+            .groupby(score_id_labels1) # group over sample_id
             .apply(lambda x: x[projected_score_column_name].sum())
             .apply(lambda c: pass_at_k(n=n, c=c, k=k))
         )
-        score = scores.mean()
-        # print(f"len = {scores.shape[0]}, mean = {scores.sum() / scores.shape[0]}, score = {score}")
-        print(f"Humaneval: n={n}\tk = {k}\tsoft = {soft}\tlen = {scores.shape[0]}\tscore = {score}")
-        result = dict(score=score, n=n, k=k, soft=soft, results=test_results_df)
-        results.append(result)
-    return results
+        if scores_df is not None:
+            scores_df[f"pass@{k}"] = scores_at_k.to_frame()
+        else:
+            scores_df = scores_at_k.to_frame(f"pass@{k}")
+        # scores_df = pd.concat([scores_df, scores_at_k.to_frame(f"pass@{k}")], axis=1) if not scores_df.empty else scores_at_k.to_frame(f"pass@{k}")
+        # keys.append(f"pass@{k}")
+    # scores_df.columns = keys
+    
+    result = (scores_df, df2, df)
+    return result
 
 
 def bleu_accuracy_score(
@@ -379,10 +420,10 @@ def eval_bleu(code, generated_code):
 
 
 def model_eval(
-    n,
-    ks,
     results_df=None,
     results_file_path=None,
+    n=100,
+    ks=[1, 10],
     output_column="output",
     gold_column="code",
     code_column="generated_code",
@@ -390,7 +431,7 @@ def model_eval(
     parse_to_code=False,
     parse_rules_enabled=False,
     compute_humanval=True,
-    compute_bleu=True,
+    compute_bleu=False,
     force_parse_code_rep_to_code=True,
 ):
     results_df = (
@@ -425,25 +466,25 @@ def model_eval(
     # )
     results_df[code_column] = results_df[code_column].str.replace('=  =', '=')
 
-    humaneval_results = (
-        humaneval_accuracy_score(n=n, ks=ks, data=results_df, code_column_name=code_column)
+    (humaneval_scores_df, samples_df, results_df) = (
+        humaneval_accuracy_score(n=n, ks=ks, df=results_df, code_column_name=code_column)
         if compute_humanval
-        else {}
+        else (None, None, results_df)
     )
 
-    bleu_results = (
+    (bleu_results_df, samples_df, results_df) = (
         bleu_accuracy_score(
             data=results_df, generated_column=code_column, gold_column=gold_column
         )
         if compute_bleu
-        else {}
+        else None, None, results_df
     )
 
     result = dict(
-        humaneval=humaneval_results,
-        bleu=bleu_results
+        humaneval=humaneval_scores_df,
+        bleu=bleu_results_df
     )
-    return result
+    return result, results_df
 
 
 def eval_generated_code(
@@ -538,7 +579,7 @@ def eval_test_data(
 
     results = None
     if should_model_eval:
-        results = model_eval(
+        results, results_df = model_eval(
             n=n,
             ks=ks,
             results_df=results_df,

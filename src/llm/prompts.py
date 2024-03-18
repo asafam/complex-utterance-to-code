@@ -45,7 +45,7 @@ def build_examples_prompt(
     
     example_prompts = []
     if (examples_df is not None) and (not examples_df.empty):
-        data = examples_df.sample(n=limit, random_state=seed) if len(examples_df) > limit else df
+        data = examples_df.sample(n=limit, random_state=seed) if len(examples_df) > limit else examples_df
         for index, (_, row) in enumerate(data.iterrows()):
             example_prompt = build_example_prompt(
                 input_value=row[properties["input_column"]], 
@@ -121,7 +121,6 @@ def build_spec_prompt(
     }]
     
     if examples_limit > 0 and examples_df is not None:
-        spec_prompt
         spec_prompt += build_examples_prompt(strategy=strategy, examples_df=examples_df, limit=examples_limit, headless=True, seed=seed, config_path=config_path)
             
     if headless:
